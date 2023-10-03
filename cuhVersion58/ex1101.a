@@ -1,0 +1,68 @@
+; ex1101.a  Multiplication (optimized)
+startup:  bl main
+          halt
+;==============================================================
+                           ; #include <stdio.h>
+slowmul:  ; r1 is x        ; int slowmul(int x, unsigned int y)
+          ; r2 is y        ; {
+
+          ; r0 is product
+          mov r0, 0        ;    int product = 0;
+
+@L0:      and r2, r2, r2   ;    while (y)          
+          brz @L1          ;    {
+
+          add r0, r0, r1   ;       product = product + x;
+                           
+          sub r2, r2, 1    ;       y--;
+                           
+          br @L0           ;    }
+@L1:
+          ret              ;    return product;
+                           ; }
+;==============================================================
+mul:      ; r1 is x        ; int mul(int x, unsigned int y)
+          ; r2 is y        ; {
+
+          ; r0 is product
+          mov r0, 0        ;    int product = 0;
+
+@L2:      and r2, r2, r2   ;    while (y)
+          brz @L3          ;    {
+                            
+          and r3, r2, 1    ;       if (y & 1)
+          brz @L4
+                            
+          add r0, r0, r1   ;          product = product + x;
+                       
+@L4:      ; shift right y  ;       y = y >> 1;
+          srl r2, 1
+          ; shift left x   ;       x = x << 1;
+          sll r1, 1
+
+          br @L2           ;    }
+                           
+@L3:      ret              ; }
+;==============================================================
+main:     push lr          ; int main()
+          push fp          ; {
+          mov fp, sp
+                           
+          mov r1, 7        ;    printf("%d\n", slowmul(7, 255));
+          mov r2, 255
+          bl slowmul
+          dout r0
+          nl
+                            
+          mov r1, 7        ;    printf("%d\n", mul(7, 255));
+          mov r2, 255
+          bl mul
+          dout r0
+          nl
+                           
+          mov r0, 0        ;    return 0;
+          mov sp, sp
+          pop fp
+          pop lr
+          ret
+                           ; }

@@ -1,0 +1,179 @@
+  1 // i1shell.c
+  2 Your name here as a comment
+  3 #include <stdio.h>    // for I/O functions
+  4 #include <stdlib.h>   // for exit()
+  5 #include <time.h>     // for time functions
+  6 
+  7 FILE *infile;
+  8 short r[8], mem[65536], offset6, imm5, imm9, pcoffset9, pcoffset11, 
+  9       regsave1, regsave2;
+ 10 unsigned short ir, pc, opcode, code, dr, sr, sr1, sr2, baser, bit5, bit11,
+ 11                trapvec, n, z, c, v;
+ 12 char letter;
+ 13 
+ 14 void setnz(short r)
+ 15 {
+ 16    n = z = 0;
+ 17    if (r < 0)    // is result negative?
+ 18       n = 1;     // set n flag
+ 19    else
+ 20    if (r == 0)   // is result zero?
+ 21       z = 1;     // set z flag
+ 22 }
+ 23 
+ 24 void setcv(short sum, short x, short y)
+ 25 {
+ 26    v = c = 0;
+ 27    if (x >= 0 && y >= 0)   // if both non-negative, then no carry
+ 28       c = 0;
+ 29    else
+ 30    if (x < 0 && y < 0)     // if both negative, then carry
+ 31       c = 1;
+ 32    else
+ 33    if (sum >= 0)           // if signs differ and sum non-neg, then carry
+ 34       c = 1;
+ 35    else                    // if signs differ and sum neg, then no carry
+ 36       c = 0;
+ 37    // if signs differ then no overflow
+ 38    if ((x < 0 && y >= 0) || (x >= 0 && y < 0))
+ 39       v = 0;
+ 40    else
+ 41    // if signs the same and sum has different sign, then overflow
+ 42    if ((sum < 0 && x >= 0) || (sum >= 0 && x < 0))
+ 43       v = 1;
+ 44    else
+ 45       v = 0;
+ 46 }
+ 47 
+ 48 int main(int argc, char *argv[])
+ 49 {
+ 50    time_t timer;
+ 51 
+ 52    if (argc != 2)
+ 53    {
+ 54        printf("Wrong number of command line arguments\n");
+ 55        printf("Usage: i1 <input filename>\n");
+ 56        exit(1);
+ 57    }
+ 58 
+ 59    // display your name, command line args, time
+ 60    time(&timer);      // get time
+ 61    printf("YOUR NAME HERE     %s %s     %s", 
+ 62            argv[0], argv[1], asctime(localtime(&timer)));
+ 63 
+ 64    infile = fopen(argv[1], "rb"); // open file in binary mode
+ 65    if (!infile)
+ 66    {
+ 67       printf("Cannot open input file %s\n", argv[1]);
+ 68       exit(1);
+ 69    }
+ 70 
+ 71    fread(&letter, 1, 1, infile);  // test for and discard get file sig
+ 72    if (letter != 'o')
+ 73    {
+ 74       printf("%s not an lcc file", argv[1]);
+ 75       exit(1);
+ 76    }
+ 77    fread(&letter, 1, 1, infile);  // test for and discard 'C'
+ 78    if (letter != 'C')
+ 79    {
+ 80       printf("Missing C header entry in %s\n", argv[1]);
+ 81       exit(1);
+ 82    }
+ 83 
+ 84    fread(mem, 1, sizeof(mem), infile); // read machine code into mem
+ 85 
+ 86    while (1)
+ 87    {
+ 88       // fetch instruction, load it into ir, and increment pc
+ 89       ir = mem[pc++];                    
+ 90 
+ 91       // isolate the fields of the instruction in the ir
+ 92       opcode = ir >> 12;                  // get opcode
+ 93       pcoffset9 = ir << 7;                // left justify pcoffset9 field
+ 94       pcoffset9 = imm9 = pcoffset9 >> 7;  // sign extend and rt justify
+ 95       pcoffset11 = ...                    // left justify pcoffset11 field
+ 96       pcoffset11 = ...                    // sign extend and rt justify
+ 97       imm5 = ...                          // left justify imm5 field
+ 98       imm5 = ...                          // sign extend andd rt justify
+ 99       offset6 = ...                       // left justify offset6 field
+100       offset6 = ...                       // sign extend and rt justify
+101       trapvec = eopcode = ir & 0x1f;      // get trapvec and eopcode fields
+102       code = dr = sr = ...                // get code/dr/sr and rt justify
+103       sr1 = baser = (ir & 0x01c0) >> 6;   // get sr1/baser and rt justify
+104       sr2 = ...                           // get third reg field
+105       bit5 = ...                          // get bit 5
+106       bit11 = ir & 0x0800;                // get bit 11
+107 
+108       // decode (i.e., determine) and execute instruction just fetched
+109       switch (opcode)
+110       {
+111          case 0:                          // branch instructions
+112             switch(code)
+113             {
+114                case 0: if (z == 1)             // brz
+115                           pc = pc + pcoffset9;
+116                        break;
+117                case 1: if (z == 0)             // brnz
+118                           pc = pc + pcoffset9;
+119                        break;
+120 
+121                // code missing here
+122 
+123                case 7: pc = pc + pcoffset9;    // br
+124                        break;
+125             }                                                   
+126             break;
+127          case 1:                               // add
+128             if (bit5)
+129             {
+130                regsave1 = r[sr1];
+131                r[dr] = regsave1 + imm5;
+132                // set c, v flags
+133                setcv(r[dr], regsave1, imm5);
+134             }
+135             else
+136             {
+137                regsave1 = r[sr1]; regsave2 = r[sr2];
+138                r[dr] = regsave1 + regsave2;
+139                // set c, v flags
+140                setcv(r[dr], regsave1, regsave2);
+141             }
+142             // set n, z flags
+143             setnz(r[dr]);
+144             break;
+145          case 2:                          // ld
+146         
+147          // code missing here
+148 
+149          case 9:                          // not
+150             // ~ is the not operator in C
+151             r[dr] = ~r[sr1];
+152             // set n, z flags
+153             setnz(r[dr]);
+154             break;
+155 
+156          // code missing here
+157 
+158          case 12:                         // jmp/ret
+159             pc = r[baser] + offset6;                     
+160             break;
+161 
+162          // code missing here
+163 
+164          case 14:                         // lea
+165             r[dr] = pc + pcoffset9;
+166             break;
+167          case 15:                         // trap
+168             if (trapvec == 0x00)             // halt
+169                exit(0);
+170             else
+171             if (trapvec == 0x01)             // nl
+172                // code missing here
+173             else
+174             if (trapvec == 0x02)             // dout
+175                // code missing here                
+176             break;
+177       }     // end of switch
+178    }        // end of while
+179 }

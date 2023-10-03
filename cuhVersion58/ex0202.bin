@@ -1,0 +1,8 @@
+; ex0202.bin
+0010 000 000000101   ; load r0 from location following halt
+0001 000 000 1 00011 ; add immediate value 3 to r0
+0011 000 000000011   ; store r0 into location following halt
+1111 0000 000 00010  ; display r0 in decimal
+1111 0000 000 00001  ; move cursor to next line
+1111 0000 000 00000  ; halt execution
+0000000000000001       ; initial value is 1                     

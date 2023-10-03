@@ -1,0 +1,14 @@
+  1 // c0715.c
+  2 #include <stdio.h>
+  3 char (*p)(char);
+  4 char f(char c)
+  5 {
+  6    return c+1;   
+  7 }
+  8 int main()
+  9 {
+ 10    p = f;
+ 11    printf("%c\n", f('a'));
+ 12    printf("%c\n", p('a'));
+ 13    return 0;
+ 14 }

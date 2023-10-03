@@ -1,0 +1,90 @@
+  1 ; a1test.a
+  2 s:        lea r0, c6
+  3           st r0, ac6
+  4           lea r0, c7
+  5           st r0, ac7
+  6           ld r0, x
+  7           dout           ; 1   (dout equivalent to dout r0)
+  8           nl
+  9           add r0, r0, r0
+ 10           dout           ; 2
+ 11           nl
+ 12           add r0, r0, 1
+ 13           dout           ; 3
+ 14           nl 
+ 15           add r0, r0, 3
+ 16           and r0, r0, 4
+ 17           dout           ; 4
+ 18           nl
+ 19           br L1
+ 20           halt
+ 21 L1:       
+ 22           brp L2
+ 23           halt
+ 24 L2:        
+ 25 ABC:
+ 26           add r1, r0, 0
+ 27           not r1, r1
+ 28           brn L3
+ 29           halt
+ 30 L3:       br L4 
+ 31 x:        .word 1
+ 32 L4:       and r2, r2, 0
+ 33           brz L5
+ 34           halt
+ 35           .zero 3
+ 36 L5:       lea r3, L6
+ 37           jmp r3
+ 38           halt
+ 39 L6:       bl r1sub      ; 5
+ 40           lea r4, r2sub
+ 41           blr r4        ; 6
+ 42           ld r0, ac7
+ 43           ldr r0, r0, 0
+ 44           dout           ; 7
+ 45           nl
+ 46           lea r4, c6
+ 47           ldr r0, r4, 4
+ 48           dout           ; 8
+ 49           nl
+ 50           ld  r5, minus
+ 51           not r0, r5 
+ 52           dout           ; -9
+ 53           nl
+ 54           add r0, r0, -1
+ 55           st r0, save
+ 56           ld r0, save
+ 57           dout           ; -10
+ 58           nl
+ 59           add r0, r0, -1
+ 60           ld r1, ac7
+ 61           str r0, r1, 0
+ 62           ld  r0, c7
+ 63           dout           ; -11
+ 64           nl
+ 65           add r0, r0, -1
+ 66           lea r1, save
+ 67           str r0, r1, 1
+ 68           ld  r0, save2
+ 69           dout           ; -12
+ 70           nl
+ 71           halt
+ 72           ; hello
+ 73 
+ 74 r1sub:    ld r0, c5
+ 75           dout           ; 5
+ 76           nl
+ 77           ret
+ 78 c5:       .word 5
+ 79 minus:    .word 8
+ 80 r2sub:    ld r0, c6
+ 81           dout
+ 82           nl
+ 83           ret
+ 84 c6:       .word 6        ; .word equivalent to .fill
+ 85 c7:       .word 7
+ 86 ac6:      .word 0          
+ 87 ac7:      .word 0
+ 88 c8:       .word 8
+ 89 save:     .word -5
+ 90 save2:    .word 100

@@ -1,0 +1,12 @@
+  1 // c0709.c
+  2 #include <stdio.h>
+  3 int x = 3, *p, **q, ***r;
+  4 int main()
+  5 {
+  6    
+  7    p = &x;
+  8    q = &p;
+  9    r = &q;
+ 10    printf("%d\n", ***r);
+ 11    return 0;
+ 12 }

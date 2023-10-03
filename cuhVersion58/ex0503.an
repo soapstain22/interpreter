@@ -1,0 +1,57 @@
+  1 ; ex0503.a  Static local variables
+  2 
+  3 startup:  bl main
+  4           halt             ; back to operating system
+  5 ;===========================================================
+  6                            ; #include <stdio.h>                           
+  7 x:        .word 5          ; int x = 5;
+  8 f:        push lr          ; void f()        
+  9           push fp          ; {
+ 10           mov fp, sp
+ 11 
+ 12                            ;    static int x;
+ 13 
+ 14           ld r0, @s0_x     ;    printf("%d\n", x);
+ 15           dout r0
+ 16           nl
+ 17 
+ 18           mov sp, fp       ; }
+ 19           pop fp
+ 20           pop lr
+ 21           ret
+ 22 ;===========================================================
+ 23 g:        push lr          ; void g()
+ 24           push fp          ; {
+ 25           mov fp, sp
+ 26 
+ 27           ld r0, x         ;    printf("d\n", x);
+ 28           dout r0
+ 29           nl
+ 30 
+ 31           mov sp, fp       ; }
+ 32           pop fp
+ 33           pop lr
+ 34           ret
+ 35 ;===========================================================
+ 36 main:     push lr          ; int main()
+ 37           push fp          ; {
+ 38           mov fp, sp
+ 39 
+ 40                            ;    static int x = 3;
+ 41 
+ 42           ld r0, @s1_x     ;    printf("%d\n", x);
+ 43           dout r0
+ 44           nl
+ 45 
+ 46           bl f             ;    f();
+ 47 
+ 48           jsr g            ;    g();
+ 49 
+ 50           mov r0, 0        ;    return 0;
+ 51           mov sp, fp                
+ 52           pop fp
+ 53           pop lr
+ 54           ret
+ 55                            ; }
+ 56 @s0_x:    .word 0
+ 57 @s1_x:    .word 3

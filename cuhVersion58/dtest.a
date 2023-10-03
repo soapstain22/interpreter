@@ -1,0 +1,8 @@
+          ; test program for d.sm microcode        dtest.a
+          ldi 7
+          dout
+          nl
+          ldi -7
+          dout
+          nl
+          halt

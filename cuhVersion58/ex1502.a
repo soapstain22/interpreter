@@ -1,0 +1,94 @@
+; ex1502.a  Objects in C++
+startup:  bl main
+          halt 
+;==============================================================
+                           ; #include <iostream>
+                           ; using namespace std;
+                           ; class A
+                           ; {
+                           ;    public:
+                           ;       void set(int n);
+                           ;       void display();
+                           ;    private:
+                           ;       int x;
+                           ;       int y;
+                           ; };
+
+@A@set$ii:push lr          ; void A::set(int n, int m)
+          push fp          ; {                        
+          mov fp, sp
+                           
+          ldr r0, fp, 3    ;    x = n;
+          ldr r1, fp, 2
+          str r0, r1, 0
+                           
+          ldr r0, fp, 4    ;    y = m;
+          ldr r1, fp, 2
+          str r0, r1, 1
+                           
+          mov sp, fp       ; }
+          pop fp
+          pop lr
+          ret
+
+@A@display$v:              ; void A::display()  
+          push lr          ; {                  
+          push fp
+          mov fp, sp
+                           
+          ldr r0, fp, 2    ;    cout << x << endl;
+          ldr r0, r0, 0
+          dout r0
+          nl
+
+          ldr r0, fp, 2    ;    cout << y << endl;
+          ldr r0, r0, 1
+          dout r0
+          nl
+                           
+          mov sp, fp       ; }
+          pop fp
+          pop lr
+          ret
+;==============================================================
+main:     push lr           ; int main()
+          push fp           ; {         
+          mov fp, sp
+                            
+          sub sp, sp, 2     ;    A a, b;
+          sub sp, sp, 2
+                            
+          mov r0, 6         ;    a.set(5, 6);                  
+          push r0
+          mov r0, 5
+          push r0
+          add r0, fp, -2
+          push r0
+          bl @A@set$ii
+          add sp, sp, 3
+                            
+          add r0, fp, -2    ;    a.display();                  
+          push r0
+          bl @A@display$v
+          add sp, sp, 1
+                            
+          mov r0, 11         ;    b.set(10, 11);                  
+          push r0
+          mov r0, 10
+          push r0
+          add r0, fp, -4
+          push r0
+          bl @A@set$ii
+          add sp, sp, 3
+                            
+          add r0, fp, -4    ;    b.display();                  
+          push r0
+          bl @A@display$v
+          add sp, sp, 1
+                            
+          mov r0, 0         ;    return 0;
+          mov sp, fp
+          pop fp
+          pop lr
+          ret
+                            ; }

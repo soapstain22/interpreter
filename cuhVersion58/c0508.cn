@@ -1,0 +1,17 @@
+  1 // c0508.c
+  2 #include <stdio.h>
+  3 void f()
+  4 {
+  5    int x;
+  6    x = 1;
+  7    printf("%d\n", x); 
+  8 } 
+  9 void g() {
+ 10    f();
+ 11 }
+ 12 int main()
+ 13 {
+ 14    f();
+ 15    g();
+ 16    return 0;
+ 17 }       

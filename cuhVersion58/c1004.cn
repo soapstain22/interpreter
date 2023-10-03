@@ -1,0 +1,30 @@
+  1 // c1004.c
+  2 #include <stdio.h>
+  3 int a[10];
+  4 void f()
+  5 {
+  6    int b[10];
+  7    static int c[10];
+  8    int *p, *q, *r, *s, *t, *u;
+  9 
+ 10    p = a;
+ 11    q = b;
+ 12    r = c;
+ 13    *p = 10;
+ 14    *q = 11;
+ 15    *r = 12;
+ 16    s = &a[3];
+ 17    t = &b[3];
+ 18    u = &c[3];
+ 19    *s = 1;
+ 20    *t = 2;
+ 21    *u = 3;
+ 22    printf("%d %d\n", a[0], a[3]);
+ 23    printf("%d %d\n", b[0], b[3]);
+ 24    printf("%d %d\n", c[0], c[3]);
+ 25 }
+ 26 int main()
+ 27 {
+ 28    f();
+ 29    return 0;
+ 30 }

@@ -1,0 +1,17 @@
+  1 // ex0902.c  Dynamically allocating structs
+  2 #include <stdio.h>
+  3 #include <stdlib.h>
+  4 struct Point
+  5 {
+  6    int x;
+  7    int y;
+  8 };
+  9 struct Point *p;
+ 10 //==================================
+ 11 int main()
+ 12 {
+ 13    p = malloc(sizeof(struct Point));
+ 14    p->y = 5;
+ 15    printf("%d\n", p -> y);
+ 16    return 0;
+ 17 }   

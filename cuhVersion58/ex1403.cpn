@@ -1,0 +1,16 @@
+  1 // ex1403.cpp  C++ reference variables
+  2 #include <iostream>
+  3 using namespace std;
+  4 int x = 5;
+  5 int &xr = x;
+  6 //===================
+  7 int main()
+  8 {
+  9    int y = 7;
+ 10    int &yr = y;
+ 11    cout << x << endl;
+ 12    cout << xr << endl;
+ 13    cout << y << endl;
+ 14    cout << yr << endl;
+ 15    return 0;
+ 16 }

@@ -1,0 +1,102 @@
+; ex1003.a  Strings
+startup:  bl main
+          halt
+;==============================================================
+                            ; include <stdio.h>
+g:        .string "AX"     ; char g[] = "AX";
+
+p:        .word @m0         ; char *p = "BX";
+@m0:      .string "BX"
+;==============================================================
+mystrcpy: push lr           ; void mystrcpy(char *p, char *q)
+          push fp
+          mov fp, sp        ; {
+@L0:                        ;     while (1)
+                            ;     {
+
+          ldr r0, fp, 3     ;        *p = *q;
+          ldr r0, r0, 0
+          ldr r1, fp, 2
+          str r0, r1, 0
+
+          ldr r0, fp, 3     ;        if (*q == 0)
+          ldr r0, r0, 0
+          cmp r0, 0
+
+          brz @L1           ;           break;
+
+          ldr r0, fp, 2     ;        p++;
+          add r0, r0, 1
+          str r0, fp, 2
+
+          ldr r0, fp, 3     ;        q++;
+          add r0, r0, 1
+          str r0, fp, 3
+
+          br @L0            ;     }
+@L1:                        ; }
+          mov sp, fp
+          pop fp
+          pop lr
+          ret
+;==============================================================
+main:     push lr           ; int main()
+          push fp           ; {
+          mov fp, sp
+
+          mov r0, 0         ;    char c[] = "CX";
+          push r0
+          mov r0, 'X'
+          push r0
+          mov r0, 'C'
+          push r0
+
+          lea r0, @m1       ;    char *q = "DX";
+          push r0
+
+          sub sp, sp, 1     ;    char *r;
+
+          lea r0, @m2       ;    r = "EX";
+          str r0, fp, -5
+
+          lea r0, g         ;    printf("%s\n", g);
+          sout r0
+          nl
+
+          ld r0, p          ;    printf("%s\n", p);
+          sout r0
+          nl
+
+          add r0, fp, -3    ;    printf("%s\n", c);
+          sout r0
+          nl
+
+          ldr r0, fp, -4    ;    printf("%s\n", q);
+          sout r0
+          nl
+
+          ldr r0, fp, -5    ;    printf("%s\n", r);
+          sout r0
+          nl
+
+          lea r0, @m3       ;    mystrcpy(g, "FX");
+          push r0
+          lea r0, g
+          push r0
+          bl mystrcpy
+          add sp, sp, 2
+
+          lea r0, g         ;    printf("%s\n", g)
+          sout r0
+          nl
+
+          mov r0, 0         ;    return 0;
+          mov sp, fp
+          pop fp
+          pop lr
+          ret
+
+@m1:      .string "DX"     ; }
+@m2:      .string "EX"
+@m3:      .string "FX"
+

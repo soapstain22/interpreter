@@ -1,0 +1,23 @@
+  1 // c0813.c
+  2 #include <stdio.h>
+  3 #include <stdarg.h>
+  4 int getmax(int c, ...)
+  5 {
+  6    int maxval, nextval;
+  7    va_list p;
+  8    va_start(p, c);
+  9    maxval = va_arg(p, int);
+ 10    while (--c)
+ 11    {
+ 12       nextval = va_arg(p, int);
+ 13       if (nextval > maxval)
+ 14          maxval = nextval;
+ 15    }
+ 16    return maxval;
+ 17 }
+ 18 int main()
+ 19 {
+ 20    printf("%d\n", getmax(1,-200));
+ 21    printf("%d\n", getmax(5, 1, 2, 300, 4, 5));
+ 22    return 0;
+ 23 }

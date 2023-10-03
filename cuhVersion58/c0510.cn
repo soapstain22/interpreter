@@ -1,0 +1,18 @@
+  1 // c0510.c
+  2 #include <stdio.h>
+  3 int x = 1, y = 2, z = 3;
+  4 void f(int x)
+  5 {
+  6    int y = 7;
+  7    x = y;
+  8    printf("%d %d\n", x, y);
+  9    int z = 8;
+ 10    x = z;
+ 11    printf("%d %d\n", x, z);
+ 12 }
+ 13 int main()
+ 14 {
+ 15    f(x);
+ 16    printf("%d %d %d\n", x, y, z);
+ 17    return 0;
+ 18 }        

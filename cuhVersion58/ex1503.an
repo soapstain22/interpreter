@@ -1,0 +1,104 @@
+  1 ; ex1503.a  Structs in C++
+  2 startup:  bl main
+  3           halt
+  4 ;==============================================================
+  5                            ; #include <iostream>
+  6                            ; using namespace std;
+  7                            ; struct A
+  8                            ; {
+  9                            ;    int x;
+ 10                            ;    int y;
+ 11                            ; };
+ 12 
+ 13 @set$p1Aii:                ; void set(A* r, int n, int m)
+ 14           push lr          ; {
+ 15           push fp
+ 16           mov fp, sp
+ 17                            
+ 18           ldr r0, fp, 3    ;    r->x = n;
+ 19           ldr r1, fp  2
+ 20           str r0, r1, 0
+ 21                            
+ 22           ldr r0, fp, 4    ;    r->y = m;
+ 23           ldr r1, fp  2
+ 24           str r0, r1, 1
+ 25                            
+ 26           mov sp, fp       ; }
+ 27           pop fp
+ 28           pop lr
+ 29           ret
+ 30 
+ 31 @display$p1A:              ; void display(A* r)
+ 32           push lr          ; {
+ 33           push fp
+ 34           mov fp, sp
+ 35                            
+ 36           ldr r0, fp, 2    ;    cout << r->x << endl;
+ 37           ldr r0, r0, 0
+ 38           dout r0
+ 39           nl
+ 40                            
+ 41           ldr r0, fp, 2    ;    cout << r->y << endl;
+ 42           ldr r0, r0, 1
+ 43           dout r0
+ 44           nl
+ 45                            
+ 46           mov sp, fp       ; }
+ 47           pop fp
+ 48           pop lr
+ 49           ret
+ 50 ;==============================================================
+ 51 main:     push lr           ; int main()
+ 52           push fp           ; {         
+ 53           mov fp, sp
+ 54                             
+ 55           sub sp, sp, 1     ;    A *p, *q;
+ 56           sub sp, sp, 1
+ 57                             
+ 58           mov r1, 2         ;    p = (A *)malloc(sizeof(A));
+ 59           bl malloc
+ 60           str r0, fp, -1
+ 61 
+ 62           mov r1, 2         ;    q = (A *)malloc(sizeof(A));
+ 63           bl malloc
+ 64           str r0, fp, -2
+ 65 
+ 66           mov r0, 6         ;    p->set(5, 6);
+ 67           push r0
+ 68           mov r0, 5
+ 69           push r0
+ 70           ldr r0, fp, -1
+ 71           push r0
+ 72           bl @set$p1Aii
+ 73           add sp, sp, 3
+ 74                             
+ 75           ldr r0, fp, -1    ;    p->display();
+ 76           push r0
+ 77           bl @display$p1A
+ 78           add sp, sp, 1
+ 79                             
+ 80           mov r0, 11        ;    q->set(10, 11);
+ 81           push r0
+ 82           mov r0, 10
+ 83           push r0
+ 84           ldr r0, fp, -2
+ 85           push r0
+ 86           bl @set$p1Aii
+ 87           add sp, sp, 3
+ 88                             
+ 89           ldr r0, fp, -2    ;    q->display();
+ 90           push r0
+ 91           bl @display$p1A
+ 92           add sp, sp, 1
+ 93                             
+ 94           mov r0, 0         ;    return 0;
+ 95           mov sp, fp
+ 96           pop fp
+ 97           pop lr
+ 98           ret
+ 99                             ; }
+100 malloc:   ld r0, @avail
+101           add r1, r0, r1
+102           st r1, @avail
+103           ret
+104 @avail:   .word @avail + 1

@@ -1,0 +1,8 @@
+  1           ; test program for s.sm microcode        stest.a
+  2           ldi 2     ; load 2 into r0
+  3           push      ; push contents of r0 onto the stack
+  4           isk       ; increment the value on top of the stack
+  5           pop       ; pop the top of the stack into r0
+  6           dout      ; display r0 (displays 3)
+  7           nl        ; move cursor to next line
+  8           halt

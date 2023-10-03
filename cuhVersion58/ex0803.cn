@@ -1,0 +1,14 @@
+  1 // ex0803.c  Pass by Value-Result (not supported by C)
+  2 #include <stdio.h>
+  3 int x = 7;
+  4 void f(int $a)    // a is a value-result parameter
+  5 {
+  6    a = a + 1;
+  7 }
+  8 //===================
+  9 int main()
+ 10 {
+ 11    f(x);
+ 12    printf("%d\n", x);
+ 13    return 0;
+ 14 }

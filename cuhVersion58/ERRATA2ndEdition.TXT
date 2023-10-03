@@ -1,0 +1,31 @@
+Errors in "C and C++ Under the Hood Second Edition" September 10, 2021
+----------------------------------------------------------------------
+
+Note: Recent printings of the book will have corrections for the following
+errata already corrected.
+
+Page 30, Fig. 2.3
+
+     Load point displayed on last line should be 
+
+             3000 (hex) 12288 (dec)
+
+Page 42, near bottom of page. Should be
+
+     "The .word directive on this line indicates that 2 ...
+      contain 0000000000000010."
+
+
+Page 275, suffixes used for the conditional branch
+mnemonics can now also be used with the jmp instruction. 
+For example, jmp is an unconditional jump but jmplt is a 
+jump on less than. Modified machine language format 
+for the jmp and ret instructions:
+
+     jmp   1100 code baser offset6    on code, pc = baser + offset6
+     ret   1100 111  111   offset6    pc = baser + offset6
+
+lcc software
+
+     Bugs in the sin, or, and xor instructions have been fixed in 
+     Version 5.2 or later.

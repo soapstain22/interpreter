@@ -1,0 +1,23 @@
+  1 // ex0806.c  Variable-length argument list
+  2 #include <stdio.h>
+  3 #include <stdarg.h>
+  4 int add(int argnum, ...)
+  5 {
+  6    int sum = 0;
+  7    va_list p;
+  8    va_start(p, argnum);
+  9    while (argnum)
+ 10    {
+ 11       sum = sum + va_arg(p, int);
+ 12       argnum--;
+ 13    }
+ 14    return sum;
+ 15 }
+ 16 //==============================
+ 17 int main()
+ 18 {
+ 19    int y;
+ 20    y = add(2, 5, 7);
+ 21    printf("%d\n", y);
+ 22    return 0;
+ 23 }

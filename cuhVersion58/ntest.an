@@ -1,0 +1,9 @@
+  1           ; test program for n.sm microcode        ntest.a
+  2           ldi 5     ; load 5 into r0
+  3           mul a     ; multiply r0 by word at a
+  4           subi 3    ; subtract 2 from r0
+  5           neg       ; negate (i.e., two's complement) r0
+  6           dout      ; display r0 (displays -7)
+  7           nl        ; move cursor to next line
+  8           halt
+  9 a:        .word 2

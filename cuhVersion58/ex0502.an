@@ -1,0 +1,43 @@
+  1 ; ex0502.a  Dynamic local variables
+  2 
+  3 startup:  bl main
+  4           halt
+  5 ;===========================================================
+  6                             ; #include <stdio.h>
+  7 f:        push lr           ; void f(int a)
+  8           push fp           ; {
+  9           mov fp, sp
+ 10 
+ 11           mov r0, 1         ;    int x = 1, y;
+ 12           push r0
+ 13           sub sp, sp, 1
+ 14 
+ 15           ldr r0, fp, -1    ;    y = x + a;
+ 16           ldr r1, fp, 2
+ 17           add r0, r0, r1
+ 18           str r0, fp, -2
+ 19 
+ 20           ldr r0, fp, -2    ;    printf("%d\n", y);
+ 21           dout r0
+ 22           nl
+ 23 
+ 24           mov sp, fp        ; }
+ 25           pop fp
+ 26           pop lr
+ 27           ret
+ 28 ;===========================================================
+ 29 main:     push lr           ; int main()   
+ 30           push fp           ; {
+ 31           mov fp, sp
+ 32 
+ 33           mov r0, 11        ;    f(11);
+ 34           push r0
+ 35           bl f
+ 36           add sp, sp, 1
+ 37           
+ 38           mov r0, 0         ;    return 0;
+ 39           mov sp, fp
+ 40           pop fp
+ 41           pop lr
+ 42           ret
+ 43                             ; }

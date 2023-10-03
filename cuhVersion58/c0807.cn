@@ -1,0 +1,15 @@
+  1 // c0807.c
+  2 #include <stdio.h>
+  3 int a = 5, b = 5;
+  4 void f(int #x)
+  5 {
+  6    a = x;
+  7    b = x;
+  8 }
+  9 int main()
+ 10 {
+ 11    f(a+b);
+ 12    printf("a = %d\n", a);
+ 13    printf("b = %d\n", b);
+ 14    return 0;
+ 15 }

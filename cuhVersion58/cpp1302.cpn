@@ -1,0 +1,28 @@
+  1 // cpp1302.cpp
+  2 #include <iostream>
+  3 using namespace std;
+  4 int g = 20;
+  5 void f(int x)
+  6 {
+  7    x = x + 5;
+  8    cout << x << endl;
+  9 }
+ 10 void f(int *p)
+ 11 {
+ 12    *p = 3;
+ 13 }
+ 14 void f(int *p, int x)
+ 15 {
+ 16    *p = x;
+ 17 }
+ 18 int main()
+ 19 {
+ 20    cout << g << endl;
+ 21    f(g);
+ 22    cout << g << endl;
+ 23    f(&g);
+ 24    cout << g << endl;
+ 25    f(&g, 20);
+ 26    cout << g << endl;
+ 27    return 0;
+ 28 }

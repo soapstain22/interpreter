@@ -1,0 +1,79 @@
+;        Basic Instruction Set                      b.sm
+
+         ;==============================================
+         ; Fetch machine instruction, increment pc
+
+fetch    a.pc c.mar
+         a.pc add b.1 c.pc rd
+
+         ;==============================================
+         ; Decode instruction
+
+         a.mdr add b.0 c.ir neg@L1
+L0       a.ir sll b.1 c.dc neg@L01
+L00      a.dc sll b.1 c.dc neg@L001
+L000     a.dc sll b.1 c.dc neg@L0001
+         br@L0000
+
+L1       a.ir sll b.1 c.dc neg@L11
+L10      a.dc sll b.1 c.dc neg@L101
+L100     a.dc sll b.1 c.dc neg@L1001
+         br@L1000
+
+L01      a.dc sll b.1 c.dc neg@L011
+L010     a.dc sll b.1 c.dc neg@L0101
+         br@L0100
+
+L11      a.dc sll b.1 c.dc neg@L111
+L110     a.dc sll b.1 c.dc neg@L1101
+         br@L1100
+
+L001     a.dc sll b.1 c.dc neg@L0011
+         br@L0010
+
+L011     a.dc sll b.1 c.dc neg@L0111
+         br@L0110
+
+L101     a.dc sll b.1 c.dc neg@L1011
+         br@L1010
+
+L111     a.dc sll b.1 c.dc neg@L1111
+         br@L1110
+
+         ;==============================================
+         ; Interpret machine instruction
+
+L0000    ; ld ==========================================
+         a.ir and b.m12 c.mar  ; extract address and zero extend
+         rd                    ; read operand from main mem to mdr
+         a.mdr c.ac br@fetch   ; load ac from mdr and start again
+L0001    ; st ==========================================
+
+L0010    ; add =========================================
+
+L0011    ; sub =========================================
+
+L0100    ; ldr =========================================
+
+L0101    ; str =========================================
+
+L0110    ; addr ========================================
+
+L0111    ; subr ========================================
+
+L1000    ; ldi =========================================
+
+L1001    ; asp =========================================
+
+L1010    ; call ========================================
+
+L1011    ; ret =========================================
+
+L1100    ; br ==========================================
+
+L1101    ; brn =========================================
+
+L1110    ; brz =========================================
+
+L1111    ; trap ========================================
+         br@fetch

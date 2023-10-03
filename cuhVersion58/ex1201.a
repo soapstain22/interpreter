@@ -1,0 +1,35 @@
+; ex1201.a  Command line arguments
+                           ; #include <stdio.h>
+          .global main     ; int main(int argc, char *argv[])
+main:     push lr          ; {
+          push fp
+          mov fp, sp
+
+          ldr r0, fp, 2    ;    int i = argc-1;
+          add r0, r0, -1
+          push r0
+
+@L0:      ldr r0, fp, -1   ;    while (i >= 0)
+          cmp r0, 0        ;    {
+          brn @L1          
+
+          ldr r0, fp, 3    ;       printf("%s\n", argv[i]);
+          ldr r1, fp, -1
+          add r0, r0, r1
+          ldr r0, r0, 0
+          sout r0
+          nl
+
+          ldr r0, fp, -1   ;       i--;
+          sub r0, r0, 1
+          str r0, fp, -1
+          br @L0
+
+@L1:                       ;    }
+
+          mov r0, 0        ;    return 0;
+          mov sp, fp
+          pop fp
+          pop lr
+          ret
+                           ; }

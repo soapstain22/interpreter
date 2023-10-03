@@ -1,0 +1,19 @@
+  1 // c1001.c
+  2 #include <stdio.h>
+  3 int n = 20, z[] = { 100, 101, 102 };
+  4 void g(int a[])
+  5 {
+  6    a[1] = a[1] + 5;
+  7    printf("%d\n", a[1]);
+  8 }
+  9 void f(int x)
+ 10 {
+ 11    x = x + 3;
+ 12    printf("%d\n", x);
+ 13 }
+ 14 int main()
+ 15 {
+ 16    f(n);
+ 17    g(z);
+ 18    return 0;
+ 19 }

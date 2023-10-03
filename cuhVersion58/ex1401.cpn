@@ -1,0 +1,16 @@
+  1 // ex1401.cpp  C++ reference parameters
+  2 #include <iostream>
+  3 using namespace std;
+  4 int x = 5;
+  5 void f(int &a)
+  6 {
+  7    a = a + 1;
+  8 }
+  9 //===================
+ 10 int main()
+ 11 {
+ 12    cout << x << endl;
+ 13    f(x);
+ 14    cout << x << endl;
+ 15    return 0;
+ 16 }

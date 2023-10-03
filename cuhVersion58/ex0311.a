@@ -1,0 +1,10 @@
+; ex0311.a
+          ld r0, x     ; loads 5
+          ld r1, x+1   ; loads 11
+          ld r2, x+2   ; loads 17
+          ld r3, y-2   ; loads 5
+          halt
+x:        .word 5
+          .word 11
+y:        .word 17
+z:        .word x+2    ; assembled to the address of y

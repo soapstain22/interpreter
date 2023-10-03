@@ -1,0 +1,9 @@
+; ex0304.a
+main:     bl sub  ; save return address in r7
+          bl sub  ; save return address in r7
+          halt
+;====================
+sub:      lea r0, msg
+          sout r0
+          ret
+msg:      .string "Hello\n"

@@ -1,0 +1,37 @@
+  1 // cpp1506.cpp
+  2 #include <iostream>
+  3 using namespace std;
+  4 class Point 
+  5 {
+  6    public:
+  7       void set();
+  8       void set(int a, int b);
+  9       void display();
+ 10    private:
+ 11       int x;
+ 12       int y;
+ 13 };
+ 14 void Point::set()
+ 15 {
+ 16    x = 1;
+ 17    y = 2;
+ 18 }
+ 19 void Point::set(int a, int b) 
+ 20 {
+ 21    x = a; 
+ 22    y = b;
+ 23 }
+ 24 void Point::display()  
+ 25 {
+ 26    cout << x << endl;
+ 27    cout << y << endl;
+ 28 }
+ 29 int main() 
+ 30 {
+ 31    Point p, pp;
+ 32    p.set();
+ 33    p.display();
+ 34    pp.set(2, 3);
+ 35    pp.display();
+ 36    return 0;
+ 37 }

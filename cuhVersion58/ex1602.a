@@ -1,0 +1,162 @@
+; ex1602.a  Virtual functions
+startup:  bl main
+          halt
+;==============================================================
+                           ; #include <iostream>
+                           ; using namespace std;
+                           ; class A
+                           ; {
+                           ;    public:
+                           ;       void set(int n);
+                           ;       virtual void display();
+                           ;    protected:   
+                           ;       int x;
+                           ; };
+
+@A@set$i: push lr          ; A::set(int n)
+          push fp          ; {          
+          mov fp, sp
+                            
+          ldr r0, fp, 3    ;    x = n;
+          ldr r1, fp, 2
+          str r0, r1, 1
+                           
+          mov sp, fp       ; }
+          pop fp
+          pop lr
+          ret
+
+@A@display$v:              ; void A::display()
+          push lr          ; {
+          push fp
+          mov fp, sp
+                           
+          ldr r0, fp, 2    ;    cout << x << endl;
+          ldr r0, r0, 1
+          dout
+          nl
+                           
+          mov sp, fp       ; }
+          pop fp
+          pop lr
+          ret
+;==============================================================
+                           ; class B: public A
+                           ; {
+                           ;    public:
+                           ;       void set(int n, int m);
+                           ;       void display();
+                           ;    private:
+                           ;       int y;
+                           ; };
+
+@B@set$ii:push lr          ; B::set(int n, int m): public A
+          push fp          ; {                             
+          mov fp, sp
+
+          ldr r0, fp, 3    ;    x = n;
+          ldr r1, fp, 2
+          str r0, r1, 1
+                           
+          ldr r0, fp, 4    ;    y = b;
+          ldr r1, fp, 2
+          str r0, r1, 2
+                           
+          mov sp, fp       ; }
+          pop fp
+          pop lr
+          ret
+
+@B@display$v:              ; void B::display()
+          push lr          ; {                
+          push fp
+          mov fp, sp
+                           
+          ldr r0, fp, 2    ;    cout << x << " " << y << endl;
+          ldr r0, r0, 1
+          dout r0
+          mov r0, ' '
+          aout
+          ldr r0, fp, 2
+          ldr r0, r0, 2
+          dout
+          nl
+                           
+          mov sp, fp       ; }
+          pop fp
+          pop lr
+          ret
+;==============================================================
+main:     push lr          ; int main()
+          push fp          ; {         
+          mov fp, sp
+
+          sub sp, sp, 1    ;    A *aptr;
+          sub sp, sp, 1    ;    B *bptr
+                           
+          mov r1, 2        ;    aptr = new A;
+          bl malloc
+          str r0, fp, -1 
+          lea r1, @A@vtbl
+          str r1, r0, 0
+
+          mov r0, 1        ;    aptr->set(1);
+          push r0
+          ldr r0, fp, -1
+          push r0
+          bl @A@set$i
+          add sp, sp, 2
+                           
+          ldr r0, fp, -1   ;    aptr->display();
+          push r0
+          ldr r0, r0, 0
+          ldr r0, r0, 0
+          blr r0
+          add sp, sp, 1
+                           
+          mov r1, 3        ;    bptr = new B;
+          bl malloc
+          str r0, fp, -2
+          lea r1, @B@vtbl
+          str r1, r0, 0
+          
+          mov r0, 3        ;    bptr->set(2, 3);
+          push r0
+          mov r0, 2
+          push r0
+          ldr r0, fp, -2
+          push r0
+          bl @B@set$ii
+          add sp, sp, 3
+                           
+          ldr r0, fp, -2   ;    bptr->display();
+          push r0
+          ldr r0, r0, 0
+          ldr r0, r0, 0
+          blr r0
+          add sp, sp, 1
+                           
+          ldr r0, fp, -2   ;    aptr = bptr;
+          str r0, fp, -1
+                           
+          ldr r0, fp, -1   ;    aptr->display();
+          push r0
+          ldr r0, r0, 0
+          ldr r0, r0, 0
+          blr r0
+          add sp, sp, 1
+                           
+          mov r0, 0        ;    return 0;
+          mov sp, fp
+          pop fp
+          pop lr
+          ret
+                           ; }
+@A@vtbl:  .word @A@display$v
+@B@vtbl:  .word @B@display$v
+
+malloc:   ld r0, @avail
+          add r1, r0, r1
+          st r1, @avail
+          ret
+@avail:   .word @avail+1

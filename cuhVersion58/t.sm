@@ -1,0 +1,25 @@
+         ; Microcode for Tiny Instruction Set       t.sm
+         ;==============================================
+         ; Fetch machine instruction, increment pc
+fetch:     a.pc c.mar 
+           a.pc add b.1 c.pc rd      ; sim handles trap instructions here
+         ;==============================================
+         ; Decode instruction
+           a.mdr add b.0 c.ir neg@ld   ; mov mdr to ir, set flags, br neg
+           a.ir sll b.1 c.dc neg@add   ; sh left 1 pos, set flags, br neg
+           a.dc sll b.1 c.dc neg@sub   ; sh left 1 pos, set flags, br neg
+           br@ldi                      ; first 3 bits 0 so ldi inst
+          ;==============================================
+         ; Interpret machine instruction
+         ; ==========================================
+ld:        a.ir and b.m12 c.mar         ; get x field, move to mar
+           rd                           ; read from main memory
+           a.mdr nop c.r0 br@fetch      ; move mdr to r0, br to fetch
+         ; ==========================================
+add:       a.ir and b.m12 c.mar         ; get x field, move to mar
+           rd                           ; read from main memory
+           a.r0 add b.mdr c.r0 br@fetch ; add mdr to r0, br to fetch
+         ; ==========================================
+sub:                                    ; microcode missing here
+         ; ==========================================
+ldi:                                    ; microcode missing here

@@ -1,0 +1,19 @@
+  1 // c0402.c
+  2 #include <stdio.h>
+  3 void g()
+  4 {
+  5    printf("in g\n");
+  6 }
+  7 void f(void)
+  8 {
+  9    printf("up\n");
+ 10    g();
+ 11    printf("down\n");
+ 12 }
+ 13 int main()
+ 14 {
+ 15    printf("hello\n");
+ 16    f();
+ 17    printf("goodbye\n");
+ 18    return 0;
+ 19 }

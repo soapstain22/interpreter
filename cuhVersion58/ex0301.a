@@ -1,0 +1,9 @@
+; ex0301.a
+          ld r0, x
+          ld r1, y
+          add r0, r0, r1
+          dout r0
+          nl
+          halt
+x:        .word 2
+y:        .word 3

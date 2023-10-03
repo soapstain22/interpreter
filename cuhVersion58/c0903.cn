@@ -1,0 +1,22 @@
+  1 // c0903.c
+  2 #include <stdio.h>
+  3 struct A 
+  4 {
+  5    int x, y;
+  6 };
+  7 struct A s;
+  8 void f(struct A a, struct A *p)
+  9 {
+ 10    p->x = a.y;
+ 11    a.y = p->x;
+ 12    printf("%d\n", a.x);
+ 13    printf("%d\n", (*p).y);
+ 14 }
+ 15 int main()
+ 16 {
+ 17    struct A a;
+ 18    a.x = 1;
+ 19    a.y = 2;
+ 20    f(a, &a);
+ 21    return 0;
+ 22 }

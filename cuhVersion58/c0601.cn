@@ -1,0 +1,19 @@
+  1 // c0601.c
+  2 #include <stdio.h>
+  3 int x;
+  4 int main()
+  5 {
+  6     printf("enter\n");
+  7     scanf("%d", &x);
+  8     if (x + 5)
+  9        printf("hello\n");
+ 10     if (x > 44)
+ 11        printf("big\n");
+ 12     else 
+ 13     {
+ 14        printf("small\n");
+ 15        if (x < 30)
+ 16           printf("really small\n");
+ 17     }
+ 18     return 0;
+ 19 }

@@ -1,0 +1,43 @@
+  1 ; ex0902.a  Dynamically allocating structs
+  2 startup:  bl main
+  3           halt
+  4 ;==============================================================
+  5                            ; #include <stdio.h>
+  6                            ; #include <stdlib.h>
+  7                            ; struct Point
+  8                            ; {
+  9                            ;    int x;
+ 10                            ;    int y;
+ 11                            ; };
+ 12                            
+ 13 p:        .word 0          ; struct Point *p;
+ 14                            
+ 15 main:     push lr          ; int main()
+ 16           push fp          ; {
+ 17           mov fp, sp
+ 18       
+ 19           mov r1, 2        ;    p = malloc(sizeof(struct Point));
+ 20           bl malloc
+ 21           st r0, p
+ 22                             
+ 23           mov r0, 5        ;    p -> y = 5;
+ 24           ld r1, p
+ 25           str r0, r1, 1
+ 26                            
+ 27           ld r0, p         ;    printf("%d\n", p -> y);
+ 28           ldr r0, r0, 1
+ 29           dout r0
+ 30           nl
+ 31                             
+ 32           mov r0, 0        ;    return 0;
+ 33           mov sp, fp
+ 34           pop fp
+ 35           pop lr
+ 36           ret
+ 37                            ; }
+ 38 ;==============================================================
+ 39 malloc:   ld r0, @avail    ; get address of next free block
+ 40           add r1, r0, r1   ; r1 holds size of allocation
+ 41           st r1, @avail    ; update @avail
+ 42           ret              ; return address of allocated block
+ 43 @avail:  .word *+1

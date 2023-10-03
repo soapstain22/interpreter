@@ -1,0 +1,17 @@
+  1 // c0815.c
+  2 #include <stdio.h>
+  3 void g(int $y)
+  4 {
+  5    y = 99;
+  6 }
+  7 void f(int $x)
+  8 {
+  9    f(x);
+ 10 }
+ 11 int main()
+ 12 {
+ 13    int a = 5;
+ 14    f(a);
+ 15    printf("a = %d\n", a);
+ 16    return 0;
+ 17 }

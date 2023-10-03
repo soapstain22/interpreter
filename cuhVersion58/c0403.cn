@@ -1,0 +1,12 @@
+  1 // c0403.c
+  2 #include <stdio.h>
+  3 void f(int x, int y, int z)
+  4 {
+  5    printf("%d %d %d\n", x, y, z);
+  6 }
+  7 int main()
+  8 {
+  9    f(1, 2, 3);
+ 10    printf("goodbye\n");
+ 11    return 0;
+ 12 }

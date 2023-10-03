@@ -1,0 +1,13 @@
+  1 // c0712.c
+  2 #include <stdio.h>
+  3 int x, y, *p, *q;
+  4 int main()
+  5 {
+  6    p = &x;
+  7    q = p + 1;
+  8    printf("%d\n", q-p);
+  9    x = (int)p;
+ 10    y = (int)q;
+ 11    printf("%d\n", x-y);
+ 12    return 0;
+ 13 }

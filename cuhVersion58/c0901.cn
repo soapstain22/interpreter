@@ -1,0 +1,21 @@
+  1 // c0901.c
+  2 #include <stdio.h>
+  3 struct A 
+  4 {
+  5    int x, y;
+  6 };
+  7 struct A s;
+  8 void f()
+  9 {
+ 10    struct A *p;
+ 11    p = &s;
+ 12    p->x = 1;
+ 13    p->y = 2;
+ 14    printf("%d\n", s.x);
+ 15    printf("%d\n", s.y);
+ 16 }
+ 17 int main()
+ 18 {
+ 19    f();
+ 20    return 0;
+ 21 }

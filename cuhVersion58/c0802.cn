@@ -1,0 +1,17 @@
+  1 // c0802.c
+  2 #include <stdio.h>
+  3 char gc;
+  4 int  gi;
+  5 void f(char c, int i, char *cp, int *ip)
+  6 {
+  7    c = 'A';
+  8    i = 2;
+  9    *cp = 'B';
+ 10    *ip = 3;
+ 11 }
+ 12 int main()
+ 13 {
+ 14    f('X', 5, &gc, &gi);
+ 15    printf("gc = %d gi - %d\n", gc, gi);
+ 16    return 0;
+ 17 }

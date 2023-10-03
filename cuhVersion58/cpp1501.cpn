@@ -1,0 +1,21 @@
+  1 // cpp1501.cpp
+  2 #include <iostream>
+  3 using namespace std;
+  4 int a;
+  5 class  C 
+  6 {
+  7    public:
+  8       int f();
+  9       int x;
+ 10 };
+ 11 int C::f()
+ 12 {
+ 13    return x;
+ 14 }
+ 15 int main()
+ 16 {
+ 17    C c;
+ 18    c.x = 5;
+ 19    cout << c.f() << endl;
+ 20    return 0;
+ 21 }

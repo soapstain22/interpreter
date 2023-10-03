@@ -1,0 +1,14 @@
+  1 // c0504.c
+  2 #include <stdio.h>
+  3 void f()
+  4 {
+  5    static int x = 3;
+  6    printf("%d\n", x);
+  7    x = x+ 1;
+  8 }
+  9 int main()
+ 10 {
+ 11    f();
+ 12    f();
+ 13    return 0;
+ 14 }

@@ -1,0 +1,15 @@
+  1 // c1008.c
+  2 #include <stdio.h>
+  3 int a[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+  4 void f(int a[])
+  5 {
+  6    int *last = a + 9;
+  7    while (a <= last)
+  8    {
+  9       printf("%d\n", *a++);;
+ 10    }
+ 11 }
+ 12 int main()
+ 13 {
+ 14    f(a);
+ 15 }

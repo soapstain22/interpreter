@@ -1,0 +1,16 @@
+  1 // ex0602.c  Recursion example 1 (tail recursive)
+  2 #include <stdio.h>
+  3 void rf1(int x)
+  4 {
+  5    if (x != 0)
+  6    {
+  7       printf("%d\n", x);
+  8       rf1(x - 1);        // recursive call
+  9    }
+ 10 }
+ 11 // =====================
+ 12 int main()
+ 13 {
+ 14    rf1(2);
+ 15    return 0;
+ 16 }

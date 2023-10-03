@@ -1,0 +1,13 @@
+  1 // c0702.c
+  2 #include <stdio.h>
+  3 int main()
+  4 {
+  5    int *p;
+  6    int x = 3, y = 5;
+  7    p = &y;
+  8    printf("%d\n", *p);
+  9    p = p+1;
+ 10    printf("%d\n", *p);
+ 11    printf("%d\n", *(p-1));
+ 12    return 0;
+ 13 }

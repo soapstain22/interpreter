@@ -1,0 +1,13 @@
+  1           ; test program for w.sm microcode        ctest.a
+  2           call sub1
+  3           dout
+  4           nl
+  5           call sub2
+  6           dout
+  7           nl
+  8           halt
+  9 
+ 10 sub1:     ldi 5
+ 11           ret
+ 12 sub2:     ldi 7
+ 13           ret

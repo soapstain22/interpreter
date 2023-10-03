@@ -1,0 +1,9 @@
+  1 ; ex0302.a
+  2           lea r0, prompt     ; get address of prompt message
+  3           sout r0            ; display prompt message
+  4           lea r0, buffer     ; get address of buffer
+  5           sin r0             ; read string from keyboard
+  6           sout r0            ; echo string to keyboard
+  7           halt
+  8 prompt:   .string "Enter string\n"
+  9 buffer:   .zero 100

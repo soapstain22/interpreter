@@ -1,0 +1,14 @@
+  1 // c1101.c 
+  2 #include <stdio.h>
+  3 int main()
+  4 {
+  5    int x = 11, y = 5;
+  6    printf("%d %d\n", x/y, x%y);
+  7    x = -11; y = 5;
+  8    printf("%d %d\n", x/y, x%y);
+  9    x = 11; y = -5;
+ 10    printf("%d %d\n", x/y, x%y);
+ 11    x = -11; y = -5;
+ 12    printf("%d %d\n", x/y, x%y);
+ 13    return 0;
+ 14 }

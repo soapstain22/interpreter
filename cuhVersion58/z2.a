@@ -1,0 +1,35 @@
+; z2.a
+              ; #include <stdio.h>
+          .extern x  ; extern int x;
+          .global y  ; int y = 7
+y:        .word 7
+
+          .global g  ; void g(void)
+g:        push lr    ; {
+          push fp
+          mov fp, sp
+
+          ld r0, y   ;    printf("%d\n", y);
+          dout r0
+          nl
+
+          mov sp, fp ; }
+          pop fp
+          pop lr
+          ret 
+;=========================================================
+          .global f  ; void f(void)
+f:        push lr    ; {
+          push fp
+          mov fp, sp
+
+          ld r0, x   ;    printf("%d\n", x);
+          dout r0
+          nl
+
+          bl g      ;    g();
+
+          mov sp, fp ;}
+          pop fp
+          pop lr
+          ret

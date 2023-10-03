@@ -1,0 +1,19 @@
+  1 // cp1407.cpp
+  2 #include <iostream>
+  3 using namespace std;
+  4 int x = 5;
+  5 int &xr = x;
+  6 //===================
+  7 int main()
+  8 {
+  9    static int &xr = x
+ 10    int y = 7;
+ 11    int &yr = y;
+ 12    xr++;
+ 13    yr--;
+ 14    cout << x << endl;
+ 15    cout << xr << endl;
+ 16    cout << y << endl;
+ 17    cout << yr << endl;
+ 18    return 0;
+ 19 }

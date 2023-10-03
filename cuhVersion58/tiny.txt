@@ -1,0 +1,81 @@
+                                            tiny.txt
+
+DISCLAIMER 
+----------
+
+The files in this software package are provided to you on an "as 
+is" basis for instructional purposes only, without any 
+warranties, expressed or implied. The author and copyright holder 
+of these files shall not be liable in any event for incidental, 
+consequential, special, or punitive damages in connection with, 
+or arising out of the distribution, performance, or use of these 
+files.            
+================================================================= 
+
+Tiny Instruction Set                         
+--------------------
+Opcode      Format       Description
+
+ 8         ld    x    r0 = mem[x]
+ 4         add   x    r0 = r0 + mem[x]
+ 3         sub   x    r0 = r0 - mem[x]
+ 1         ldi   x    r0 = x
+
+x is the rightmost 12 bits in the instruction that can range
+from 0 to 4095 decimal (x is an unsigned number). 
+
+Also included in the tiny instruction set are all the trap
+instructions (din, dout, nl, halt, etc.), all of which
+are handled by the sim program, not by microinstructions.
+
+tiny assembler
+--------------
+Assembles assembly language programs written in the tiny
+instruction set. Usage:
+
+     tiny <input filename>
+
+If the input file name does not have an extension, ".a" is 
+assumed. For example, 
+
+     tiny ttest.a
+and
+     tiny ttest
+
+both assemble the program in ttest.a.
+
+
+Microcode for tiny instruction set
+----------------------------------
+
+t.sm (not complete)
+
+
+Test Program ttest.a
+--------------------
+
+      ; test program for t.sm microcode        ttest.a
+      ld   a    ; load r0 from a
+      dout      ; display r0 (displays 2)
+      nl        ; move cursor to next line
+      add  b    ; add word at b to r0
+      dout      ; display r0 (displays 5)
+      nl        ; move cursor to next line
+      sub  a    ; subtract word at a from r0
+      dout      ; display r0 (displays 3)
+      nl        ; move cursor to next line
+      ldi  7    ; load immediate value 7 into r0
+      dout      ; display r0 (displays 7)
+      nl        ; move cursor to next line
+      halt
+a     .word 2
+b     .word 3
+
+To run ttest.e, enter
+
+tiny ttest.a
+micro t.sm      (after completing t.sm)
+sim ttest.e
+
+Hand in t.lst, ttest.log
+

@@ -1,0 +1,50 @@
+                                            nano.txt
+
+Nano Instruction Set                         
+--------------------
+Opcode      Format       Description
+
+ 8         ldi   x    r0 = x
+ 4         mul   x    r0 = r0 * mem[x]
+ 2         subi  x    r0 = r0 - x
+ 1         neg        r0 = -r0
+
+x is the rightmost 12 bits in the instruction, which can range
+from 0 to 4095 decimal (x is an unsigned number). 
+
+Also included in the nano instruction set are all the trap
+instructions (din, dout, nl, halt, etc.), all of which
+are handled by the sim program, not by microinstructions.
+
+
+Microcode
+---------
+
+n.sm is the symbolic microcode file you create for the nano 
+symbolic instruction set.
+
+To multiply, use the ALU mult function.
+
+
+Test Program ntest.a (no assembler is available)
+------------------------------------------------
+
+          ; test program for n.sm microcode        ntest.a
+          ldi 5     ; load 5 into r0
+          mul a     ; multiply r0 by word at a
+          subi 3    ; subtract 3 from r0
+          neg       ; negate (i.e., two's complement) r0
+          dout      ; display r0 (displays -7)
+          nl        ; move cursor to next line
+          halt
+a:        .word 2
+
+ntest.hex is the ntest.a program in hex form that you create.
+
+To run ntest.hex, enter
+
+   micro n.sm
+   h2b ntest.hex n
+   sim ntest.e
+
+Hand in n.lst, ntest.hex, and ntest.log

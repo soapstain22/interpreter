@@ -1,0 +1,13 @@
+  1 // c0406.c
+  2 #include <stdio.h>
+  3 void f(short x)
+  4 {
+  5    printf("%hd\n", x); 
+  6    printf("%hu\n", x);   // %hu conversion code for unsigned short
+  7 }
+  8 int main()
+  9 {
+ 10    f(60000);
+ 11    f(-1);
+ 12    return 0;
+ 13 }

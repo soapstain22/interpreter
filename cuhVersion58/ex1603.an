@@ -1,0 +1,171 @@
+  1 ; ex1603.a  Constructors
+  2 startup:  bl main
+  3           halt 
+  4 ;==============================================================
+  5                            ; #include <iostream>
+  6                            ; using namespace std;
+  7                            ; class A
+  8                            ; {
+  9                            ;    public:
+ 10                            ;       A(int n);
+ 11                            ;       void display();
+ 12                            ;    protected:   
+ 13                            ;       int x;
+ 14                            ; };
+ 15 
+ 16 @A@A$i:   push lr          ; A::A(int n)
+ 17           push fp          ; {          
+ 18           mov fp, sp
+ 19                            
+ 20           ldr r0, fp, 3    ;    x = n;
+ 21           ldr r1, fp, 2
+ 22           str r0, r1, 0
+ 23                            
+ 24           mov sp, fp       ; }
+ 25           pop fp
+ 26           pop lr
+ 27           ret
+ 28 
+ 29 @A@display$v:              ; void A::display()
+ 30           push lr          ; {                
+ 31           push fp
+ 32           mov fp, sp
+ 33                            
+ 34           ldr r0, fp, 2    ;    cout << x << endl;
+ 35           ldr r0, r0, 0
+ 36           dout r0
+ 37           nl
+ 38                            
+ 39           mov sp, fp       ; }
+ 40           pop fp
+ 41           pop lr
+ 42           ret
+ 43 ;==============================================================
+ 44                            ; class B: public A
+ 45                            ; {
+ 46                            ;    public:
+ 47                            ;       B(int n, int m);
+ 48                            ;       void display();
+ 49                            ;    private:
+ 50                            ;       int y;
+ 51                            ; };
+ 52 
+ 53 @B@B$ii:  push lr          ; B::B(int n, int m): A(n)
+ 54           push fp          ; {
+ 55           mov fp, sp
+ 56                            
+ 57           ldr r0, fp, 3
+ 58           push r0
+ 59           ldr r0, fp, 2
+ 60           push r0
+ 61           bl @A@A$i
+ 62           add sp, sp, 2
+ 63                            
+ 64           ldr r0, fp, 4    ;    y = m;
+ 65           ldr r1, fp, 2
+ 66           str r0, r1, 1
+ 67                            
+ 68           mov sp, fp       ; }
+ 69           pop fp
+ 70           pop lr
+ 71           ret
+ 72 
+ 73 @B@display$v:              ; void B::display()
+ 74           push lr          ; {                
+ 75           push fp
+ 76           mov fp, sp
+ 77                            
+ 78           ldr r0, fp, 2    ;    cout << x << " " << y << endl;
+ 79           ldr r0, r0, 0
+ 80           dout r0
+ 81           mov r0, ' '
+ 82           aout r0
+ 83           ldr r0, fp, 2
+ 84           ldr r0, r0, 1
+ 85           dout r0
+ 86           nl
+ 87                            
+ 88           mov sp, fp       ; }
+ 89           pop fp
+ 90           pop lr
+ 91           ret
+ 92 ;==============================================================
+ 93 main:     push lr          ; int main() 
+ 94           push fp          ; {          
+ 95           mov fp, sp
+ 96                            
+ 97           sub sp, sp, 1    ;    A *aptr;
+ 98           sub sp, sp, 1    ;    B *bptr;
+ 99 
+100           sub sp, sp, 1    ;    A a(1);
+101           mov r0, 1
+102           push r0
+103           add r0, fp, -3
+104           push r0
+105           bl @A@A$i
+106           add sp, sp, 2
+107           add r0, fp, -3
+108           push r0
+109           bl @A@display$v
+110           add sp, sp, 1
+111 
+112           sub sp, sp, 2    ;    B b(2, 3)
+113           mov r0, 3
+114           push r0
+115           mov r0, 2
+116           push r0
+117           add r0, fp, -4
+118           push r0
+119           bl @B@B$ii
+120           add sp, sp, 3
+121 
+122           add r0, fp, -4
+123           push r0
+124           bl @B@display$v
+125           add sp, sp, 1
+126                            
+127           mov r1, 1        ;    aptr = new A(4);
+128           bl malloc 
+129           str r0, fp, -1
+130 
+131           mov r0, 4
+132           push r0
+133           ldr r0, fp, -1
+134           push r0
+135           bl @A@A$i
+136           add sp, sp, 2
+137                            
+138           ldr r0, fp, -1   ;    aptr->display();
+139           push r0
+140           bl @A@display$v
+141           add sp, sp, 1
+142                            
+143           mov r1, 2        ;    bptr = new B(5, 6);
+144           bl malloc
+145           str r0, fp, -2
+146 
+147           mov r0, 6
+148           push r0
+149           mov r0, 5
+150           push r0
+151           ldr r0, fp, -2
+152           push r0
+153           bl @B@B$ii
+154           add sp, sp, 3
+155                            
+156           ldr r0, fp, -2   ;    bptr->display();
+157           push r0
+158           bl @B@display$v
+159           add sp, sp, 1
+160                            
+161           mov r0, 0        ;    return 0;
+162           mov sp, fp
+163           pop fp
+164           pop lr
+165           ret
+166 
+167 malloc:   ld r0, @avail
+168           add r1, r0, r1
+169           st r1, @avail
+170           ret                           
+171 @avail:   .word @avail+1   ; }

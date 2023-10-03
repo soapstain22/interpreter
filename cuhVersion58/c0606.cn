@@ -1,0 +1,18 @@
+  1 // c0606.c
+  2 #include <stdio.h>
+  3 void f(int x)
+  4 {
+  5    if (x < 0)
+  6    {
+  7       printf("%d\n", x);
+  8       f(x-1);
+  9       printf("hello\n");
+ 10       f(x-1);
+ 11       printf("goodbye\n");
+ 12    }
+ 13 }
+ 14 int main()
+ 15 {
+ 16    f(3);
+ 17    return 0;
+ 18 }

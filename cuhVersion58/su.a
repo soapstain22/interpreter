@@ -1,0 +1,52 @@
+; su.a  start-up code that configures argc and argv
+          .start su        ; makes su the entry point
+          .extern main     ; needed to link to main
+sig:      .word 'Z'        ; signature for this module
+
+su:       ld r3, clloc     ; r3 points to command line
+          lea r4, array    ; r4 point to argv array
+          mov r5, 0        ; r5 is arg counter
+
+getarg:   str r3, r4, 0    ; store arg addr in array
+          add r4, r4, 1    ; inc pointer to array
+          add r5, r5, 1    ; increment arg counter
+
+nextchar: add r3, r3, 1    ; move com line pointer
+          ldr r0, r3, 0    ; get char from com line
+          cmp r0, 0        ; is it the null char
+          brz cldone       ; branch if end of command line
+          ld r1, blank     ; load blank
+          cmp r0, r1       ; compare char and blank
+          brnz nextchar    ; branch if not blank
+
+          mov r0, 0        ; get null char
+          str r0, r3, 0    ; overlay blank with null char
+          add r3, r3, 1    ; advance ptr to next arg
+          br getarg
+
+cldone:   st r5, argc      ; store arg count in argc
+          mov sp, 0        ; initialize sp and fp
+          mov fp, 0
+
+          ld r0, argv      ; call main passing it argc, argv
+          push r0
+          ld r0, argc      
+          push r0          
+          bl main         ; program must have main function
+          add sp, sp, 2    ; remove parms, r0 has return code
+          
+          ld r1, sig       ; get signature
+          ld r2, sigcopy   ; get original signature
+          cmp r1, r2       ; compare signatures
+          brz alldone      ; branch if the same
+          lea r0, m1       ; get address of error message
+          sout r0
+
+alldone:  halt
+argc:     .word 0          ; .word equivalent to .fill
+argv:     .word array
+array:    .zero 20         ; argv array (.zero equivalent to .blkw)
+m1:       .string "\nStart-up code corrupted\n"
+clloc:    .word 0x8000     ; command line location
+blank:    .word ' '
+sigcopy:  .word 'Z'

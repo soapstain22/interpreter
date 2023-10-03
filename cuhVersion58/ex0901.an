@@ -1,0 +1,47 @@
+  1 ; ex0901.a  Structs
+  2 startup:  bl main
+  3           halt
+  4 ;==============================================================
+  5                            ; #include <stdio.h>
+  6                            ; struct Point
+  7                            ; {
+  8                            ;    int x;
+  9                            ;    int y;
+ 10                            ; };
+ 11                            
+ 12 a:        .zero 1          ; struct Point a;
+ 13 p:        .word 0          ; struct Point *p;
+ 14                            
+ 15 main:     push lr          ; int main()
+ 16           push fp          ; {
+ 17           mov fp, sp
+ 18                            
+ 19           mov r0, 1        ;    a.x = 1;
+ 20           st r0, a
+ 21                            
+ 22           mov r0, 2        ;    a.y = 2;
+ 23           st r0, a+1
+ 24                            
+ 25           lea r0, a        ;    p = &a;
+ 26           st r0, p
+ 27                            
+ 28           ld r0, a+1       ;    printf("%d\n", a.y);
+ 29           dout r0
+ 30           nl
+ 31                            
+ 32           ld r0, p         ;    printf("%d\n", p->y);
+ 33           ldr r0, r0, 1
+ 34           dout r0
+ 35           nl
+ 36                             
+ 37           ld r0, p         ;    printf("%d\n", (*p).y);
+ 38           ldr r0, r0, 1
+ 39           dout r0
+ 40           nl
+ 41                            
+ 42           mov r0, 0        ;    return 0;
+ 43           mov sp, fp
+ 44           pop fp
+ 45           pop lr
+ 46           ret
+ 47                            ; }

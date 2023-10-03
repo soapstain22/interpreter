@@ -1,0 +1,76 @@
+; ex0903.a  Passing structs
+startup:  bl main
+          halt
+;==============================================================
+                            ; #include <stdio.h>
+                            ; struct Point
+                            ; {
+                            ;    int x;
+                            ;    int y;
+                            ; };
+a:        .zero 2           ; struct Point a;
+;==============================================================
+f:        push lr           ; void f(struct Point s)
+          push fp           ; {
+          mov fp, sp
+
+          ldr r0, fp, 2     ;    printf("%d %d\n", s.x, s.y);
+          dout r0
+          mov r0, ' '
+          aout r0
+          ldr r0, fp, 3
+          dout r0
+          nl
+
+          mov sp, fp        ; }
+          pop fp
+          pop lr
+          ret
+;==============================================================
+g:        push lr           ; void g(struct Point *p)
+          push fp           ; {
+          mov fp, sp
+
+          ldr r1, fp, 2     ;    printf("%d %d\n", p->x, p->y);
+          ldr r0, r1, 0
+          dout r0
+          mov r0, ' '
+          aout r0
+          ldr r0, r1, 1
+          dout r0
+          nl
+
+          mov sp, fp        ; }
+          pop fp
+          pop lr
+          ret
+;==============================================================
+main:     push lr           ; int main()
+          push fp           ; {
+          mov fp, sp
+
+          mov r0 1          ;    a.x = 1;
+          st r0, a
+
+          mov r0, 2         ;    a.y = 2;
+          st r0, a+1
+
+          ld r0, a+1        ;    f(a);
+          push r0
+          ld r0, a
+          push r0
+          bl f
+          add sp, sp, 2
+
+          lea r0, a         ;    g(&a);
+          push r0
+          bl g
+          add sp, sp, 1
+
+          mov r0, 0         ;    return 0;
+          mov sp, fp
+          pop fp
+          pop lr
+          ret
+
+                            ; }

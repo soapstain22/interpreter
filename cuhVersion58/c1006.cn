@@ -1,0 +1,11 @@
+  1 // c1006.c
+  2 #include <stdio.h>
+  3 int table[] = {5, 6, 7};
+  4 int *p;
+  5 int main()
+  6 {
+  7    p = &table[1];
+  8    p[1] = 55;
+  9    printf("%d\n", *(p+1));
+ 10    return 0;
+ 11 }

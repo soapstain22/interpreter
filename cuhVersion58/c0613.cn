@@ -1,0 +1,15 @@
+  1 // c0613.c
+  2 #include <stdio.h>
+  3 int a(int x, int y)
+  4 {
+  5    if (x == 0)
+  6       return y + 1;
+  7    if (x > 0 && y == 0)
+  8       return a(x - 1, 1);
+  9    return a(x - 1, a(x, (y - 1)));
+ 10 }
+ 11 int main()
+ 12 {
+ 13    a(2, 2);
+ 14    return 0;
+ 15 }

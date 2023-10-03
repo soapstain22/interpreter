@@ -1,0 +1,22 @@
+  1 // c1204.c
+  2 #include <stdio.h>
+  3 int x = 5;
+  4 static int y;
+  5 static void f(int *p)
+  6 {
+  7    *p = 5;
+  8 }
+  9 int main()
+ 10 {
+ 11    static int a = 1;
+ 12    int b = 2;
+ 13    f(&x);
+ 14    f(&y);
+ 15    f(&a);
+ 16    f(&b);
+ 17    printf("%d\n", a);
+ 18    printf("%d\n", b);
+ 19    printf("%d\n", x);
+ 20    printf("%d\n", y);
+ 21    return 0;
+ 22 }

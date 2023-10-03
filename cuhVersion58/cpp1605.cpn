@@ -1,0 +1,70 @@
+  1 // cpp1605.cpp
+  2 #include <iostream>
+  3 using namespace std;
+  4 class A
+  5 {
+  6    public:
+  7       A(int n);
+  8       virtual void display();
+  9    protected:   
+ 10       int x;
+ 11 };
+ 12 A::A(int n)
+ 13 {
+ 14    x = n;
+ 15 }
+ 16 void A::display()
+ 17 {
+ 18    cout << x << endl;
+ 19 }
+ 20 class B: public A
+ 21 {
+ 22    public:
+ 23       B(int n, int m);
+ 24       void display();
+ 25    protected:
+ 26       int y;
+ 27 };
+ 28 B::B(int n, int m): A(n)
+ 29 {
+ 30    y = m;
+ 31 }
+ 32 void B::display()
+ 33 {
+ 34    cout << x << " " << y << endl;
+ 35 }
+ 36 class C: public B
+ 37 {
+ 38    public:
+ 39       C(int n, int m, int r);
+ 40       void display();
+ 41    private:
+ 42       int z;
+ 43 };
+ 44 C::C(int n, int m, int r): B(n, m)
+ 45 {
+ 46    z = r;
+ 47 }
+ 48 void C::display()
+ 49 {
+ 50    cout << x << " " << y << " " << z << endl;
+ 51 }
+ 52 int main()
+ 53 {
+ 54    A *aptr;
+ 55    B *bptr;
+ 56    C *cptr;
+ 57    A a(1);
+ 58    a.display();
+ 59    B b(2, 3);
+ 60    b.display();
+ 61    aptr = new A(4);
+ 62    aptr->display();
+ 63    bptr = new B(5, 6);
+ 64    bptr->display();
+ 65    cptr = new C(100, 200, 300);
+ 66    cptr->display();
+ 67    aptr = cptr;
+ 68    aptr->display();
+ 69    return 0;  
+ 70 }

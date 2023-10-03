@@ -1,0 +1,46 @@
+; ex1401.a  C++ reference parameters
+startup:  bl main
+          halt
+;==============================================================
+                           ; #include <iostream>
+                           ; using namespace std;
+x:        .word 5          ; int x = 5;
+
+@f$ri:    push lr          ; void f(int &a)
+          push fp          ; {             
+          mov fp, sp
+                           
+          ldr r0, fp, 2    ;    a = a + 1;
+          ldr r0, r0, 0
+          add r0, r0, 1
+          ldr r1, fp, 2
+          str r0, r1, 0
+                           
+          mov sp, fp       ; }
+          pop fp
+          pop lr
+          ret
+;==============================================================
+main:     push lr          ; int main()
+          push fp          ; {         
+          mov fp, sp
+                           
+          ld r0, x         ;    cout << x << endl;
+          dout r0
+          nl
+                           
+          lea r0, x        ;    f(x);
+          push r0
+          bl @f$ri
+          add sp, sp, 1
+                           
+          ld r0, x         ;    cout << x << endl;
+          dout r0
+          nl
+                           
+          mov r0, 0        ;    return 0;
+          mov sp, fp
+          pop fp
+          pop lr
+          ret
+                           ; }

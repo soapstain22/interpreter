@@ -1,0 +1,291 @@
+  1 // a1shell.c
+  2    Your name here as a comment
+  3 #include <stdio.h>    // for I/O functions
+  4 #include <stdlib.h>   // for exit()
+  5 #include <string.h>   // for string functions
+  6 #include <ctype.h>    // for isspace(), tolower()
+  7 #include <time.h>     // for time functions
+  8 
+  9 FILE *infile, *outfile;
+ 10 short pcoffset9, pcoffset11, imm5, imm9, offset6;
+ 11 unsigned short symadd[500], macword, dr, sr, sr1, sr2, baser, trapvec, eopcode;
+ 12 char outfilename[100], linesave[100], buf[100], *symbol[500], *p1, *p2, *cp,
+ 13      *mnemonic, *o1, *o2, *o3, *label;
+ 14 int stsize, linenum, rc, loc_ctr, num;
+ 15 time_t timer;
+ 16 
+ 17 // Case insensitive string compare
+ 18 // Returns 0 if two strings are equal.
+ 19 short int mystrcmpi(const char *p, const char *q) 
+ 20 {
+ 21    char a, b;
+ 22    while (1) 
+ 23    {
+ 24       a = tolower(*p); b = tolower(*q);
+ 25       if (a != b) return a-b;
+ 26       if (a == '\0') return 0;
+ 27       p++; q++;
+ 28    }
+ 29 }
+ 30 
+ 31 // Case insensitive string compare
+ 32 // Compares up to a maximum of n characters from each string.
+ 33 // Returns 0 if characters compared are equal.
+ 34 short int mystrncmpi(const char *p, const char *q, int n) 
+ 35 {
+ 36    char a, b;
+ 37    int i;
+ 38    for (i = 1; i <= n; i++) 
+ 39    {
+ 40       a = tolower(*p); b = tolower(*q);
+ 41       if (a != b) return a-b;
+ 42       if (a == '\0') return 0;
+ 43       p++; q++;
+ 44    }
+ 45 }
+ 46 
+ 47 void error(char *p)
+ 48 {
+ 49    // Code missing here:
+ 50    // Displays error message p points to, line number in linenum, and line in
+ 51    // linesave.
+ 52 }
+ 53 int isreg(char *p)
+ 54 {
+ 55    // Code missing here:
+ 56    // Returns 1 if p points to a register name.
+ 57    // Otherwise, returns 0.   
+ 58 }
+ 59 unsigned short getreg(char *p)              
+ 60 {
+ 61    // Code missing here:
+ 62    // Returns register number of the register whose name p points to.
+ 63    // Calls error() if not passed a register name.
+ 64 }
+ 65 unsigned short getadd(char *p)
+ 66 {
+ 67    // Code missing here:
+ 68    // Returns address of symbol p points to accessed from the symbol table.
+ 69    // Calls error() if symbol not in symbol table.
+ 70 }
+ 71 int main(int argc,char *argv[])
+ 72 {
+ 73    if (argc != 2)
+ 74    {
+ 75       printf("Wrong number of command line arguments\n");
+ 76       printf("Usage: a1 <input filename>\n");
+ 77       exit(1);
+ 78    }
+ 79 
+ 80    // display your name, command line args, time
+ 81    time(&timer);      // get time
+ 82    printf("YOUR NAME HERE   %s %s   %s", 
+ 83            argv[0], argv[1], asctime(localtime(&timer)));
+ 84 
+ 85    infile = fopen(argv[1], "r");
+ 86    if (!infile)
+ 87    {
+ 88       printf("Cannot open input file %s\n", argv[1]);
+ 89       exit(1);
+ 90    }
+ 91 
+ 92    // construct output file name
+ 93    strcpy(outfilename, argv[1]);        // copy input file name
+ 94    p1 = strrchr(outfilename, '.');      // search for period in extension
+ 95    if (p1)                              // name has period
+ 96    {
+ 97 #ifdef _WIN32                           // defined only on Windows systems
+ 98       p2 = strrchr(outfilename, '\\' ); // compiled if _WIN32 is defined
+ 99 #else
+100       p2 = strrchr(outfilename, '/');   // compiled if _WIN32 not defined
+101 #endif
+102       // can p2 < p1 in following if statement be eliminated by 
+103       // using strchr(p1, ...) instead of strrchr(outfilename, ...) 
+104       // in the preceding assignments to p2?
+105       if (!p2 || p2 < p1)               // input file name has extension?
+106          *p1 = '\0';                    // null out extension
+107    }
+108    strcat(outfilename, ".e");           // append ".e" extension
+109 
+110    outfile = fopen(outfilename, "wb");
+111    if (!outfile)
+112    {
+113       printf("Cannot open output file %s\n", outfilename);
+114       exit(1);
+115    }
+116 
+117    loc_ctr = linenum = 0;       // initialize, not required because global
+118    fwrite("oC", 2, 1, outfile); // output empty header
+119 
+120    // Pass 1
+121    printf("Starting Pass 1\n");
+122    while (fgets(buf, sizeof(buf), infile))
+123    {
+124       linenum++;  // update line number
+125       cp = buf;
+126       while (isspace(*cp))
+127          cp++;
+128       if (*cp == '\0' || *cp ==';')  // if line all blank, go to next line
+129          continue;
+130       strcpy(linesave, buf);        // save line for error messages
+131       if (!isspace(buf[0]))         // line starts with label
+132       {
+133          label = strdup(strtok(buf, " \r\n\t:"));
+134          // Add code here that checks for a duplicate label, use strcmp().
+135          symbol[stsize] = label;
+136          symadd[stsize++] = loc_ctr;
+137          mnemonic = strtok(NULL," \r\n\t:"); // get ptr to mnemonic/directive
+138          o1 = strtok(NULL, " \r\n\t");      // get ptr to first operand
+139       }
+140       else   // tokenize line with no label
+141       {
+142          mnemonic = strtok(buf, " \r\n\t");  // get ptr to mnemonic
+143          o1 = strtok(NULL, " \r\n\t");       // get ptr to first operand
+144       }
+145       if (mnemonic == NULL)    // check for mnemonic or directive
+146          continue;
+147       if (!mystrcmpi(mnemonic, ".zero"))    // case insensitive compare
+148       {
+149          if (o1)
+150             rc = sscanf(o1, "%d", &num);    // get size of block from o1
+151          else
+152             error("Missing operand");
+153          if (rc != 1 || num > (65536 - loc_ctr) || num < 1)
+154             error("Invalid operand");
+155          loc_ctr = loc_ctr + num;
+156       }
+157       else
+158          loc_ctr++;
+159       if (loc_ctr > 65536)
+160          error("Program too big");
+161    }
+162 
+163    rewind(infile);
+164 
+165    // Pass 2
+166    printf("Starting Pass 2\n");
+167    loc_ctr = linenum = 0;      // reinitialize
+168    while (fgets(buf, sizeof(buf), infile))
+169    {
+170       linenum++;
+171       // Code missing here:
+172       // Discard blank/comment lines, and save buf in linesave as in pass 1
+173       // Tokenize entire current line.
+174       // Do not make any new entries into the symbol table
+175 
+176       if (mnemonic == NULL)
+177          continue;
+178       if (!mystrncmpi(mnemonic, "br", 2))    // case sensitive compares
+179       {
+180          if (!mystrcmpi(mnemonic, "br" ))
+181             macword = 0x0e00;
+182          else
+183          if (!mystrcmpi(mnemonic, "brz" ))
+184             macword = 0x0000;
+185          else
+186          if (!mystrcmpi(mnemonic, "brnz" ))
+187             macword = 0x0200;
+188          else
+189          if (!mystrcmpi(mnemonic, "brn" ))
+190             macword = 0x0400;
+191          else
+192          if (!mystrcmpi(mnemonic, "brp" ))
+193             macword = 0x0600;
+194          else
+195          if (!mystrcmpi(mnemonic, "brlt" ))
+196             macword = 0x0800;
+197          else
+198          if (!mystrcmpi(mnemonic, "brgt" ))
+199             macword = 0x0a00;
+200          else
+201          if (!mystrcmpi(mnemonic, "brc" ))
+202             macword = 0x0c00;
+203          else
+204             error("Invalid branch mnemonic");
+205 
+206          pcoffset9 = (getadd(o1) - loc_ctr - 1);    // compute pcoffset9
+207          if (pcoffset9 > 255 || pcoffset9 < -256)
+208             error("pcoffset9 out of range");
+209          macword = macword | (pcoffset9 & 0x01ff);  // assemble inst
+210          fwrite(&macword, 2, 1, outfile);           // write out instruction
+211          loc_ctr++;
+212       }
+213       else
+214       if (!mystrcmpi(mnemonic, "add" ))
+215       {
+216          if (!o3)
+217             error("Missing operand");
+218          dr = getreg(o1) << 9;   // get and position dest reg number
+219          sr1 = getreg(o2) << 6;  // get and position srce reg number
+220          if (isreg(o3)) // is 3rd operand a reg?
+221          {
+222             sr2 = getreg(o3);      // get third reg number
+223             macword = 0x1000 | dr | sr1 | sr2; // assemble inst
+224          }
+225          else
+226          {
+227             if (sscanf(o3,"%d", &num) != 1)    // convert imm5 field
+228                error("Bad imm5");
+229             if (num > 15 || num < -16)
+230                error("imm5 out of range");
+231             macword = 0x1000 | dr | sr1 | 0x0020 | (num & 0x1f);
+232          }
+233          fwrite(&macword, 2, 1, outfile);      // write out instruction
+234          loc_ctr++;
+235       }
+236       else
+237       if (!mystrcmpi(mnemonic, "ld" ))
+238       {
+239          dr = getreg(o1) << 9;// get and position destination reg number
+240          pcoffset9 = (getadd(o2) - loc_ctr - 1);
+241          if (pcoffset9 > 255 || pcoffset9 < -256)
+242             error("pcoffset9 out of range");
+243          macword = 0x2000 | dr | (pcoffset9 & 0x1ff);   // assemble inst
+244          fwrite(&macword, 2, 1, outfile); // write out instruction
+245          loc_ctr++;
+246       }
+247 
+248       // code missing here for st, bl, blr, and, ldr, str, not
+249 
+250       else
+251       if (!mystrcmpi(mnemonic, "jmp" ))     // also ret instruction
+252       {
+253          baser = getreg(o1) << 6;        // get reg number and position it
+254          if (o2)                         // offset6 specified?
+255          {
+256             if (sscanf(o2,"%d", &num) != 1)    // convert offset6 field
+257                error("Bad offset6");
+258             if (num > 31 || num < -32)
+259                error("offset6 out of range");
+260          }
+261          else
+262             num = 0;                           // offset6 defaults to 0
+263          // combine opcode, reg number, and offset6
+264          macword = 0xc000 | baser | num;       
+265          fwrite(&macword, 2, 1, outfile);  // write out instruction
+266          loc_ctr++;
+267       }
+268       else
+269       if (!mystrcmpi(mnemonic, "ret" ))     // also ret instruction
+270       {
+271          // code here is similar to code for jmp except baser
+272          // is always 7 and optional offset6 is pointed to by
+273          // o1, not by o2 as in jmp
+274       }
+275 
+276       // code missing here for lea, trap (halt, nl, dout), .word
+277 
+278       else
+279       if (!mystrcmpi(mnemonic, ".zero"))
+280       {
+281          sscanf(o1, "%d", &num);             // get size of block
+282          loc_ctr = loc_ctr + num;            // adjust loc_ctr
+283          macword = 0;
+284          while (num--)                       // write out a block of zeros
+285             fwrite(&macword, 2, 1, outfile);
+286       }
+287       else
+288          error("Invalid mnemonic or directive");
+289    }
+290    // Close files.
+291 }

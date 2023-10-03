@@ -1,0 +1,31 @@
+  1 ; ex0402.a  Returning a value
+  2 
+  3 startup:  bl main
+  4           halt             ; back to operating system
+  5 ;==============================================================
+  6                            ; #include <stdio.h>
+  7 f:        push lr          ; int f()
+  8           push fp          ; {
+  9           mov fp, sp
+ 10                            
+ 11           mov r0, 5        ;    return 5;
+ 12           mov sp, fp
+ 13           pop fp
+ 14           pop lr
+ 15           ret
+ 16                            ; }
+ 17 ;==============================================================
+ 18 main:     push lr          ; int main()
+ 19           push fp          ; {
+ 20           mov fp, sp
+ 21 
+ 22           bl f             ;    printf("%d\n", f());
+ 23           dout r0
+ 24           nl
+ 25                            
+ 26           mov r0, 0        ;    return 0;
+ 27           mov sp, fp
+ 28           pop fp
+ 29           pop lr
+ 30           ret
+ 31                            ; }

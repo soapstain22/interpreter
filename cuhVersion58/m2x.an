@@ -1,0 +1,25 @@
+  1           .extern i
+  2           .extern j
+  3           .global sub
+  4 sub:      halt
+  5           push lr
+  6           push fp
+  7           mov fp, sp
+  8 
+  9           ld r0, j-1
+ 10           ld r1, x
+ 11           ldr r1, r1, 0
+ 12           add r0, r0, r1
+ 13           ld r1, z
+ 14           ldr r1, r1, 0
+ 15           add r0, r0, r1
+ 16           dout r0
+ 17           nl
+ 18 
+ 19           mov sp, fp
+ 20           pop fp
+ 21           pop lr
+ 22           ret
+ 23 x:        .word z-1    
+ 24 c:        .word 11
+ 25 z:        .word i+2

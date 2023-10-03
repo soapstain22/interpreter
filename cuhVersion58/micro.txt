@@ -1,0 +1,43 @@
+micro Assembler Version 3.0
+
+DISCLAIMER 
+----------
+
+The files in this software package are provided to you on an "as 
+is" basis for instructional purposes only, without any 
+warranties, expressed or implied. The author and copyright holder 
+of these files shall not be liable in any event for incidental, 
+consequential, special, or punitive damages in connection with, 
+or arising out of the distribution, performance, or use of these 
+files.     
+================================================================= 
+
+micro assembles microcode in symbolic form to binary (see sim.txt 
+for a description of symbolic microcode). 
+
+To invoke micro on Windows, enter on the command line
+
+   micro <symbolic microcode file name>
+
+To invoke micro on OS X, Linux, or Raspbian, enter on the command 
+line 
+
+   ./micro <symbolic microcode file name> 
+
+Alternatively, you can invoke a program simply by double clicking 
+on its icon. 
+
+The name of the binary microcode file produced by micro has the 
+extension ".m" and the same base name as the input file. For 
+example, if the input file is "b.sm", the output file is "b.m". 
+
+If a file exists with the same basename as the symbolic microcode 
+file and the extension ".cfg", micro will read it in and use it 
+as the configuration file (see sim.txt for a description of a 
+configuration file).  
+
+Symbolic microinstructions are case insensitive.
+
+The file name for microcode that implements a stack architecture
+must start with "s". For a register architecture, it must not
+start with "s".

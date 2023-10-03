@@ -1,0 +1,165 @@
+
+C Practice Problems
+-------------------
+
+1) Write a program that displays your name 20 times. Use a loop.
+
+2) Write a program that reads in a positive integer n and then 
+displays all the positive integers from 1 to n.
+
+3) Write a program that reads in two hex integers and displays 
+in hex their bitwise exclusive OR, bitwise OR,
+and bitwise AND (use the ^, |, and & bitwise operators). 
+Test your program with ffffffff and 89abcdef.
+
+4) Write a program that prompts for and reads in from the 
+keyboard a string containing all lowercase letters.
+Your program should change all the lower cases letters to 
+upper case and display the resulting string. Your
+program should work for any size string. Test your program 
+with the string “computer”. Hint: What must you
+subtract from each lowercase letter to convert it to upper 
+case (see chapter 1 in the textbook)? Initialize a
+char pointer so it points to the first character. Then 
+execute a while loop that displays the character pointed
+to and then increments the pointer. Continue until the 
+pointer points to the null character (‘\0’).
+
+5) Write a program that repeatedly prompts for and reads 
+in decimal numbers from the keyboard until a negative
+number is entered, at which point your program should 
+display the sum of all the numbers previously entered.
+Test your program by entering 1, 2, 3, -1 (the sum 
+displayed should be 6).
+
+6) Write a program that prompts for and reads in from the 
+keyboard a positive decimal number and then displays
+the sum of all the integers from 1 to the number entered. 
+Test your program by entering 10.
+
+7) Write a program that displays a table of ASCII codes 
+from 32 to 127 and their corresponding characters.
+
+8) Write a program that prompts for and reads in a character 
+from the keyboard. Your program then displays the
+character entered and its ASCII code in both decimal and hex.
+
+9) Write a program that determines and displays the number 
+of bytes in a file whose name is provided on the
+command line. Test your program with this file. Note: You 
+program should count both the newline and return
+characters at the end of each line.
+
+10) Write a program that reads two integer numbers that 
+are arguments on the command line and displays their
+sum. Note: the arguments are in string form so they must 
+be converted to type int before computing their
+sum. The C function that will do the conversion is sscanf.
+
+11) Write a program that prompts for and reads in from the 
+keyboard a decimal number. Your program should
+then display the number of 1 bits in the binary form of 
+the inputted number. Hint: Use the right shift 
+operator >>.
+
+12) Write a program that reads in a hex number, flips bit 3, 
+sets bit 5, and resets bit 7. Display in hex the resulting
+number. Test your program with 0 and ffffffff. Hint: Use 
+the ^ (bitwise exclusive OR), | (bitwise OR),
+and & (bitwise AND) operators.
+
+13) Same as problem 10 but input the three bit positions 
+at which to modify the inputted number.
+
+14) Write a program that reads in strings from the keyboard 
+until the string “done” is entered. Your program
+should then display the string that is the first (alphabetically) 
+and the string that is the last (alphabetically)
+among the strings entered. Hint: Use the strcmp function.
+
+15) Run the C programs in chapter 1 of the textbook to confirm 
+the floating-point errors illustrated by those
+programs.
+
+16) Write a program that prompts for and reads in a decimal 
+number and displays the number of leading zeros in
+its 32-bit binary form. Test your program by entering 9251. 
+Hint: Use the left shift operator <<.
+
+17) Write a program that reads in the decimal numbers from 
+the file p15.txt and displays the largest. Create
+the p15.txt file so it contains the numbers 3 100 -30 -50 
+101 99 0 -1 5 77.
+
+18) Same as problem 17 but get the file name by prompting 
+for it and reading it in from the keyboard.
+
+19) Same as problem 17 but get the file name from the command line.
+
+20) Write a program that prompts for and reads in a string. 
+It should then display all and only the decimal digits
+in the string. Test your program with “A1,b2C34”.
+
+21) Write a program that reads in a string and displays it 
+with its non-null characters in reverse order. Test your
+program by entering “hello”. Push each character on a stack. 
+Then pop and display each character.
+
+22) Same as problem 21 but assign a char pointer to the last 
+character in the string. To do this, use strlen to
+determine the length of the string from which you can compute 
+the address of the last character in the string.
+Then execute a loop that displays each pointed-to character 
+and then decrements the pointer.
+
+23) Write a program that reads in a hex number and displays 
+it in binary. Test your program by entering ab5d.
+Hint: Use the left shift operator <<.
+
+24) Propose an alternate approach to representing strings in 
+memory. C strings mark the end of the string with the
+null character.
+
+25) Write a program that prompts for and reads in a positive 
+decimal number. Your program should make two
+copies of the inputted number. It should left shift the first 
+copy once and the second copy twice. It should then
+add the original number and the two shifted copies and display 
+the sum. What is the relationship between the
+inputted number and the number displayed? Test your program by 
+entering 5 and -5.
+
+26) Write a program that reads in a binary number and displays 
+its value in hex. Test your program by entering
+0101111110101001.
+
+27) Write a program that reads in 10 numbers and displays 
+them in ascending order. Use the bubble sort. Test
+your program with 5, 2, 8, 3, -9, 1, 6, 4, 2, 7.
+
+28) Same as problem 27 but create an array of int pointers 
+that point to the inputted numbers. Sort the numbers
+by manipulating the pointers in the array, not the numbers 
+themselves.
+
+29) Write a program that prompts for and reads in a decimal 
+number and then displays “odd” or “even” depending
+on the value of the number inputted. Test your program by 
+entering 7, 4, -7, and -4.
+
+30) Write a program that creates a linked list of 10 structs 
+each containing an integer number read in from the
+keyboard and a next pointer. Call a function that displays 
+the numbers in the list in their natural order. Call
+a second function that displays the numbers in the list in 
+reverse order. Use recursion for both functions.
+
+31) Prize behind one of three curtains. Goats behind other 
+two curtains. Contestant picks one curtain. Host knows
+where the goats are. Reveals one of the curtains where a 
+goat is and gives contestant the choice to stay with
+original pick or go with the other curtain.
+Simulate this game 1,000,000 times to determine the probability 
+of wining the prize if contestant stays with
+original pick. Is the probability 1/2?
+

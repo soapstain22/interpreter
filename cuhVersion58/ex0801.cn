@@ -1,0 +1,15 @@
+  1 // ex0801.c  Pass by value
+  2 #include <stdio.h>
+  3 int x = 7;
+  4 void f(int a)
+  5 {
+  6    a = a + 1;
+  7    return;
+  8 }
+  9 //===================
+ 10 int main()
+ 11 {
+ 12    f(x);
+ 13    printf("%d\n", x);
+ 14    return 0;
+ 15 }

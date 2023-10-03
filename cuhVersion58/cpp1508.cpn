@@ -1,0 +1,80 @@
+  1 // cpp1508.cpp
+  2 // Test by entering 10, 3, 15, 1, 18, 5, 12, -1
+  3 #include <iostream>
+  4 using namespace std;
+  5 struct Node 
+  6 {
+  7    int data;
+  8    Node *left;
+  9    Node *right;
+ 10 };
+ 11 class Tree
+ 12 {
+ 13    public:
+ 14       void init();
+ 15       void addnode(int val);
+ 16       void inorder();
+ 17    private:
+ 18       void inorder(Node *p);
+ 19       Node *rootptr;
+ 20 };
+ 21 void Tree::init()
+ 22 {
+ 23    rootptr = NULL;
+ 24 }
+ 25 void Tree::addnode(int val)
+ 26 {
+ 27   Node *newnode, *leading, *trailing;
+ 28   newnode = new Node;
+ 29   newnode->data  = val;
+ 30   newnode->left  = NULL;
+ 31   newnode->right = NULL;
+ 32   leading = rootptr;                  
+ 33   trailing = NULL;
+ 34   while (leading != NULL)    
+ 35   {
+ 36     trailing = leading;
+ 37     if (val < leading->data)
+ 38        leading = leading->left;
+ 39     else
+ 40        leading = leading->right;
+ 41   }
+ 42   if (trailing == NULL)
+ 43      rootptr = newnode;
+ 44   else
+ 45     if (val < trailing->data)
+ 46        trailing->left = newnode;
+ 47     else                                
+ 48        trailing->right = newnode;
+ 49 
+ 50 }
+ 51 void Tree::inorder()
+ 52 {
+ 53    inorder(rootptr);
+ 54 }
+ 55 void Tree::inorder(Node *p) 
+ 56 {
+ 57    if (p) 
+ 58    {
+ 59       inorder(p -> left);
+ 60       cout <<  p -> data << endl;
+ 61       inorder (p -> right);
+ 62    }
+ 63 }
+ 64 int main(void)
+ 65 {
+ 66   int x;
+ 67   Tree t;
+ 68   t.init();
+ 69   printf("Enter integers, -1 at end\n");
+ 70   while (1)
+ 71   {
+ 72      cin >> x;
+ 73      if (x < 0)
+ 74         break;
+ 75      t.addnode(x);
+ 76   }
+ 77   printf("Traverse the tree\n");
+ 78   t.inorder();
+ 79   return 0;
+ 80 }

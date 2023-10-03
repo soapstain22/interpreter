@@ -1,0 +1,13 @@
+          ; test program for j.sm microcode        jtest.a
+          jsr sub1
+          dout
+          nl
+          jsr sub2
+          dout
+          nl
+          halt
+
+sub1:     ldi 5
+          ret
+sub2:     ldi 7
+          ret

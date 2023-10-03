@@ -1,0 +1,9 @@
+  1 // c1202.c
+  2 // run with args "first second third"
+  3 #include <stdio.h>
+  4 int main(int argc, char *argv[])
+  5 {
+  6      while (--argc)
+  7         printf("%d %s\n", argc, argv[argc]);
+  8      return 0;
+  9 }

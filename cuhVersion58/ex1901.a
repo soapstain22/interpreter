@@ -1,0 +1,10 @@
+; ex1901.a Creation, propagation, and destruction of addresses
+          ld r0,    a  ; address now in r0
+          st r0,    b  ; address now at b
+          ld r1,    c     
+          st r1,    a  ; address at a overlaid with a constant
+          halt        
+a:        .word  d     ; assembled to 16-bit address of d
+b:        .word  3    
+c:        .word  5    
+d:        .word  17    ; the address of this word is 0008

@@ -1,0 +1,60 @@
+  1 ; ex0703.a  Pointers to functions
+  2 startup:  bl main
+  3           halt
+  4 ;==============================================================
+  5                            ; #include <stdio.h>
+  6 sum:      .word 0          ; int sum;
+  7 p:        .word 0          ; int (*p)(int, int);
+  8 ;==============================================================
+  9 f:        push lr          ; int f(int x, int y)
+ 10           push fp          ; {
+ 11           mov fp, sp
+ 12 
+ 13           ldr r0, fp, 2    ;    return x+y;
+ 14           ldr r1, fp, 3
+ 15           add r0, r0, r1
+ 16           mov sp, fp
+ 17           pop fp
+ 18           pop lr
+ 19           ret
+ 20                            ; }
+ 21 ;==============================================================
+ 22 main:     push lr          ; int main()
+ 23           push fp          ; {
+ 24           mov fp, sp
+ 25 
+ 26           mov r0, 2        ;    sum = f(1, 2);
+ 27           push r0
+ 28           mov r0, 1
+ 29           push r0
+ 30           bl f
+ 31           add sp, sp, 2
+ 32           st r0, sum
+ 33 
+ 34 
+ 35           ld r0, sum       ;    printf("%d\n", sum);
+ 36           dout r0
+ 37           nl
+ 38 
+ 39           lea r0, f        ;    p = f;
+ 40           st r0, p
+ 41 
+ 42           mov r0, 2        ;    sum = p(1, 2);
+ 43           push r0
+ 44           mov r0, 1
+ 45           push r0
+ 46           ld r0, p
+ 47           blr r0
+ 48           add sp, sp, 2
+ 49           st r0, sum
+ 50 
+ 51           ld r0, sum       ;    printf("%d\n", sum);
+ 52           dout r0
+ 53           nl
+ 54 
+ 55           mov r0, 0        ;    return 0;
+ 56           mov sp, fp
+ 57           pop fp
+ 58           pop lr
+ 59           ret
+ 60                            ; }

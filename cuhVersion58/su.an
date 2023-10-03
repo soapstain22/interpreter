@@ -1,0 +1,52 @@
+  1 ; su.a  start-up code that configures argc and argv
+  2           .start su        ; makes su the entry point
+  3           .extern main     ; needed to link to main
+  4 sig:      .word 'Z'        ; signature for this module
+  5 
+  6 su:       ld r3, clloc     ; r3 points to command line
+  7           lea r4, array    ; r4 point to argv array
+  8           mov r5, 0        ; r5 is arg counter
+  9 
+ 10 getarg:   str r3, r4, 0    ; store arg addr in array
+ 11           add r4, r4, 1    ; inc pointer to array
+ 12           add r5, r5, 1    ; increment arg counter
+ 13 
+ 14 nextchar: add r3, r3, 1    ; move com line pointer
+ 15           ldr r0, r3, 0    ; get char from com line
+ 16           cmp r0, 0        ; is it the null char
+ 17           brz cldone       ; branch if end of command line
+ 18           ld r1, blank     ; load blank
+ 19           cmp r0, r1       ; compare char and blank
+ 20           brnz nextchar    ; branch if not blank
+ 21 
+ 22           mov r0, 0        ; get null char
+ 23           str r0, r3, 0    ; overlay blank with null char
+ 24           add r3, r3, 1    ; advance ptr to next arg
+ 25           br getarg
+ 26 
+ 27 cldone:   st r5, argc      ; store arg count in argc
+ 28           mov sp, 0        ; initialize sp and fp
+ 29           mov fp, 0
+ 30 
+ 31           ld r0, argv      ; call main passing it argc, argv
+ 32           push r0
+ 33           ld r0, argc      
+ 34           push r0          
+ 35           bl main         ; program must have main function
+ 36           add sp, sp, 2    ; remove parms, r0 has return code
+ 37           
+ 38           ld r1, sig       ; get signature
+ 39           ld r2, sigcopy   ; get original signature
+ 40           cmp r1, r2       ; compare signatures
+ 41           brz alldone      ; branch if the same
+ 42           lea r0, m1       ; get address of error message
+ 43           sout r0
+ 44 
+ 45 alldone:  halt
+ 46 argc:     .word 0          ; .word equivalent to .fill
+ 47 argv:     .word array
+ 48 array:    .zero 20         ; argv array (.zero equivalent to .blkw)
+ 49 m1:       .string "\nStart-up code corrupted\n"
+ 50 clloc:    .word 0x8000     ; command line location
+ 51 blank:    .word ' '
+ 52 sigcopy:  .word 'Z'

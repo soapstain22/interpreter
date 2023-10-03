@@ -1,0 +1,247 @@
+  1 // lshell.c
+  2 // Your name here as a comment
+  3 #include <stdio.h>    // for I/O functions
+  4 #include <stdlib.h>   // for exit()
+  5 #include <string.h>   // for string functions
+  6 #include <time.h>     // for time functions
+  7 
+  8 int i, j;
+  9 
+ 10 unsigned short temp, inst, addr;
+ 11 char buf[300];
+ 12 
+ 13 FILE *infile;
+ 14 FILE *outfile;
+ 15 char c, *p, letter;
+ 16 
+ 17 unsigned short mca[65536];
+ 18 int mcaindex;
+ 19 
+ 20 unsigned short start;
+ 21 int gotstart;
+ 22 
+ 23 unsigned short Gadd[1000];
+ 24 char *Gptr[1000];
+ 25 int Gindex;
+ 26 
+ 27 unsigned short Eadd[1000];
+ 28 char *Eptr[1000];
+ 29 int Eindex;
+ 30 
+ 31 unsigned short eadd[1000];
+ 32 char * eptr[1000];
+ 33 int eindex;
+ 34 
+ 35 unsigned short Aadd[1000];
+ 36 int Amodadd[1000];
+ 37 int Aindex;
+ 38 
+ 39 unsigned short Vadd[1000];
+ 40 char *Vptr[1000];
+ 41 int Vindex;
+ 42 
+ 43 time_t timer;
+ 44 
+ 45 int main(int argc,char *argv[])
+ 46 {
+ 47    if (argc < 2)
+ 48    {
+ 49         printf("Wrong number of command line arguments\n");
+ 50         printf("Usage: l <obj module name1> <obj module name2> ... \n");
+ 51         exit(1);
+ 52    }
+ 53 
+ 54    // display your name, command line args, time
+ 55    time(&timer);      // get time
+ 56    printf("YOUR NAME HERE   %s %s   %s", 
+ 57            argv[0], argv[1], asctime(localtime(&timer)));
+ 58 
+ 59    //================================================================
+ 60    // Step 1:
+ 61    // For each module, store header entries into tables with adjusted
+ 62    // addresses and store machine code in mca (the machine code array).
+ 63 
+ 64    for (i = 1; i < argc; i++)
+ 65    {
+ 66       infile = fopen(argv[i], "rb");
+ 67       if (!infile)
+ 68       {
+ 69          printf("Cannot open %s\n", argv[i]);
+ 70          exit(1);
+ 71       }
+ 72       printf("Linking %s\n", argv[i]);
+ 73       letter = fgetc(infile);
+ 74       if (letter != 'o')
+ 75       {
+ 76          printf("Not a linkable file\n");
+ 77          exit(1);
+ 78       }
+ 79       while (1)
+ 80       {
+ 81          letter = fgetc(infile);
+ 82          if (letter == 'C')
+ 83             break;
+ 84          else
+ 85          if (letter == 'S')
+ 86          {
+ 87             if (fread(&addr, 2, 1, infile) != 1) // addr unsigned short
+ 88             {
+ 89                printf("Invalid S entry\n");
+ 90                exit(1);
+ 91             }
+ 92             if (gotstart)
+ 93             {
+ 94                printf("More than one entry point\n");
+ 95                exit(1);
+ 96             }
+ 97             gotstart = 1;                   // indicate S entry processed
+ 98             start = addr + mcaindex;        // save adjusted address
+ 99          }
+100          else
+101          if (letter == 'G')
+102          {
+103             if (fread(&addr, 2, 1, infile) != 1)
+104             {
+105                printf("Invalid G entry\n");
+106                exit(1);
+107             }
+108             Gadd[Gindex] = addr + mcaindex; // save adjusted address
+109             j = 0;
+110             do                              // get string in G entry
+111             {
+112                letter = fgetc(infile);
+113                buf[j++] = letter;
+114             } while (letter != '\0');
+115             j = 0;
+116             while (j < Gindex)     // check for multiple definitions
+117             {
+118                if (!strcmp(buf, Gptr[j]))
+119                {
+120                   printf("Multiple defs of global var %s\n", buf);
+121                   exit(1);
+122                }
+123                else
+124                   j++;
+125             }
+126             Gptr[Gindex++] = strdup(buf);   // save string
+127          }
+128          else
+129          if (letter == 'E')
+130          {
+131             // code missing here
+132          }
+133          else
+134          if (letter == 'e')
+135          {
+136             // code missing here
+137          }
+138          else
+139          if (letter == 'V')
+140          {
+141             // code missing here
+142          }
+143          else
+144          if (letter == 'A')
+145          {
+146             // code missing here
+147          }
+148          else
+149          {
+150             printf("Invalid header entry %c in %s\n", letter, argv[i]);
+151             exit(1);
+152          }
+153       }
+154 
+155       // add machine code to machine code array
+156       while(fread(&inst, 2, 1, infile))
+157       {
+158          mca[mcaindex++] = inst;
+159       }
+160       fclose(infile);
+161    }
+162 
+163    //================================================================
+164    // Step 2: Adjust external references
+165 
+166    // handle E references
+167    for (i = 0; i < Eindex; i++)
+168    {
+169       for (j = 0; j < Gindex; j++)
+170          if(!strcmp(Eptr[i], Gptr[j]))
+171             break;
+172       if (j >= Gindex)
+173       {
+174          printf("%s is an undefined external reference", Eptr[i]);
+175          exit(1);
+176       }
+177       mca[Eadd[i]] = (mca[Eadd[i]] & 0xf800) |
+178                      ((mca[Eadd[i]] + Gadd[j] - Eadd[i] - 1) & 0x7ff);
+179    }
+180    // handle e entries
+181    for (i = 0; i < eindex; i++)
+182    {
+183       // code missing here
+184    }
+185 
+186    // handle V entries
+187    for (i = 0; i < Vindex; i++)
+188    {
+189       // code missing here
+190    }
+191 
+192    //================================================================
+193    // Step 3: Handle A entries
+194 
+195    for (i = 0; i < Aindex; i++)
+196       // Code missing here. Only 1 statement needed to handle each A entry
+197 
+198    //================================================================
+199    // Step 4: Write out executable file
+200 
+201    outfile = fopen("link.e", "wb");
+202    if (!outfile)
+203    {
+204       printf("Cannot open output file link.e\n");
+205       exit(1);
+206    }
+207 
+208    // Write out file signature
+209    fwrite("o", 1, 1, outfile);
+210    
+211    printf("Creating executable file link.e\n");
+212    // Write out start entry if there is one
+213    if (gotstart)
+214    {
+215       fwrite("S", 1, 1, outfile);
+216       fwrite(&start, 2, 1, outfile);
+217    }
+218    // Write out G entries
+219    for (i = 0; i < Gindex; i++)
+220    {
+221       fwrite("G", 1, 1, outfile);
+222       fwrite(Gadd + i, 2, 1, outfile);
+223       fprintf(outfile, "%s", Gptr[i]);
+224       fwrite("", 1, 1, outfile);
+225    }
+226    // Write out V entries as A entries
+227    for (i = 0; i < Vindex; i++)
+228    {
+229       //  Code missing here:
+230       //  Write out V entries as A entries.
+231    }
+232    // Write out A entries
+233    for (i = 0; i < Aindex; i++)
+234    {                        
+235       // Code missing here:
+236       // Write out A entries.
+237    }
+238    // Terminate header
+239    fwrite("C", 1, 1, outfile);
+240 
+241    // Write out code
+242    for (i = 0; i < mcaindex; i++)
+243    {
+244       fwrite(mca + i, 2, 1, outfile);
+245    }
+246    fclose(outfile);
+247 }

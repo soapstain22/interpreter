@@ -1,0 +1,35 @@
+  1 ; ex0702.a  Pointers to local variables
+  2 startup:  bl main
+  3           halt
+  4 ;==============================================================
+  5                            ; #include <stdio.h>
+  6 main:     push lr          ; int main()
+  7           push fp          ; {
+  8           mov fp, sp
+  9 
+ 10           sub sp, sp, 1    ;    int *p, x = 7;
+ 11           mov r0, 7
+ 12           push r0
+ 13 
+ 14           add r0, fp, -2   ;    p = &x;
+ 15           str r0, fp, -1
+ 16 
+ 17           ldr r0, fp, -1   ;    printf("%d\n", *p);
+ 18           ldr r0, r0, 0
+ 19           dout r0
+ 20           nl
+ 21 
+ 22           mov r0, 8        ;    *p = 8;
+ 23           ldr r1, fp, -1
+ 24           str r0, r1, 0
+ 25 
+ 26           ldr r0, fp, -2   ;    printf("%d\n", x);
+ 27           dout r0
+ 28           nl
+ 29 
+ 30           mov r0, 0        ;    return 0;
+ 31           mov sp, fp
+ 32           pop fp
+ 33           pop lr
+ 34           ret
+ 35                            ; }

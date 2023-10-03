@@ -1,0 +1,8 @@
+  1 // z1.c
+  2 void f(void);
+  3 int x = 5;
+  4 int main()
+  5 {
+  6    f();
+  7    return 0;
+  8 }

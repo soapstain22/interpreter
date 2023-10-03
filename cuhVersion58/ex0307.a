@@ -1,0 +1,5 @@
+; ex0307.a
+          ld r0,y  ; translated to 0010 000 000000011
+          halt     ; translated to 1111 0000 00100101
+x:        .word 7  ; translated to 0000000000000111 (7 decimal)
+y:        .word x  ; translated to 0000000000000010 (address of x)

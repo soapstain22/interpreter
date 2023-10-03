@@ -1,0 +1,5 @@
+  1           .extern main
+  2           .start startupx
+  3           halt
+  4 startupx: bl main
+  5           halt

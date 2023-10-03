@@ -1,0 +1,17 @@
+  1 // c0513.c
+  2 #include <stdio.h>
+  3 int x, y = 5;
+  4 void f(int x)
+  5 {
+  6    int y;
+  7    y = x + 3;
+  8    printf("%d %d\n", x, y);
+  9 }
+ 10 int main()
+ 11 {
+ 12    printf("%d %d\nEnter number: ", x, y);
+ 13    scanf("%d", &y);
+ 14    f(y);
+ 15    printf("%d %d\n", x, y);
+ 16    return 0;
+ 17 }        

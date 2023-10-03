@@ -1,0 +1,22 @@
+  1 // c0505.c
+  2 #include <stdio.h>
+  3 void f()
+  4 {
+  5    static int x = 3;
+  6    printf("%d\n", x);
+  7    x = x+ 1;
+  8 }
+  9 void g()
+ 10 {
+ 11    static int x = 5;
+ 12    printf("%d\n", x);
+ 13    x = x+ 1;
+ 14 }
+ 15 int main()
+ 16 {
+ 17    f();
+ 18    f();
+ 19    g();
+ 20    g();
+ 21    return 0;
+ 22 }

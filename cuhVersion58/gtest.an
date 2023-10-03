@@ -1,0 +1,8 @@
+  1           ; test program for g.sm microcode        gtest.a
+  2           ldi 7
+  3           dout
+  4           nl
+  5           ldi -7
+  6           dout
+  7           nl
+  8           halt

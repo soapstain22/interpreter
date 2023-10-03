@@ -1,0 +1,59 @@
+  1 // cpp1504.cpp
+  2 #include <iostream>
+  3 using namespace std;
+  4 struct Node
+  5 {
+  6    int data;
+  7    Node *link;
+  8 };
+  9 class List
+ 10 {
+ 11    public:
+ 12       void addnode(int x);
+ 13       void traverse1();
+ 14       void traverse2();
+ 15    private:
+ 16       void rectraverse(Node *p);
+ 17       Node *first = NULL;
+ 18 };
+ 19 void List::addnode(int x)
+ 20 {
+ 21    Node *p;
+ 22    p = new Node;
+ 23    p->data = x;
+ 24    p->link = first;
+ 25    first = p;
+ 26 }
+ 27 void List::traverse1()
+ 28 {
+ 29    Node *p;
+ 30    p = first;
+ 31    while (p)
+ 32    {
+ 33       cout << p->data << endl;
+ 34       p = p->link;
+ 35    }
+ 36 }
+ 37 void List::traverse2()
+ 38 {
+ 39    rectraverse(first);
+ 40 }
+ 41 void List::rectraverse(Node *p)
+ 42 {
+ 43    if (p)
+ 44    {
+ 45       rectraverse(p->link);
+ 46       cout << p->data << endl;
+ 47    }
+ 48 }
+ 49 int main()
+ 50 {
+ 51    List z;
+ 52    z.addnode(1);
+ 53    z.addnode(2);
+ 54    z.addnode(3);
+ 55    z.traverse1();
+ 56    z.traverse2();
+ 57    return 0;
+ 58 }
+ 59 

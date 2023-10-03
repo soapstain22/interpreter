@@ -1,0 +1,107 @@
+  1 ; ex1504.a  Dynamic objects in C++
+  2 startup:  bl main
+  3           halt
+  4 ;==============================================================
+  5                            ; #include <iostream>
+  6                            ; using namespace std;
+  7                            ; class A
+  8                            ; {
+  9                            ;    public:
+ 10                            ;       void set(int n, int m);
+ 11                            ;       void display();
+ 12                            ;    private:
+ 13                            ;       int x;
+ 14                            ;       int y;
+ 15                            ; };
+ 16 
+ 17 @A@set$ii:push lr          ; A::set(int n, int m)
+ 18           push fp          ; {                   
+ 19           mov fp, sp
+ 20                            
+ 21           ldr r0, fp, 3    ;    x = n;
+ 22           ldr r1, fp  2
+ 23           str r0, r1, 0
+ 24                            
+ 25           ldr r0, fp, 4    ;    y = m;
+ 26           ldr r1, fp  2
+ 27           str r0, r1, 1
+ 28                            
+ 29           mov sp, fp       ; }
+ 30           pop fp
+ 31           pop lr
+ 32           ret
+ 33 
+ 34 @A@display$v:              ; void A::display()
+ 35           push lr          ; {
+ 36           push fp
+ 37           mov fp, sp
+ 38                            
+ 39           ldr r0, fp, 2    ;    cout << x << endl;
+ 40           ldr r0, r0, 0
+ 41           dout r0
+ 42           nl
+ 43                            
+ 44           ldr r0, fp, 2    ;    cout << y << endl;
+ 45           ldr r0, r0, 1
+ 46           dout r0
+ 47           nl
+ 48                            
+ 49           mov sp, fp       ; }
+ 50           pop fp
+ 51           pop lr
+ 52           ret
+ 53 ;==============================================================
+ 54 main:     push lr           ; int main()
+ 55           push fp           ; {         
+ 56           mov fp, sp
+ 57                             
+ 58           sub sp, sp, 1     ;    A *p, *q;
+ 59           sub sp, sp, 1
+ 60                             
+ 61           mov r1, 2          ;    p = new A;
+ 62           bl malloc
+ 63           str r0, fp, -1
+ 64 
+ 65           mov r1, 2          ;    q = new A;
+ 66           bl malloc
+ 67           str r0, fp, -2
+ 68 
+ 69           mov r0, 6         ;    p->set(5, 6);
+ 70           push r0
+ 71           mov r0, 5
+ 72           push r0
+ 73           ldr r0, fp, -1
+ 74           push r0
+ 75           bl @A@set$ii
+ 76           add sp, sp, 3
+ 77                             
+ 78           ldr r0, fp, -1    ;    p->display();
+ 79           push r0
+ 80           bl @A@display$v
+ 81           add sp, sp, 1
+ 82                             
+ 83           mov r0, 11        ;    q->set(10, 11);
+ 84           push r0
+ 85           mov r0, 10
+ 86           push r0
+ 87           ldr r0, fp, -2
+ 88           push r0
+ 89           bl @A@set$ii
+ 90           add sp, sp, 3
+ 91                             
+ 92           ldr r0, fp, -2    ;    q->display();
+ 93           push r0
+ 94           bl @A@display$v
+ 95           add sp, sp, 1
+ 96                             
+ 97           mov r0, 0         ;    return 0;
+ 98           mov sp, fp
+ 99           pop fp
+100           pop lr
+101           ret
+102                             ; }
+103 malloc:   ld r0, @avail
+104           add r1, r0, r1
+105           st r1, @avail
+106           ret
+107 @avail:   .word @avail + 1

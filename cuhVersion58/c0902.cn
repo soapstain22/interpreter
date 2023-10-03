@@ -1,0 +1,22 @@
+  1 // c0902.c
+  2 #include <stdio.h>
+  3 #include <stdlib.h>
+  4 struct A 
+  5 {
+  6    int x;
+  7    char c;
+  8 };
+  9 struct A *p;
+ 10 void f()
+ 11 {
+ 12    p = (struct A *)malloc(sizeof(struct A));
+ 13    p->x = 1;
+ 14    p->c = 'A';
+ 15 }
+ 16 int main()
+ 17 {
+ 18    f();
+ 19    printf("%d\n", p->x);
+ 20    printf("%c\n", p->c);
+ 21    return 0;
+ 22 }

@@ -1,0 +1,17 @@
+  1          .global i
+  2          .global j
+  3          .global main
+  4          .extern sub
+  5 main:    push lr
+  6          push fp
+  7          mov fp, sp
+  8 
+  9          bl sub+1
+ 10 
+ 11          mov sp, fp
+ 12          pop fp
+ 13          pop lr
+ 14          ret
+ 15 i:       .word 5     ; word equivalent to .fill
+ 16 j:       .word 7
+ 17 c:       .word 999

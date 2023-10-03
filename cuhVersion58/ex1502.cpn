@@ -1,0 +1,33 @@
+  1 // ex1502.cpp  Objects in C++
+  2 #include <iostream>
+  3 using namespace std;
+  4 class A
+  5 {
+  6    public:
+  7       void set(int n, int m);
+  8       void display();
+  9    private:   
+ 10       int x;
+ 11       int y;
+ 12 };
+ 13 void A::set(int n, int m)
+ 14 {
+ 15    x = n;
+ 16    y = m;
+ 17 }
+ 18 void A::display()
+ 19 {
+ 20    cout << x << endl;
+ 21    cout << y << endl;
+ 22 }
+ 23 //===================
+ 24 int main()
+ 25 {
+ 26    A a, b;
+ 27    a.set(5, 6);
+ 28    a.display();
+ 29    b.set(10, 11);
+ 30    b.display();
+ 31 // b.x = 20;          illegal because x is private
+ 32    return 0;
+ 33 }

@@ -1,0 +1,32 @@
+  1 // ex1503.cpp  Creating structs with malloc
+  2 #include <iostream>
+  3 using namespace std;
+  4 struct A
+  5 {
+  6    int x;
+  7    int y;
+  8 };
+  9 //======================
+ 10 void set(A *r, int n, int m)
+ 11 {
+ 12    r->x = n;
+ 13    r->y = m;
+ 14 }
+ 15 //======================
+ 16 void display(A *r)
+ 17 {
+ 18    cout << r->x << endl;
+ 19    cout << r->y << endl;
+ 20 }
+ 21 //======================
+ 22 int main()
+ 23 {
+ 24    A *p, *q;
+ 25    p = (A *)malloc(sizeof(A));
+ 26    set(p, 5, 6);
+ 27    display(p);
+ 28    q = (A *)malloc(sizeof(A));
+ 29    set(q, 10, 11);
+ 30    display(q);
+ 31    return 0;
+ 32 }

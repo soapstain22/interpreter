@@ -1,0 +1,12 @@
+  1 // ex0402.c  Returning a value
+  2 #include <stdio.h>
+  3 int f()
+  4 {
+  5    return 5;
+  6 }
+  7 //==================================
+  8 int main()
+  9 {
+ 10    printf("%d\n", f());
+ 11    return 0;
+ 12 } 

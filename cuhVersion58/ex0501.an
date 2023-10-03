@@ -1,0 +1,26 @@
+  1 ; ex0501.a  Global variables
+  2 
+  3 startup:  bl main      
+  4           halt             ; back to operating system
+  5 ;===========================================================
+  6                            ; #include <stdio.h>
+  7 x:        .word 2          ; int x = 2, y;
+  8 y:        .word 0          
+  9 
+ 10 main:     push lr          ; int main()
+ 11           push fp          ; {
+ 12           mov fp, sp
+ 13 
+ 14           ld r0, x         ;    y = x;
+ 15           st r0, y
+ 16 
+ 17           ld r0, y         ;    printf("%d\n", y);
+ 18           dout r0
+ 19           nl
+ 20 
+ 21           mov r0, 0        ;    return 0;
+ 22           mov sp, fp
+ 23           pop fp
+ 24           pop lr
+ 25           ret
+ 26                            ; }
