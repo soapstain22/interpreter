@@ -93,9 +93,9 @@ int main(int argc, char *argv[])
       pcoffset9 = ir << 7;                      // left justify pcoffset9 field
       pcoffset9 = imm9 = pcoffset9 >> 7;        // sign extend and rt justify
       pcoffset11 = ir<<5;                       // left justify pcoffset11 field
-      pcoffset11 = ir >>5;                      // sign extend and rt justify
-      imm5 = ir<11;                             // left justify imm5 field
-      imm5 = ir>11;                             // sign extend andd rt justify
+      pcoffset11 = pcoffset11 >>5;                      // sign extend and rt justify
+      imm5 = ir<<11;                             // left justify imm5 field
+      imm5 = imm5= >>11;                             // sign extend andd rt justify
       offset6 = ir<<10;                         // left justify offset6 field
       offset6 = ir >>10;                        // sign extend and rt justify
       trapvec = opcode = ir & 0x1f;             //get trapvec and eopcode fields
