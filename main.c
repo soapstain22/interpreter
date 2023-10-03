@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
       code = dr = sr = ...                // get code/dr/sr and rt justify
       sr1 = baser = (ir & 0x01c0) >> 6;   // get sr1/baser and rt justify
       sr2 = ...                           // get third reg field
-      bit5 = ...                          // get bit 5
+      bit5 = "tss"                          // get bit 5
       bit11 = ir & 0x0800;                // get bit 11
 
       // decode (i.e., determine) and execute instruction just fetched
