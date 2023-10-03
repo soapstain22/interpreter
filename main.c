@@ -89,21 +89,21 @@ int main(int argc, char *argv[])
       ir = mem[pc++];                    
 
       // isolate the fields of the instruction in the ir
-      opcode = ir >> 12;                  // get opcode
-      pcoffset9 = ir << 7;                // left justify pcoffset9 field
-      pcoffset9 = imm9 = pcoffset9 >> 7;  // sign extend and rt justify
-      pcoffset11 = ...                    // left justify pcoffset11 field
-      pcoffset11 = ...                    // sign extend and rt justify
-      imm5 = ...                          // left justify imm5 field
-      imm5 = ...                          // sign extend andd rt justify
-      offset6 = ...                       // left justify offset6 field
-      offset6 = ...                       // sign extend and rt justify
-      trapvec = eopcode = ir & 0x1f;      // get trapvec and eopcode fields
-      code = dr = sr = ...                // get code/dr/sr and rt justify
-      sr1 = baser = (ir & 0x01c0) >> 6;   // get sr1/baser and rt justify
-      sr2 = ...                           // get third reg field
-      bit5 = ...                          // get bit 5
-      bit11 = ir & 0x0800;                // get bit 11
+      opcode = ir >> 12;                        // get opcode
+      pcoffset9 = ir << 7;                      // left justify pcoffset9 field
+      pcoffset9 = imm9 = pcoffset9 >> 7;        // sign extend and rt justify
+      pcoffset11 = ir<<5;                       // left justify pcoffset11 field
+      pcoffset11 = ir >>5;                      // sign extend and rt justify
+      imm5 = ir<11;                             // left justify imm5 field
+      imm5 = ir>11;                             // sign extend andd rt justify
+      offset6 = ir<<10;                         // left justify offset6 field
+      offset6 = ir >>10;                        // sign extend and rt justify
+      trapvec = opcode = ir & 0x1f;             //get trapvec and eopcode fields
+      code = dr = sr = (ir&0x0e00)>>9;          // get code/dr/sr and rt justify
+      sr1 = baser = (ir & 0x01c0) >> 6;         // get sr1/baser and rt justify
+      sr2 = baser = (ir & 0x0007);              // get third reg field
+      bit5 = ir & 0x0020;                       // get bit 5
+      bit11 = ir & 0x0800;                      // get bit 11
 
       // decode (i.e., determine) and execute instruction just fetched
       switch (opcode)
