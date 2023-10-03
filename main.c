@@ -1,5 +1,5 @@
 // i1shell.c
-//Your name here as a comment
+//Henry
 #include <stdio.h>    // for I/O functions
 #include <stdlib.h>   // for exit()
 #include <time.h>     // for time functions
@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
       pcoffset11 = ir<<5;                       // left justify pcoffset11 field
       pcoffset11 = pcoffset11 >>5;                      // sign extend and rt justify
       imm5 = ir<<11;                             // left justify imm5 field
-      imm5 = imm5= >>11;                             // sign extend andd rt justify
+      imm5 = imm5 >> 11;                             // sign extend andd rt justify
       offset6 = ir<<10;                         // left justify offset6 field
       offset6 = ir >>10;                        // sign extend and rt justify
       trapvec = opcode = ir & 0x1f;             //get trapvec and eopcode fields
@@ -117,10 +117,17 @@ int main(int argc, char *argv[])
                case 1: if (z == 0)             // brnz
                           pc = pc + pcoffset9;
                        break;
-
-               // code missing here
-
-               case 7: pc = pc + pcoffset9;    // br
+                case 2: if (z <0)               //brn
+                        pc= pc + pcoffset9;
+                case 3: if (z >0)               //brp
+                        pc= pc + pcoffset9;
+                case 4: if (n != v)              //brlt if n =1 and v is = 0 then its less than 
+                        pc= pc + pcoffset9;
+                case 5: if (n == v && z=0)                   //brgt
+                        pc = pc + pcoffset9;
+                case 6: if(c=1)
+                        pc = pc + pcoffset9;
+               case 7: pc = pc + pcoffset9;    // br or bral
                        break;
             }                                                   
             break;
@@ -142,10 +149,38 @@ int main(int argc, char *argv[])
             // set n, z flags
             setnz(r[dr]);
             break;
-         case 2:                          // ld
-        
-         // code missing here
+         case 2: 
+            dr = mem[pc+pcoffset9];                      // ld
+            break;
+         case 3:                                    //st
+            mem[pc+pcoffset9] =sr;
+            break;
+         case 4:                                    //bl
+            r[7] = pc; pc = pc + pcoffset11;
+            break;
+         case 5:                                    //AND
+            if (bit5)
+            {
+               regsave1 = r[sr1];
+               r[dr] = regsave1 & imm5;
+            }
+            else
+            {
+               regsave1 = r[sr1]; regsave2 = r[sr2];
+               r[dr] = regsave1 & regsave2;
+            }
+            setnz(r[dr]);
+            break;
 
+         case 6:                                //ldr
+            dr = mem[baser+offset6];
+            break;
+         case 7:                                   //str
+            mem[baser+offset6] =sr;
+            break;
+         case 8:                                    //blr
+            r[7] = pc; pc = baser + offset6;
+            break;
          case 9:                          // not
             // ~ is the not operator in C
             r[dr] = ~r[sr1];
