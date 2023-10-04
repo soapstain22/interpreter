@@ -1,5 +1,5 @@
 // i1shell.c
-//Henry
+//Your name here as a comment
 #include <stdio.h>    // for I/O functions
 #include <stdlib.h>   // for exit()
 #include <time.h>     // for time functions
@@ -7,8 +7,8 @@
 FILE *infile;
 short r[8], mem[65536], offset6, imm5, imm9, pcoffset9, pcoffset11, 
       regsave1, regsave2;
-unsigned short ir, pc, opcode, code, dr, sr, sr1, sr2, baser, bit5, bit11,
-               trapvec, n, z, c, v;
+unsigned short ir, pc, opcode, eopcode, code, dr, sr, sr1, sr2, baser, bit5, bit11,
+               trapvec, n, z, c, v; // ADDED EOPCODE HERE (why wasn't it here??)
 char letter;
 
 void setnz(short r)
@@ -89,21 +89,21 @@ int main(int argc, char *argv[])
       ir = mem[pc++];                    
 
       // isolate the fields of the instruction in the ir
-      opcode = ir >> 12;                        // get opcode
-      pcoffset9 = ir << 7;                      // left justify pcoffset9 field
-      pcoffset9 = imm9 = pcoffset9 >> 7;        // sign extend and rt justify
-      pcoffset11 = ir<<5;                       // left justify pcoffset11 field
-      pcoffset11 = pcoffset11 >>5;                      // sign extend and rt justify
-      imm5 = ir<<11;                             // left justify imm5 field
-      imm5 = imm5 >> 11;                             // sign extend andd rt justify
-      offset6 = ir<<10;                         // left justify offset6 field
-      offset6 = ir >>10;                        // sign extend and rt justify
-      trapvec = opcode = ir & 0x1f;             //get trapvec and eopcode fields
-      code = dr = sr = (ir&0x0e00)>>9;          // get code/dr/sr and rt justify
-      sr1 = baser = (ir & 0x01c0) >> 6;         // get sr1/baser and rt justify
-      sr2 = baser = (ir & 0x0007);              // get third reg field
-      bit5 = ir & 0x0020;                       // get bit 5
-      bit11 = ir & 0x0800;                      // get bit 11
+      opcode = ir >> 12;                  // get opcode
+      pcoffset9 = ir << 7;                // left justify pcoffset9 field
+      pcoffset9 = imm9 = pcoffset9 >> 7;  // sign extend and rt justify
+      pcoffset11 = ir << 5;               // left justify pcoffset11 field (CHANGED)
+      pcoffset11 = ir >> 5;               // sign extend and rt justify (CHANGED)
+      imm5 = ir << 11;                    // left justify imm5 field (CHANGED)
+      imm5 = ir >> 11;                    // sign extend andd rt justify (CHANGED)
+      offset6 = ir << 10;                 // left justify offset6 field (CHANGED)
+      offset6 = ir >> 10;                 // sign extend and rt justify (CHANGED)
+      trapvec = eopcode = ir & 0x1f;      // get trapvec and eopcode fields
+      code = dr = sr = (ir & 0xe00) >> 9; // get code/dr/sr and rt justify (CHANGED)
+      sr1 = baser = (ir & 0x01c0) >> 6;   // get sr1/baser and rt justify
+      sr2 = ir & 0x7;                     // get third reg field (CHANGED)
+      bit5 = "tss";                        // get bit 5
+      bit11 = ir & 0x0800;                // get bit 11
 
       // decode (i.e., determine) and execute instruction just fetched
       switch (opcode)
@@ -117,17 +117,20 @@ int main(int argc, char *argv[])
                case 1: if (z == 0)             // brnz
                           pc = pc + pcoffset9;
                        break;
-                case 2: if (z <0)               //brn
-                        pc= pc + pcoffset9;
-                case 3: if (z >0)               //brp
-                        pc= pc + pcoffset9;
-                case 4: if (n != v)              //brlt if n =1 and v is = 0 then its less than 
-                        pc= pc + pcoffset9;
-                case 5: if (n == v && z=0)                   //brgt
-                        pc = pc + pcoffset9;
-                case 6: if(c=1)
-                        pc = pc + pcoffset9;
-               case 7: pc = pc + pcoffset9;    // br or bral
+
+               // code missing here
+
+               // (NEW)
+               case 2: if (n == 1)             // brn
+                          pc = pc + pcoffset9;
+                       break;
+               
+               // (NEW)
+               case 3: if (n == z)              // brp
+                          pc = pc + pcoffset9;
+                       break;
+
+               case 7: pc = pc + pcoffset9;    // br
                        break;
             }                                                   
             break;
@@ -149,38 +152,16 @@ int main(int argc, char *argv[])
             // set n, z flags
             setnz(r[dr]);
             break;
-         case 2: 
-            dr = mem[pc+pcoffset9];                      // ld
-            break;
-         case 3:                                    //st
-            mem[pc+pcoffset9] =sr;
-            break;
-         case 4:                                    //bl
-            r[7] = pc; pc = pc + pcoffset11;
-            break;
-         case 5:                                    //AND
-            if (bit5)
-            {
-               regsave1 = r[sr1];
-               r[dr] = regsave1 & imm5;
-            }
-            else
-            {
-               regsave1 = r[sr1]; regsave2 = r[sr2];
-               r[dr] = regsave1 & regsave2;
-            }
-            setnz(r[dr]);
+         case 2:                          // ld
+        
+            // (CHANGED)
+            dr = mem[pc + pcoffset9];
             break;
 
-         case 6:                                //ldr
-            dr = mem[baser+offset6];
+         case 3:                          // st (NEW)
+            mem[pc + pcoffset9] = sr;
             break;
-         case 7:                                   //str
-            mem[baser+offset6] =sr;
-            break;
-         case 8:                                    //blr
-            r[7] = pc; pc = baser + offset6;
-            break;
+
          case 9:                          // not
             // ~ is the not operator in C
             r[dr] = ~r[sr1];
@@ -200,14 +181,21 @@ int main(int argc, char *argv[])
             r[dr] = pc + pcoffset9;
             break;
          case 15:                         // trap
-            if (trapvec == 0x00)             // halt
+            if (trapvec == 0x00) // halt
+            {
                exit(0);
-            else
-            if (trapvec == 0x01)             // nl
-               // code missing here
-            else
-            if (trapvec == 0x02)             // dout
-               // code missing here                
+            }             
+            else if (trapvec == 0x01)     // nl
+            {
+               // CHANGED
+               printf("\n");
+            }
+            else if (trapvec == 0x02)     // dout
+            {
+               // (CHANGED)
+               printf("%d", sr);
+            }
+
             break;
       }     // end of switch
    }        // end of while
