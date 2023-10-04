@@ -120,6 +120,16 @@ int main(int argc, char *argv[])
 
                // code missing here
 
+               // (NEW)
+               case 2: if (n == 1)             // brn
+                          pc = pc + pcoffset9;
+                       break;
+               
+               // (NEW)
+               case 3: if (n == z)              // brp
+                          pc = pc + pcoffset9;
+                       break;
+
                case 7: pc = pc + pcoffset9;    // br
                        break;
             }                                                   
