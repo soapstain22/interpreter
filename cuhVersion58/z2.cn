@@ -1,0 +1,15 @@
+  1 // z2.c
+  2 #include <stdio.h>
+  3 extern int x;
+  4 int y = 7;
+  5 void g(void)   
+  6 {
+  7    printf("%d\n", y);
+  8 }
+  9 //===================
+ 10 void f(void)
+ 11 {
+ 12    printf("%d\n", x);
+ 13    g();
+ 14 
+ 15 }

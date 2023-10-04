@@ -1,0 +1,42 @@
+  1 ; ex1402.a  C++ reference variables
+  2 startup:  bl main
+  3           halt 
+  4 ;==============================================================
+  5                            ; #include <iostream>
+  6                            ; using namespace std;
+  7 x:        .word 5          ; int x = 5;
+  8 xr:       .word x          ; int &xr = x;
+  9 
+ 10 main:     push lr          ; int main()
+ 11           push fp          ; {
+ 12           mov fp, sp
+ 13 
+ 14           mov r0, 7        ;    int y = 7;
+ 15           push r0
+ 16           add r0, fp, -1   ;    int &yr = y;
+ 17           push r0
+ 18 
+ 19           ld r0, x         ;    cout << x << endl;
+ 20           dout
+ 21           nl
+ 22 
+ 23           ld r0, xr        ;    cout << xr << endl;
+ 24           ldr r0, r0, 0
+ 25           dout r0
+ 26           nl
+ 27 
+ 28           ldr r0, fp, -1   ;    cout << y << endl;
+ 29           dout r0
+ 30           nl
+ 31 
+ 32           ldr r0, fp, -2   ;    cout << yr << endl;
+ 33           ldr r0, r0, 0
+ 34           dout r0
+ 35           nl
+ 36 
+ 37           mov r0, 0        ;    return 0;
+ 38           mov sp, fp
+ 39           pop fp
+ 40           pop lr
+ 41           ret
+ 42                            ; }

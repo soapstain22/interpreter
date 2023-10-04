@@ -1,0 +1,14 @@
+  1 // c0803.c
+  2 #include <stdio.h>
+  3 int a, b;
+  4 void f(int x, int *p)
+  5 {
+  6    x = 44;
+  7    *p = 55;
+  8 }
+  9 int main()
+ 10 {
+ 11    f(a, &b);
+ 12    printf("%d %d\n", a, b);
+ 13    return 0;
+ 14 }

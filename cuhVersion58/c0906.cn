@@ -1,0 +1,35 @@
+  1 // c0906.c
+  2 #include <stdio.h>
+  3 #include <stdlib.h>
+  4 struct Node 
+  5 {
+  6    int x;
+  7    struct Node *next;
+  8 };
+  9 void traverse(struct Node *p)
+ 10 {
+ 11    while (p)
+ 12    {
+ 13       printf("%d\n", p->x);
+ 14       p = p->next;
+ 15    }
+ 16 }
+ 17 int main()
+ 18 {
+ 19    int n;
+ 20    struct Node *head = NULL, *p;  // NULL represents the constant 0
+ 21    
+ 22    while (1)
+ 23    {
+ 24       printf("Enter: "); // Enter the numbers 1, 2, 3, 4, 5, -1
+ 25       scanf("%d", &n);
+ 26       if (n < 0)
+ 27          break;
+ 28       p = (struct Node *)malloc(sizeof(struct Node));
+ 29       p->x = n;
+ 30       p->next = head;
+ 31       head = p;
+ 32    }
+ 33    traverse(head);
+ 34    return 0;
+ 35 }

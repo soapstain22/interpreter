@@ -1,0 +1,27 @@
+  1 // c0507.c
+  2 #include <stdio.h> 
+  3 void f()
+  4 {
+  5    static int x = 2;
+  6    int y = 3, z = 5;
+  7    printf("%d %d %d\n", x, y, z);
+  8    x = 1;
+  9    y = 2;
+ 10    z = 3; 
+ 11 }
+ 12 void g() 
+ 13 {
+ 14    static int x = 44;
+ 15    int y = 50;
+ 16    printf("%d %d\n", x, y);
+ 17    y = 22;
+ 18    x = y;
+ 19 }
+ 20 int main()
+ 21 {
+ 22   f();
+ 23   f();
+ 24   g();
+ 25   g();
+ 26   return 0;
+ 27 }

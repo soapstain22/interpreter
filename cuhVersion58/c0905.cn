@@ -1,0 +1,19 @@
+  1 // c0905.c
+  2 #include <stdio.h>
+  3 struct S 
+  4 {
+  5    int x, y, z;
+  6 };
+  7 struct S b;
+  8 struct S f()
+  9 {
+ 10    struct S a;
+ 11    a.x = a.y = a.z = 5;
+ 12    return a;   // return via the stack
+ 13 }
+ 14 int main()
+ 15 {
+ 16    b = f();   // allocate space on stack to hold return value
+ 17    printf("%d %d\n", b.x, b.y);
+ 18    return 0;
+ 19 }

@@ -1,0 +1,119 @@
+  1 // pshell.c
+  2    Your name here as a comment
+  3 #include <stdio.h>    // for I/O functions
+  4 #include <stdlib.h>   // for exit()
+  5 #include <time.h>     // for time functions
+  6 
+  7 int main(int argc,char *argv[])
+  8 {
+  9    FILE *infile;
+ 10    unsigned short addr, codeword;
+ 11    char c;
+ 12    int i;
+ 13    time_t timer;
+ 14 
+ 15    if (argc != 2)
+ 16    {
+ 17          printf("Wrong number of command line arguments\n");
+ 18          printf("Usage: p <input filename>\n");
+ 19          exit(1);
+ 20    }
+ 21 
+ 22    // display your name, command line args, time
+ 23    time(&timer);      // get time
+ 24    printf("YOUR NAME HERE   %s %s   %s", 
+ 25            argv[0], argv[1], asctime(localtime(&timer)));
+ 26 
+ 27    infile = fopen(argv[1], "r");
+ 28    if (!infile)
+ 29    {
+ 30       printf("Cannot open input file %s\n", argv[1]);
+ 31       exit(1);
+ 32    }
+ 33 
+ 34    // process header entries
+ 35    printf("\nHeader:\n");
+ 36    c = fgetc(infile);
+ 37    if (c == 'o')      // check for lcc file signature
+ 38       printf("    o\n");
+ 39    else
+ 40    {
+ 41       printf("%s not a lcc file\n", argv[1]);
+ 42       exit(1);
+ 43    }
+ 44    while (1)
+ 45    {
+ 46       c = fgetc(infile);
+ 47       if (c == 'C')
+ 48       {
+ 49          printf("    C\n");
+ 50          break;
+ 51       }
+ 52       if (c == 'S')
+ 53       {
+ 54          if (fread(&addr, 2, 1, infile) != 1)
+ 55          {
+ 56             printf("Invalid S entry\n");
+ 57             exit(1);
+ 58          }
+ 59          printf("    S  %04hx\n", addr); // %hx conversion code for short
+ 60       }
+ 61       else
+ 62       if (c == 'G')
+ 63       {
+ 64          if (fread(&addr, 2, 1, infile) != 1)
+ 65          {
+ 66             printf("Invalid G entry\n");
+ 67             exit(1);
+ 68          }
+ 69          printf("    G  %04hx ", addr);
+ 70          while (1)  // read and display string in G entry char by char
+ 71          {
+ 72             c = fgetc(infile);
+ 73             if (c == '\0')
+ 74                break;
+ 75             printf("%c", c);  // displays characters as read in
+ 76          }
+ 77          printf("\n");
+ 78       }
+ 79       else
+ 80       if (c == 'E')
+ 81       {
+ 82          // code missing here
+ 83       }
+ 84       else
+ 85       if (c == 'e')
+ 86       {
+ 87          // code missing here
+ 88       }
+ 89       else
+ 90       if (c == 'V')
+ 91       {
+ 92          // code missing here
+ 93       }
+ 94       else
+ 95       if (c == 'A')
+ 96       {
+ 97          // code missing here
+ 98       }
+ 99       else
+100       {
+101          printf("Invalid header entry in %s\n", argv[1]);
+102          exit(1);
+103       }
+104    }
+105 
+106    // process machine code
+107    i = 0;
+108    printf("\nCode:\n");
+109 
+110    while (fread(&codeword, 2, 1, infile))
+111    {
+112       // Code missing here:
+113       // Display word in codeword, 8 words per line, 1 space separating
+114       // each code word, with each line starting with the hex address of
+115       // the first word on that line as shown in the textbook. 
+116       //  Use i to determine when to output hex address and newline.
+117       i++;
+118    }
+119 }

@@ -1,0 +1,15 @@
+  1 // c0707.c
+  2 #include <stdio.h>
+  3 int x = 3;
+  4 int *f(int x)
+  5 {
+  6    int *p;
+  7    p = &x;
+  8    return p;
+  9 }   
+ 10 int main()
+ 11 {
+ 12    
+ 13    printf("%d\n", *f(7));
+ 14    return 0;
+ 15 }

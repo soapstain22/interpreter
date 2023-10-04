@@ -1,0 +1,14 @@
+  1 // c0814.c
+  2 #include <stdio.h>
+  3 void f(int $x, int y)
+  4 {
+  5    y++;
+  6    x = y;
+  7 }
+  8 int main()
+  9 {
+ 10    int a = 5, b = 10;
+ 11    f(a, b);
+ 12    printf("a = %d b = %d\n", a, b);
+ 13    return 0;
+ 14 }

@@ -1,0 +1,21 @@
+          ; Hex version of the ttest.a program              ttest.hex
+          ; To convert to binary and output to ttest.e, enter
+          ;      h2b ttest.hex t
+          ; Can then run ttest.e on sim with
+          ;      sim ttest.e
+          ;
+800d      ;      ld   a   load r0 from a
+f002      ;      dout     display r0 (displays 2)
+f001      ;      nl       move cursor to next line
+400e      ;      add  b   add word at b to r0
+f002      ;      dout     display r0 (displays 5)
+f001      ;      nl       move cursor to next line
+200d      ;      sub  a   subtract word at a from r0
+f002      ;      dout     display r0 (displays 3)
+f001      ;      nl       move cursor to next line
+1007      ;      ldi  7   load immediate value 7 into r0
+f002      ;      dout     display r0 (displays 7)
+f001      ;      nl       move cursor to next line
+f000      ;      halt     halt
+0002      ;      .word 2 
+0003      ;      .word 3 

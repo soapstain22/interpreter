@@ -1,0 +1,12 @@
+; ex0203.bin
+0010 000 000001000   ; load first number into r0
+1001 000 000 000000  ; flip the bits in r0 with a not instruction
+0010 001 000000111   ; load second number into r1
+1001 001 001 000000  ; flip the bits in r1 with a not instruction
+0101 000 000 000 001 ; AND r0 with r1 , and place result in r0
+1001 000 000 000000  ; flip the bits in r0 with a not instruction
+1111 000 0000 00100  ; display r0 in hex with a hout instruction
+1111 000 0000 00001  ; move cursor to the next line with nl instruction
+1111 000 0000 00000  ; halt
+1100101011001010     ; first number
+1010110010101100     ; second number

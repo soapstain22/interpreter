@@ -1,0 +1,12 @@
+  1           .global a
+  2           .global b
+  3           .extern sub
+  4           .extern x
+  5           .start s
+  6 s:        bl sub
+  7           ld  r0,x
+  8           dout r0
+  9           halt
+ 10 a:        .word b
+ 11 b:        .word 100
+ 12 c:        .word x

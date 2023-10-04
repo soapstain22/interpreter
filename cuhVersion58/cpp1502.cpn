@@ -1,0 +1,22 @@
+  1 // cpp1502.cpp ====================
+  2 #include <iostream>
+  3 using namespace std;
+  4 int a = 7;
+  5 class C 
+  6 {
+  7    public:
+  8       void f(int a);
+  9       int x;
+ 10 };
+ 11 void C::f(int a)
+ 12 {
+ 13    x = a;
+ 14 }
+ 15 int main()
+ 16 {
+ 17    C *p;
+ 18    p = new C;
+ 19    p->f(a);
+ 20    cout << p->x << endl;
+ 21    return 0;
+ 22 }

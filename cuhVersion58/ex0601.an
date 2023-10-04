@@ -1,0 +1,42 @@
+  1 ; ex0601.a  while statement in a non-recursive function
+  2 startup:  bl main
+  3           halt
+  4 ;==============================================================
+  5 nrf:      push lr          ; #include <stdio.h>
+  6           push fp          ; void nrf(int x)
+  7           mov fp, sp       ; {
+  8 
+  9 @L0:      ldr r0, fp, 2    ;    while (x != 0)
+ 10           cmp r0, 0        ;    {
+ 11           brz @L1
+ 12 
+ 13           ldr r0, fp, 2    ;       printf("%d\n", x);
+ 14           dout r0
+ 15           nl
+ 16 
+ 17           ldr r0, fp, 2    ;       x = x - 1;
+ 18           sub r0, r0, 1
+ 19           str r0 fp, 2
+ 20 
+ 21           br @L0           ;    }
+ 22 @L1:
+ 23           mov sp, fp       ; }
+ 24           pop fp
+ 25           pop lr
+ 26           ret
+ 27 ;==============================================================
+ 28 main:     push lr          ; int main()
+ 29           push fp          ; {
+ 30           mov fp, sp
+ 31 
+ 32           mov r0, 2        ;    nrf(2);
+ 33           push r0
+ 34           bl nrf
+ 35           add sp, sp, 1
+ 36 
+ 37           mov r0, 0        ;    return 0;
+ 38           mov sp, fp
+ 39           pop fp
+ 40           pop lr
+ 41           ret
+ 42                            ; }

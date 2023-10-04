@@ -1,0 +1,15 @@
+  1 ; ex0303.a
+  2         mov r1, 0        ; sum initially is 0
+  3         mov r2, 1        ; initialize r2 to first odd number
+  4         mov r3, 2        ; r3 used to get next odd number in series
+  5         mov r4, 10       ; 10 is number of odd numbers to sum
+  6 loop:   add r1, r1, r2   ; add odd number in r2 to r1
+  7         add r2, r2, r3   ; add 2 to r2 to get next odd number
+  8         sub r4, r4, 1    ; decrement count
+  9         brp loop         ; do loop again if count in r4 is positive
+ 10         lea r0,s         ; get address of string
+ 11         sout r0          ; display "Sum = "
+ 12         dout r1          ; display the sum
+ 13         nl               ; move cursor to the next line
+ 14         halt
+ 15 s:      .string "Sum = "

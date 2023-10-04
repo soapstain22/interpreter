@@ -1,0 +1,52 @@
+                                            call.txt
+
+Call Instruction Set                         
+--------------------
+Opcode      Format       Description
+
+ 8         call x     mem[--sp] = pc; pc = x;
+ 4         ret        pc = mem[sp++]
+ 2         ldi x      r0 = x
+
+x is the rightmost 12 bits in the instruction, which can range
+from 0 to 4095 (x is an unsigned number).
+
+Also included in the call instruction set are all the trap
+instructions (din, dout, nl, halt, etc.), all of which
+are handled by the sim program, not by microinstructions.
+ 
+
+
+Microcode
+---------
+
+c.sm is the symbolic microcode file you create for the 
+call instruction set. 
+
+
+Test Program ctest.a (no assembler is available)
+------------------------------------------------
+
+          ; test program for c.sm microcode        ctest.a
+          call sub1
+          dout
+          nl
+          call sub2
+          dout
+          nl
+          halt
+
+sub1:     ldi 5
+          ret
+sub2:     ldi 7
+          ret
+
+ctest.hex is the ctest.a program in hex form that you create.
+
+To run ctest.hex, enter
+
+   micro c.sm
+   h2b ctest.hex c
+   sim ctest.e
+
+Hand in c.lst, ctest.hex, and ctest.log

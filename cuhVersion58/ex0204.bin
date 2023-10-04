@@ -1,0 +1,8 @@
+; ex0204.bin
+1110 000 000000010   ; lea instruction, loads r0 with addr
+1111 000 0000 00110  ; sout displays str pointed to by r0
+1111 000 0000 00000  ; halt instruction
+00000000 01101000    ; 'h'
+00000000 01101001    ; 'i'
+00000000 00001010    ; '\n'
+0000000000000000     ; null character

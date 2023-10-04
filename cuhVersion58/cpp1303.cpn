@@ -1,0 +1,23 @@
+  1 // cpp1303.cpp
+  2 #include <iostream>
+  3 using namespace std;
+  4 void f(int x, unsigned y, short z)
+  5 {
+  6    x = 1;
+  7    y = 2;
+  8    z = 3;
+  9    cout << x << ' ' << y << ' ' << z << endl;
+ 10 }
+ 11 void f(int x, int y, int z)
+ 12 {
+ 13    x = 4;
+ 14    y = 5;
+ 15    z = 6;
+ 16    cout << x << ' ' <<  y << ' ' << z << endl;
+ 17 }
+ 18 int main()
+ 19 {
+ 20    f(10, -11, 12);
+ 21    f(10, 11, 12);
+ 22    return 0;
+ 23 }

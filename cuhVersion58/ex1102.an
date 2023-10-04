@@ -1,0 +1,39 @@
+  1 ; ex1102.a  Division (optimized)
+  2 startup:  bl main
+  3           halt
+  4 ;==============================================================
+  5 div:      ; r1 is x        ; int div(int x, unsigned int y)
+  6           ; r2 is y        ; {
+  7           ; r0 is quotient
+  8           mov r0, 0        ;    int quotient = 0;
+  9 
+ 10 @L0:                       ;    while (1)
+ 11                            ;    {
+ 12           sub r1, r1, r2   ;       x = x - y; 
+ 13 
+ 14           brn @L1          ;       if (x < 0)
+ 15                            ;          break;
+ 16           
+ 17           add r0, r0, 1    ;       quotient++;
+ 18                            
+ 19           br @L0           ;    }   
+ 20 
+ 21 @L1:      ret              ;    return quotient;
+ 22                            ; }
+ 23 ;==============================================================
+ 24 main:     push lr          ; int main()
+ 25           push fp          ; {
+ 26           mov fp, sp
+ 27                            
+ 28           mov r1, 77       ;    printf("%d\n", div(77, 7));
+ 29           mov r2, 7
+ 30           bl div
+ 31           dout r0
+ 32           nl
+ 33                             
+ 34           mov r0, 0        ;    return 0;
+ 35           mov sp, sp
+ 36           pop fp
+ 37           pop lr
+ 38           ret
+ 39                            ; }

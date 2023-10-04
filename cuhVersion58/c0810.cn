@@ -1,0 +1,13 @@
+  1 // c0810.c
+  2 #include <stdio.h>
+  3 void f(int #x, int #y)
+  4 {
+  5     x = x + y;
+  6 }
+  7 int main()
+  8 {
+  9    int x = 7;
+ 10    f(x, x+3);
+ 11    printf("%d\n", x);
+ 12    return 0;
+ 13 }

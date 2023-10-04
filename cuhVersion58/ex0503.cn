@@ -1,0 +1,20 @@
+  1 // ex0503.c
+  2 #include <stdio.h>
+  3 int x = 5;
+  4 void f()
+  5 {
+  6    static int x;
+  7    printf("%d\n", x);
+  8 }
+  9 void g()
+ 10 {
+ 11    printf("%d\n", x);
+ 12 }
+ 13 int main()
+ 14 {
+ 15    static int x = 3;
+ 16    printf("%d\n", x);
+ 17    f();
+ 18    g();
+ 19    return 0;
+ 20 }

@@ -1,0 +1,18 @@
+  1 // c0506.c
+  2 #include <stdio.h>
+  3 int a = 7;
+  4 int f(int x, int y)
+  5 {
+  6    int sum;
+  7    printf("%d\n", x);
+  8    printf("%d\n", y);
+  9    sum = x + y;
+ 10    return sum;
+ 11 }
+ 12 int main()
+ 13 {
+ 14    int ans;
+ 15    ans = f(a, 11);
+ 16    printf("ans = %d\n", ans);
+ 17    return 0;
+ 18 }

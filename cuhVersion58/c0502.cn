@@ -1,0 +1,9 @@
+  1 // c0502.c
+  2 #include <stdio.h>
+  3 int main()
+  4 {
+  5    int x = 1;
+  6    x = x + 1;
+  7    printf("%d\n", x);
+  8    return 0;
+  9 }

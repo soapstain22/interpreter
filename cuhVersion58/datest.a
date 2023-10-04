@@ -1,0 +1,12 @@
+          ; test program datest.a
+          .start s
+          .global x
+          .extern y
+          .global z
+x:        .word 5
+s:        ld r0, x
+          ld r1, y
+          add r0, r0, r1
+          halt
+w:        .word z
+z:        .word 7

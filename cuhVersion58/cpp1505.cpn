@@ -1,0 +1,201 @@
+  1 // cpp1505.cpp
+  2 #include <iostream>
+  3 using namespace std;
+  4 #include <stdlib.h>
+  5 struct Node 
+  6 {
+  7    int data;
+  8    Node *link;
+  9 };
+ 10 class Stack 
+ 11 {
+ 12 public:
+ 13    void init();
+ 14    void push(int x);     
+ 15    int  pop();           
+ 16    int  top();           
+ 17    int  empty();         
+ 18    void display();       
+ 19    int  length();        
+ 20    int  equal(Stack& s); 
+ 21    void copy(Stack& s);  
+ 22    void destroy();       
+ 23 private:
+ 24    Node *head;
+ 25    int  count;
+ 26 };
+ 27 void Stack::init() 
+ 28 {
+ 29    head = NULL;
+ 30    count = 0;
+ 31 }
+ 32 void Stack::push(int x) 
+ 33 {
+ 34    Node *p;
+ 35    p = new Node;
+ 36    if (p == NULL) 
+ 37    {
+ 38       cout << "ERROR: out of storage\n";
+ 39       exit(1);
+ 40    }
+ 41    p -> data = x;
+ 42    p -> link = head;
+ 43    head = p;
+ 44    count++;
+ 45 }
+ 46 //======================================================
+ 47 int Stack::pop() 
+ 48 {
+ 49    if (head == NULL) 
+ 50    {
+ 51       cout << "ERROR: cannot pop empty stack\n";
+ 52       exit(1);
+ 53    }
+ 54    Node *p;
+ 55    int x;
+ 56    p = head;
+ 57    head = head -> link;
+ 58    x = p -> data;
+ 59    delete p;
+ 60    count--;
+ 61    return x;
+ 62 }
+ 63 int Stack::top() 
+ 64 {
+ 65    if (head == NULL) 
+ 66    {
+ 67       cout << "ERROR: not top node on empty stack\n";
+ 68       exit(1);
+ 69    }
+ 70    return head -> data;
+ 71 }
+ 72 int Stack::empty() 
+ 73 {
+ 74    return head == NULL;
+ 75 }
+ 76 void Stack::display() 
+ 77 {
+ 78    Node *p = head;
+ 79    while (p) 
+ 80    {
+ 81       cout << p -> data << endl;
+ 82       p = p -> link;
+ 83    }
+ 84 }
+ 85 int Stack::length() 
+ 86 {
+ 87     return count;   // change this return;
+ 88 }
+ 89 int Stack::equal(Stack& s) 
+ 90 {
+ 91    Node *p = head, *q = s.head;
+ 92    while (p && q && p -> data == q -> data) 
+ 93    {
+ 94          p = p -> link;
+ 95          q = q -> link;
+ 96    }
+ 97    if (!p && !q)
+ 98      return 1;
+ 99    else
+100      return 0;
+101 }
+102 void Stack::copy(Stack& s) 
+103 {
+104    int x;
+105    s.destroy();
+106    Node *p= head, *q, *tail;
+107    while (p) 
+108    {
+109       x = p -> data;
+110       q = new Node;
+111       q -> data = x;
+112       if (s.head == NULL) {
+113          s.head = q;
+114          tail = q;
+115       }
+116       else {
+117          tail -> link = q;
+118          tail = q;
+119       }
+120       p = p -> link;
+121    }
+122    if (s.head)
+123       tail -> link = NULL;
+124    s.count = count;
+125 }
+126 void Stack::destroy() 
+127 {
+128     Node *p = head;
+129     while (head) 
+130     {
+131        p = head;
+132        head = head -> link;
+133        delete p;
+134     }
+135     count = 0;
+136 }
+137 int main() 
+138 {
+139    int i;
+140    Stack s, t;
+141    s.init(); t.init();
+142    for (i = 1; i <= 5; i++) 
+143    {
+144       s.push(i);
+145       t.push(i);
+146    }
+147    if (s.equal(t)) 
+148       cout << "good\n";
+149    else
+150       cout << "bug\n";
+151    t.push(10);
+152    if (!s.equal(t)) 
+153       cout << "good\n";
+154    else
+155       cout << "bug\n";
+156    cout << "Stack t contains (10 5 4 3 2 1):\n";
+157    t.display();
+158    t.destroy();
+159    cout << "Stack t contains (should be null):\n";
+160    cout << "Length of Stack t  (should be 0) = " << t.length() << endl;
+161    s.copy(t);
+162    cout << "Length of Stack t  (should be 5) = " << t.length() << endl;
+163    if (s.equal(t)) 
+164       cout << "good\n";
+165    else
+166       cout << "bug\n";
+167    t.destroy();
+168    cout << "Length of stack s (should be 5)= " << s.length() << endl;
+169    while (!s.empty()) 
+170    {
+171       cout << "top = " << s.top() << endl;
+172       cout << "popped = " << s.pop() << endl;
+173    }
+174    s.push(100);
+175    cout << "Stack s contains:\n";
+176    s.display();
+177    s.destroy();
+178    s.destroy();
+179    if (s.empty()) 
+180       cout << "good\n";
+181    else
+182       cout << "bug\n";
+183    if (s.equal(t))
+184       cout << "good\n";
+185    else
+186       cout << "bad\n";
+187    s.copy(t);
+188    if (s.equal(t))
+189       cout << "good\n";
+190    else
+191       cout << "bad\n";
+192    s.push(5);
+193    s.push(6);
+194    t.push(6);
+195    if (t.equal(s))
+196       cout << "bad\n";
+197    else
+198       cout << "good\n";
+199    return 0;
+200 }
+201 

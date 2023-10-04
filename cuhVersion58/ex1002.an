@@ -1,0 +1,97 @@
+  1 ; ex1002.a  Passing arrays
+  2 startup:  bl main
+  3           halt
+  4 ;==============================================================
+  5                            ; #include <stdio.h>
+  6 a:       .zero 2           ; int a[2];
+  7                             
+  8                            
+  9 f1:       push lr          ; void f1(int z[])
+ 10           push fp          ; {
+ 11           mov fp, sp
+ 12                            
+ 13           ldr r0, fp, 2    ;    printf("%d\n", z[1]);
+ 14           ldr r0, r0, 1
+ 15           dout r0
+ 16           nl
+ 17                            
+ 18           mov sp, fp       ; }
+ 19           pop fp
+ 20           pop lr
+ 21           ret
+ 22 ;==============================================================
+ 23 f2:       push lr          ; void f2(int *z)
+ 24           push fp          ; {
+ 25           mov fp, sp
+ 26                            
+ 27           ldr r0, fp, 2    ;    printf("%d\n", *(z+1));
+ 28           ldr r0, r0, 1
+ 29           dout r0
+ 30           nl
+ 31                            
+ 32           mov sp, fp       ; }
+ 33           pop fp
+ 34           pop lr
+ 35           ret
+ 36 ;==============================================================
+ 37 f3:       push lr          ; void f3(int z[])
+ 38           push fp          ; {
+ 39           mov fp, sp
+ 40                            
+ 41           ldr r0, fp, 2    ;    printf("%d\n", *(z+1));
+ 42           ldr r0, r0, 1
+ 43           dout r0
+ 44           nl
+ 45                            
+ 46           mov sp, fp       ; }
+ 47           pop fp
+ 48           pop lr
+ 49           ret
+ 50 ;==============================================================
+ 51 f4:       push lr          ; void f4(int *z)
+ 52           push fp          ; {
+ 53           mov fp, sp
+ 54                            
+ 55           ldr r0, fp, 2    ;    printf("%d\n", z[1]);
+ 56           ldr r0, r0, 1
+ 57           dout r0
+ 58           nl
+ 59                            
+ 60           mov sp, fp       ; }
+ 61           pop fp
+ 62           pop lr
+ 63           ret
+ 64 ;==============================================================
+ 65 main:     push lr          ; int main()
+ 66           push fp          ; {
+ 67           mov fp, sp
+ 68                            
+ 69           mov r0, 99       ;    a[1] = 99;
+ 70           st r0, a+1       
+ 71                              
+ 72           lea r0, a        ;    f1(a);
+ 73           push r0
+ 74           bl f1
+ 75           add sp, sp, 1
+ 76                             
+ 77           lea r0, a        ;    f2(a);
+ 78           push r0
+ 79           bl f2
+ 80           add sp, sp, 1
+ 81                             
+ 82           lea r0, a        ;    f3(a);
+ 83           push r0
+ 84           bl f3
+ 85           add sp, sp, 1
+ 86                            
+ 87           lea r0, a        ;    f4(a);
+ 88           push r0
+ 89           bl f4
+ 90           add sp, sp, 1
+ 91                             
+ 92           mov r0, 0        ;    return 0;
+ 93           mov sp, fp
+ 94           pop fp
+ 95           pop lr
+ 96           ret
+ 97                            ; }

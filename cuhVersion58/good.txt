@@ -1,0 +1,48 @@
+                                            good.txt
+
+Good Instruction Set                         
+--------------------
+Opcode      Format       Description
+
+ 0         ldi s           r0 = s
+
+s is the rightmost 12 bits in the instruction, which can range
+from -2048 to 2047 (s is a signed number). 
+
+Also included in the good instruction set are all the trap 
+instructions (din, dout, nl, halt, etc.), all of which are 
+handled by the sim program, not by microinstructions. 
+
+
+Microcode
+---------
+
+g.sm is the symbolic microcode file you create for the good 
+instruction set.
+
+Sign extend by shifting left logically and then shifting right
+arithmetically. To shift right arithmetically, use the sra
+ALU function.
+
+Test Program gtest.a (no assembler is available)
+------------------------------------------------
+
+          ; test program for g.sm microcode        gtest.a
+          ldi 7
+          dout 
+          nl
+          ldi -7
+          dout 
+          nl
+          halt
+
+gtest.hex is the the gtest.a program in hex form that you 
+create. 
+
+To run gtest.hex, enter
+
+   micro g.sm
+   h2b gtest.hex g
+   sim gtest.e
+
+Hand in g.lst, gtest.hex, and gtest.log.

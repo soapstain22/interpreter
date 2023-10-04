@@ -1,0 +1,9 @@
+  1 ; ex0305.a  Infinite loop
+  2 sub:      lea r0, msg
+  3           sout r0
+  4           ret
+  5 msg:      .string "Hello\n"
+  6 ; ==========================
+  7 main:     bl sub
+  8           bl sub
+  9           halt

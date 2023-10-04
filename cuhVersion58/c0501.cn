@@ -1,0 +1,7 @@
+  1 // c0501.c
+  2 #include <stdio.h>
+  3 int main()
+  4 {
+  5    printf("Hello, world.\n");
+  6    return 0;
+  7 }

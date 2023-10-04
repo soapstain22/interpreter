@@ -1,0 +1,69 @@
+; ex0806.a  Variable-length parameter list
+startup   bl main
+          halt
+;==============================================================
+                           ; #include <stdio.h>
+                           ; #include <stdarg.h>
+add:      push lr          ; int add(int argnum, ...)
+          push fp          ; {
+          mov fp, sp
+
+          mov r0, 0        ;    int sum = 0;
+          push r0
+
+          sub sp, sp, 1    ;    va_list p;
+                           
+          add r0, fp, 3    ;    va_start(p, argnum)
+          str r0, fp, -2
+@L0:
+          ldr r0, fp, 2    ;    while (argnum)
+          cmp r0, 0        ;    {
+          brz @L1          ;    
+
+          ldr r0, fp, -1   ;       sum = sum + va_arg(p, int);
+          ldr r1, fp, -2
+          ldr r2, r1, 0
+          add r1, r1, 1
+          str r1, fp, -2
+          add r0, r0, r2
+          str r0, fp, -1
+
+          ldr r0, fp, 2    ;       argnum--;
+          sub r0, r0, 1
+          str r0, fp, 2
+
+          br @L0           ;    }
+@L1:                       
+          ldr r0, fp, -1   ;    return sum;
+          mov sp, fp
+          pop fp
+          pop lr
+          ret
+                           ; }
+;==============================================================
+main:     push lr          ; int main()
+          push fp          ; {
+          mov fp,sp        ;
+
+          add sp,sp, -1    ;    int y;
+
+          mov r0, 7        ;    y = add(2, 5, 7);
+          push r0
+          mov r0, 5
+          push r0
+          mov r0, 2
+          push r0
+          bl add
+          add sp, sp, 3
+          str r0, fp, -1
+
+          ldr r0, fp, -1   ;    printf("%d\n", y);
+          dout r0
+          nl
+
+          mov r0, 0        ;    return 0;
+          mov sp, fp
+          pop fp
+          pop lr
+          ret
+                           ; }

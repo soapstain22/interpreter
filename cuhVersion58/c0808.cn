@@ -1,0 +1,22 @@
+  1 // c0808.c
+  2 #include <stdio.h>
+  3 int a = 100;
+  4 void f(int #x)
+  5 {
+  6     a = x + 5;
+  7 }
+  8 void g(int z)
+  9 {
+ 10    int y = 1;
+ 11    f(y + 20);
+ 12    printf("a = %d\n", a);
+ 13    printf("y = %d\n", y);
+ 14    f(z + 20);
+ 15    printf("a = %d\n", a);
+ 16    printf("y = %d\n", y);
+ 17 }
+ 18 int main()
+ 19 {
+ 20    g(7);
+ 21    return 0;
+ 22 }

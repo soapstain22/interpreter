@@ -1,0 +1,17 @@
+  1 // c0804.c
+  2 #include <stdio.h>
+  3 int x = 1;
+  4 void f(int *p)
+  5 {
+  6    *p++;
+  7    printf("%d\n", x);
+  8    *(p++);
+  9    printf("%d\n", x);
+ 10    (*p)++;
+ 11 }
+ 12 int main()
+ 13 {
+ 14    f(&x);
+ 15    printf("%d\n", x);
+ 16    return 0;
+ 17 }

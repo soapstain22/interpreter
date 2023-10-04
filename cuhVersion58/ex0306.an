@@ -1,0 +1,10 @@
+  1 ; ex0306.a
+  2           .start main
+  3 sub:      lea r0, msg
+  4           sout r0
+  5           ret
+  6 msg:      .string "Hello\n"
+  7 ; ==========================
+  8 main:     bl sub
+  9           bl sub
+ 10           halt

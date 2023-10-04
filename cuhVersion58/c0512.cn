@@ -1,0 +1,17 @@
+  1 // c0512.c
+  2 #include <stdio.h>
+  3 int x, y, z = 6;
+  4 void f(int a, int b, int c)
+  5 {
+  6    static int h, i, j;
+  7    b = c = h = i = ++j;
+  8    printf("%d %d\n", a, b);
+  9 }
+ 10 int main()
+ 11 {
+ 12    x = 1;
+ 13    y = 2;
+ 14    f(x, y, z);
+ 15    f(z, y, z);
+ 16    return 0;
+ 17 }        

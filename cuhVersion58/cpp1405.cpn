@@ -1,0 +1,18 @@
+  1 // cpp1405.cpp
+  2 #include <iostream>
+  3 using namespace std;
+  4 int a = 3;
+  5 void g(int &y) 
+  6 {
+  7   y = 4;
+  8 }
+  9 void f(int &x)
+ 10 {
+ 11    g(x);
+ 12 }
+ 13 int main()
+ 14 {
+ 15    f(a);
+ 16    cout << a << endl;
+ 17    return 0;
+ 18 }

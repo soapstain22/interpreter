@@ -1,0 +1,23 @@
+  1           ; test program for f.sm microcode        ftest.a
+  2           ldi r1, 10    ; load 10 into r1
+  3           dout r1
+  4           nl
+  5           ldi r2, 20    ; load 20 into r2
+  6           dout r2
+  7           nl
+  8           ldi r3, 30    ; load 30 into r3
+  9           dout r3
+ 10           nl
+ 11           ldi r4, 40    ; load 40 into r4
+ 12           dout r4
+ 13           nl
+ 14           ldi r5, 50    ; load 50 into r5
+ 15           dout r5
+ 16           nl
+ 17           ldi r6, 60    ; load 60 into r6
+ 18           dout r6
+ 19           nl
+ 20           ldi r7, 70    ; load 70 into r7
+ 21           dout r7
+ 22           nl
+ 23           halt

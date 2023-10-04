@@ -1,0 +1,129 @@
+                                                basic.txt
+
+DISCLAIMER 
+----------
+
+The files in this software package are provided to you on an "as 
+is" basis for instructional purposes only, without any 
+warranties, expressed or implied. The author and copyright holder 
+of these files shall not be liable in any event for incidental, 
+consequential, special, or punitive damages in connection with, 
+or arising out of the distribution, performance, or use of these 
+files.          
+================================================================= 
+
+Function
+--------
+Assembles assembly language programs written in the basic
+instruction set.
+
+
+Usage
+----- 
+     basic <input file name>
+
+If the input file name does not have an extension, ".a" is 
+assumed. For example, 
+
+     basic btest.a
+and
+     basic btest
+
+both assemble the program in btest.a.
+
+
+Basic Instruction Set   
+---------------------
+Opcode      Format       Description
+
+ 0         ld    x    ac = mem[x];       (ac is alternate name for r0)
+ 1         st    x    mem[x] = ac;
+ 2         add   x    ac = ac + mem[x];
+ 3         sub   x    ac = ac - mem[x];
+ 4         ldr   x    ac = mem[sp + x];
+ 5         str   x    mem[sp + x] = ac;
+ 6         addr  x    ac = ac + mem[sp + x];
+ 7         subr  x    ac = ac - mem[sp + x];
+ 8         ldi   x    ac = x;
+ 9         asp   s    sp = sp + s;
+ A         call  x    mem[--sp] = pc; pc = x;                 
+ B         ret        pc = mem[sp++];
+ C         br    x    pc = x;
+ D         brn   x    if (ac < 0) pc = x;
+ E         brz   x    if (ac == 0) pc = x;
+ F         trap  y    see below
+
+Also included in the basic instruction set are all the trap
+instructions (din, dout, nl, halt, etc.), all of which
+are handled by the sim program, not by microinstructions.
+
+ x:  bits 0 to 11 in machine instruction, zero extended to 16 bits
+ s:  bits 0 to 11 in machine instruction, sign extended to 16 bits
+ y:  bits 0 to 7 in machine instruction, zero extended to 16 bits
+ ac: accumulator register (ac is the alternate name for r0)
+ pc: program counter register
+ sp: stack pointer register
+
+
+Microcode for basic instruction set
+-----------------------------------
+
+b.m binary microcode (not provided)
+
+
+Test program btest.a
+--------------------
+          
+          ; test program btest.a
+          ldi msg
+          sout
+          nl
+          nl
+          ld x
+          dout     ; 1 
+          st x
+          ldi 1
+          add x    ; 2
+          dout
+          ldi 4
+          sub x
+          dout     ; 3
+          call sub ; 4
+          asp -2
+          ldi 5
+          str 1
+          ldi 0
+          ldr 1
+          dout     ; 5
+          ld x
+          addr 1
+          dout     ; 6
+          ldi 12
+          subr 1
+          dout     ; 7
+          br br1
+          halt
+br1       ldi 8
+          dout     ; 8
+          ldi 0
+          brz br2
+          halt
+br2       ldi 9
+          dout     ; 9
+          sub y
+          brn br3
+          halt
+br3       ldi 10
+          dout     ; 10
+          halt
+x         .word 1
+y         .word 20
+msg       .string "Correct if 1 to 10 displayed"
+sub       ldi 4
+          dout
+          ret
+
+To run btest.a, enter
+
+basic btest.a
+sim btest

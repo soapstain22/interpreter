@@ -1,0 +1,37 @@
+  1 // ex1003.c  Strings
+  2 #include <stdio.h>
+  3 char g[]= "AX";
+  4 char *p = "BX";
+  5 void mystrcpy(char *p, char *q)
+  6 {
+  7    while (1)
+  8    {
+  9       *p = *q;
+ 10       if (*q == 0)
+ 11          break;
+ 12       p++;
+ 13       q++;
+ 14    }
+ 15 }
+ 16 //=============================
+ 17 void f(char *p)
+ 18 {
+ 19    printf("%s\n", p);
+ 20 }
+ 21 //=============================
+ 22 int main()
+ 23 {
+ 24    char c[] = "CX";
+ 25    char *q = "DX";
+ 26    char *r;
+ 27    r = "EX";
+ 28    printf("%s\n", g);
+ 29    printf("%s\n", p);
+ 30    printf("%s\n", c);
+ 31    printf("%s\n", q);
+ 32    printf("%s\n", r);
+ 33    mystrcpy(g, "FX");
+ 34    f(g);
+ 35    return 0;
+ 36 }
+ 37 

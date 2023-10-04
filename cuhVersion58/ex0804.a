@@ -1,0 +1,83 @@
+; ex0804.a  Pass by name (not supported by C)
+startup   bl main
+          halt             ; back to operating system
+;==============================================================
+                           ; #include <stdio.h>
+a:        .word 1          ; int a = 1;
+                           
+f:        push lr          ; void f(int #x)
+          push fp          ; {
+          mov fp, sp
+                           
+          ; get thunk addr ;    printf("%d\n", y);
+          ldr r0, fp, 2
+          ; save f's fp
+          push fp
+          ; restore fp with caller's fp
+          ldr fp, fp, 0
+          ; call thunk
+          blr r0
+          ; restore fp with called function's fp
+          pop fp
+          ; dereference address returned by thunk
+          ldr r0, r0, 0
+          ; display value returned
+          dout r0
+          nl
+                           
+          ld r0, a         ;    a = a + 2;
+          add r0, r0, 2
+          st r0, a
+                            
+          ; get thunk addr ;    printf("%d\n", y);
+          ldr r0, fp, 2
+          ; save f's fp
+          push fp
+          ; restore fp with caller's fp
+          ldr fp, fp, 0
+          ; call thunk
+          blr r0
+          ; restore fp with called function's fp
+          pop fp
+          ; dereference address returned by thunk
+          ldr r0, r0, 0
+          ; display value returned
+          dout
+          nl
+                           
+          mov sp, fp       ; }
+          pop fp
+          pop lr
+          ret
+;==============================================================
+main:     push lr          ; int main()
+          push fp          ; {
+          mov fp, sp
+                           
+          mov r0, 2        ;    int b = 2;
+          push r0
+
+          ; branch over thunk                 
+          br @L0           ;    f(a+b);
+
+          ; thunk
+@L1:      ld r0, a
+          ldr r1, fp, -1
+          add r0, r0, r1
+          str r0, fp, -2
+          add r0, fp, -2
+          ret
+
+          ; calling sequence
+@L0:      sub sp, sp, 1
+          lea r0, @L1
+          push r0
+          bl f
+          add sp, sp, 2
+                           
+          mov r0, 0        ;    return 0;
+          mov sp, fp
+          pop fp
+          pop lr
+          ret
+                           ; }

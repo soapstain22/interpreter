@@ -1,0 +1,16 @@
+ 1 // c1205a.c                     1  // c1205b.c         
+ 2 #include <stdio.h>              2  void g(int *p)     
+ 3 void g(int *);                  3  {
+ 4 static void f(int x)            4     *p = -7;
+ 5 {                               5     greeting();
+ 6    printf("%d\n", x);           6  }
+ 7 }                               7  void greeting()
+ 8 int main()                      8  {
+ 9 {                               9     printf("hi!\n");
+10    int x;                      10  }
+11    int y = 20;
+12    f(y);
+13    g(&x);
+14    printf("%d\n", x);
+15    return 0;
+16 }

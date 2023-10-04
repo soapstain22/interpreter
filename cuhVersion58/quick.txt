@@ -1,0 +1,46 @@
+                                            quick.txt
+
+Quick Instruction Set                         
+---------------------
+Opcode      Format       Description
+
+ 8         ldi  x        r0 = x
+ 4         push          mem[--sp] = r0
+ 2         pop           r0 = mem[sp++]
+ 3         isk           mem[sp] = mem[sp] + 1
+
+x is the rightmost 12 bits in the instruction, which can range
+from 0 to 4095 decimal (x is an unsigned number). 
+
+Also included in the small instruction set are all the trap
+instructions (din, dout, nl, halt, etc.), all of which are
+handled by the sim program, not by microinstructions.
+
+Microcode
+---------
+
+q.sm is the symbolic microcode file you create for the small 
+instruction set.
+
+
+Test Program qtest.a (no assembler is available)
+------------------------------------------------
+
+      ; test program for q.sm microcode        qtest.a
+      ldi 2     ; load 2 into r0
+      push      ; push contents of r0 onto the stack
+      isk       ; increment the value on top of the stack
+      pop       ; pop the top of the stack into r0
+      dout      ; display r0 (displays 3)
+      nl        ; move cursor to next line
+      halt
+
+qtest.hex is the qtest.a program in hex form that you create.
+
+To run stest.hex, enter
+
+   micro q.sm
+   h2b qtest.hex q
+   sim qtest.e
+
+Hand in q.lst, qtest.hex, and qtest.log.

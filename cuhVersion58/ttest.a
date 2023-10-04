@@ -1,0 +1,16 @@
+          ; test program for t.sm microcode        ttest.a
+          ld   a    ; load r0 from a
+          dout      ; display r0 (displays 2)
+          nl        ; move cursor to next line
+          add  b    ; add word at b to r0
+          dout      ; display r0 (displays 5)
+          nl        ; move cursor to next line
+          sub  a    ; subtract word at a from r0
+          dout      ; display r0 (displays 3)
+          nl        ; move cursor to next line
+          ldi  7    ; load immediate value 7 into r0
+          dout      ; display r0 (displays 7)
+          nl        ; move cursor to next line
+          halt
+a:        .word 2
+b:        .word 3

@@ -1,0 +1,44 @@
+  1 ; ex0803.a  Pass by value-result (not supported by C)
+  2 
+  3 startup:  bl main
+  4           halt             ; back to operating system
+  5 ;==============================================================
+  6                            ; #include <stdio.h>
+  7 x:        .word 7          ; int x = 7;
+  8                            ; void f(int $a)
+  9 f:        push lr          ; {
+ 10           push fp
+ 11           mov fp, sp
+ 12                            
+ 13           ldr r0, fp, 2    ;    a = a + 1;
+ 14           add r0, r0, 1
+ 15           str r0, fp, 2
+ 16                            
+ 17           mov sp, fp       
+ 18           pop fp
+ 19           pop lr
+ 20           ret
+ 21                            ; }
+ 22 ;===========================================================
+ 23                            ; int main()
+ 24 main:                      ; {
+ 25           push lr
+ 26           push fp
+ 27           mov fp, sp
+ 28 
+ 29           ld r0, x         ;    f(x);
+ 30           push r0
+ 31           bl f
+ 32           pop r0
+ 33           st r0, x
+ 34                            
+ 35           ld r0, x         ;    printf("%d\n", x);
+ 36           dout r0
+ 37           nl
+ 38 
+ 39           mov r0, 0        ;    return 0;
+ 40           mov sp, fp
+ 41           pop fp
+ 42           pop lr
+ 43           ret
+ 44                            ; }

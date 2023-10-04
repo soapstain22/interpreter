@@ -1,0 +1,8 @@
+          ; test program for q.sm microcode        qtest.a
+          ldi 2     ; load 2 into r0
+          push      ; push contents of r0 onto the stack
+          isk       ; increment the value on top of the stack
+          pop       ; pop the top of the stack into r0
+          dout      ; display r0 (displays 3)
+          nl        ; move cursor to next line
+          halt

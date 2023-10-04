@@ -1,0 +1,17 @@
+  1 // c0704.c
+  2 #include <stdio.h>
+  3 void g(int *b)
+  4 {
+  5    printf("%d\n", *b);
+  6 }
+  7 void f(int *a)
+  8 {
+  9    g(a);
+ 10 }
+ 11 int main()
+ 12 {
+ 13    int x = 5, *p;
+ 14    p = &x;
+ 15    f(p);
+ 16    return 0;
+ 17 }

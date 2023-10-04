@@ -1,0 +1,76 @@
+  1 ; ex0903.a  Passing structs
+  2 startup:  bl main
+  3           halt
+  4 ;==============================================================
+  5                             ; #include <stdio.h>
+  6                             ; struct Point
+  7                             ; {
+  8                             ;    int x;
+  9                             ;    int y;
+ 10                             ; };
+ 11 a:        .zero 2           ; struct Point a;
+ 12 ;==============================================================
+ 13 f:        push lr           ; void f(struct Point s)
+ 14           push fp           ; {
+ 15           mov fp, sp
+ 16 
+ 17           ldr r0, fp, 2     ;    printf("%d %d\n", s.x, s.y);
+ 18           dout r0
+ 19           mov r0, ' '
+ 20           aout r0
+ 21           ldr r0, fp, 3
+ 22           dout r0
+ 23           nl
+ 24 
+ 25           mov sp, fp        ; }
+ 26           pop fp
+ 27           pop lr
+ 28           ret
+ 29 ;==============================================================
+ 30 g:        push lr           ; void g(struct Point *p)
+ 31           push fp           ; {
+ 32           mov fp, sp
+ 33 
+ 34           ldr r1, fp, 2     ;    printf("%d %d\n", p->x, p->y);
+ 35           ldr r0, r1, 0
+ 36           dout r0
+ 37           mov r0, ' '
+ 38           aout r0
+ 39           ldr r0, r1, 1
+ 40           dout r0
+ 41           nl
+ 42 
+ 43           mov sp, fp        ; }
+ 44           pop fp
+ 45           pop lr
+ 46           ret
+ 47 ;==============================================================
+ 48 main:     push lr           ; int main()
+ 49           push fp           ; {
+ 50           mov fp, sp
+ 51 
+ 52           mov r0 1          ;    a.x = 1;
+ 53           st r0, a
+ 54 
+ 55           mov r0, 2         ;    a.y = 2;
+ 56           st r0, a+1
+ 57 
+ 58           ld r0, a+1        ;    f(a);
+ 59           push r0
+ 60           ld r0, a
+ 61           push r0
+ 62           bl f
+ 63           add sp, sp, 2
+ 64 
+ 65           lea r0, a         ;    g(&a);
+ 66           push r0
+ 67           bl g
+ 68           add sp, sp, 1
+ 69 
+ 70           mov r0, 0         ;    return 0;
+ 71           mov sp, fp
+ 72           pop fp
+ 73           pop lr
+ 74           ret
+ 75 
+ 76                             ; }

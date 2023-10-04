@@ -1,0 +1,91 @@
+  1 ; ex1501.a  Structs in C++
+  2 startup:  bl main
+  3           halt
+  4 ;==============================================================
+  5                            ; #include <iostream>
+  6                            ; using namespace std;
+  7                            ; struct Point
+  8                            ; {
+  9                            ;    int x;
+ 10                            ;    int y;
+ 11                            ; };
+ 12                            
+ 13 @set$p1Aii:                ; void set(A *r, int n, int m)
+ 14           push lr          ; {
+ 15           push fp
+ 16           mov fp, sp
+ 17                            
+ 18           ldr r0, fp, 3    ;    r->x = n;
+ 19           ldr r1, fp, 2
+ 20           str r0, r1, 0
+ 21                            
+ 22           ldr r0, fp, 4    ;    r->y = m;
+ 23           ldr r1, fp  2
+ 24           str r0, r1, 1
+ 25                            
+ 26           mov sp, fp       ; }
+ 27           pop fp
+ 28           pop lr
+ 29           ret
+ 30 
+ 31 @display$p1A:              ; void display(A *r)
+ 32           push lr          ; {
+ 33           push fp
+ 34           mov fp, sp
+ 35                            
+ 36           ldr r0, fp, 2   ;    cout << r->x << endl;
+ 37           ldr r0, r0, 0
+ 38           dout r0
+ 39           nl
+ 40                            
+ 41           ldr r0, fp, 2   ;    cout << r->y << endl;
+ 42           ldr r0, r0, 1
+ 43           dout r0
+ 44           nl
+ 45                            
+ 46           mov sp, fp       ; }
+ 47           pop fp
+ 48           pop lr
+ 49           ret
+ 50 ;==============================================================
+ 51 main:     push lr           ; int main()
+ 52           push fp           ; {         
+ 53           mov fp, sp
+ 54                            
+ 55           sub sp, sp, 2    ;    A a, b;
+ 56           sub sp, sp, 2
+ 57                             
+ 58           mov r0, 6         ;    set(&a, 5, 6);
+ 59           push r0
+ 60           mov r0, 5
+ 61           push r0
+ 62           add r0, fp, -2
+ 63           push r0
+ 64           bl @set$p1Aii
+ 65           add sp, sp, 3
+ 66                             
+ 67           add r0, fp, -2    ;    display(&a);
+ 68           push r0
+ 69           bl @display$p1A
+ 70           add sp, sp, 1
+ 71 
+ 72           mov r0, 11        ;    set(&b, 10, 11);
+ 73           push r0
+ 74           mov r0, 10
+ 75           push r0
+ 76           add r0, fp, -4
+ 77           push r0
+ 78           bl @set$p1Aii
+ 79           add sp, sp, 3
+ 80                              
+ 81           add r0, fp, -4    ;    display(&b);
+ 82           push r0
+ 83           bl @display$p1A
+ 84           add sp, sp, 1
+ 85                             
+ 86           mov r0, 0         ;    return 0;
+ 87           mov sp, fp
+ 88           pop fp
+ 89           pop lr
+ 90           ret
+ 91                            ; } 

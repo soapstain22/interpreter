@@ -1,0 +1,19 @@
+  1 // ex0603.c  Recursion example 2 (not tail recursive)
+  2 #include <stdio.h>
+  3 void r2(int x)
+  4 {
+  5    if (x == 0)
+  6       printf("bottom\n");
+  7    else 
+  8    {
+  9       printf("down\n");
+ 10       r2(x-1);
+ 11       printf("up\n");
+ 12    }
+ 13 }
+ 14 //=======================
+ 15 int main()
+ 16 {
+ 17    r2(2);
+ 18    return 0;
+ 19 }

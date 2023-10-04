@@ -1,0 +1,11 @@
+  1 // ex0701.c Pointers to global variables
+  2 #include <stdio.h>
+  3 int *p, x = 7;
+  4 int main()
+  5 {
+  6    p = &x;
+  7    printf("%d\n", *p);
+  8    *p = 8;
+  9    printf("%d\n", x);
+ 10    return 0;
+ 11 }

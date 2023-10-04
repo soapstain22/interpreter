@@ -1,0 +1,38 @@
+  1 ; ex0401.a  Calling a function
+  2 
+  3 startup:  bl main
+  4           halt            ; back to operating system
+  5 ;==============================================================
+  6                           ; #include <stdio.h>
+  7 f:        push lr         ; void f(int x, int y)
+  8           push fp         ; {
+  9           mov fp, sp
+ 10 
+ 11           ldr r0, fp, 2   ;    printf("%d\n", x + y);
+ 12           ldr r1, fp, 3
+ 13           add r0, r0, r1
+ 14           dout r0
+ 15           nl
+ 16 
+ 17           mov sp, fp      ; }
+ 18           pop fp
+ 19           pop lr
+ 20           ret
+ 21 ;==============================================================
+ 22 main:     push lr         ; int main()
+ 23           push fp         ; {
+ 24           mov fp, sp
+ 25 
+ 26           mov r0, 2       ;    f(1, 2);
+ 27           push r0
+ 28           mov r0, 1
+ 29           push r0
+ 30           bl f
+ 31           add sp, sp, 2      
+ 32 
+ 33           mov r0, 0       ;    return 0;
+ 34           mov sp, fp
+ 35           pop fp
+ 36           pop lr
+ 37           ret
+ 38                           ; }

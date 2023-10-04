@@ -1,0 +1,14 @@
+  1 // ex0502.c  Dynamic local variables
+  2 #include <stdio.h>
+  3 void f(int a)
+  4 {
+  5    int x = 1, y;
+  6    y = x + a;
+  7    printf("%d\n", y);
+  8 }
+  9 //==============================
+ 10 int main()
+ 11 {
+ 12    f(11);
+ 13    return 0;
+ 14 }

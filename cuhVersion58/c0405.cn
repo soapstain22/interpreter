@@ -1,0 +1,15 @@
+  1 // c0405.c
+  2 #include <stdio.h>
+  3 void g(int x, int y)
+  4 {
+  5    printf("%d %d\n", x, y);
+  6 }
+  7 void f(int x, int y)
+  8 {
+  9    g(x, y);
+ 10 }
+ 11 int main()
+ 12 {
+ 13    f(3, 4);
+ 14    return 0;
+ 15 }

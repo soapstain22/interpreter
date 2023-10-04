@@ -1,0 +1,16 @@
+  1 // ex0103.c  Lack of associativity in floating-point computations
+  2 #include <stdio.h>
+  3 int main()
+  4 {
+  5    double sum = 0.0;
+  6    int i;
+  7    for (i = 1; i <= 100000000; i++)
+  8       sum = sum + 1.0/i;
+  9    printf("%.17f\n", sum);
+ 10 
+ 11    sum = 0.0;
+ 12    for (i = 100000000; i >= 1; i--)		// better for loop
+ 13       sum = sum + 1.0/i;
+ 14    printf("%.17f\n", sum);
+ 15    return 0;
+ 16 }

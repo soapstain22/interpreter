@@ -1,0 +1,15 @@
+  1 // cpp1304.cpp
+  2 #include <iostream>
+  3 using namespace std;
+  4 void (*p)(int, int);
+  5 void f(int x, int y)
+  6 {
+  7    cout << x + y << endl;
+  8 }
+  9 int main()
+ 10 {
+ 11    p = f;
+ 12    f(1, 2);
+ 13    p(3, 4);
+ 14    return 0;
+ 15 }

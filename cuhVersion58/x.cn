@@ -1,0 +1,11 @@
+  1 // x.c  Command line arguments display
+  2 #include <stdio.h>
+  3 int main(int argc, char *argv[])
+  4 {
+  5    int i = argc-1;
+  6    while (i >= 0)
+  7    {
+  8       printf("%s\n", argv[i]);
+  9       i--;
+ 10    }
+ 11 }

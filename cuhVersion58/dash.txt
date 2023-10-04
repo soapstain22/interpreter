@@ -1,0 +1,48 @@
+                                            dash.txt
+
+Dash Instruction Set                         
+--------------------
+Opcode      Format       Description
+
+ 0          ldi s          r0 = s
+
+s is the rightmost 12 bits in the instruction, which can range
+from -2048 to 2047. s is a signed number. 
+
+Also included in the dash instruction set are all the trap
+instructions (din, dout, nl, halt, etc.), all of which
+are handled by the sim program, not by microinstructions.
+
+
+Microcode
+---------
+
+d.sm is the symbolic microcode file you create for the dash 
+instruction set.
+
+Sign extend using the ALU function that sign extends (sext). 
+
+See LCCMicrolevelSummary.pdf.
+
+
+Test Program dtest.a (no assembler is available)
+------------------------------------------------
+
+          ; test program for d.sm microcode        dtest.a
+          ldi 7
+          dout 
+          nl
+          ldi -7
+          dout 
+          nl
+          halt
+
+dtest.hex is the dtest.a program in hex form that you create. 
+
+To run dtest.hex, enter
+
+   micro d.sm
+   h2b dtest.hex d
+   sim dtest.e
+
+Hand in d.lst, dtest.hex, and dtest.log.

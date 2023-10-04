@@ -1,0 +1,47 @@
+; ex0602.a  Recursion example 1 (tail recursive)
+startup:  bl main
+          halt
+;==============================================================
+                           ; #include <stdio.h>
+rf1:      push lr          ; void rf1(int x)
+          push fp          ; {
+          mov fp, sp
+
+          s ; debugging instruction that displays stack
+
+          ldr r0, fp, 2    ;    if (x != 0)
+          cmp r0, 0        ;    {
+          brz @L0          
+
+          ldr r0, fp, 2    ;       printf("%d\n", x);
+          dout r0
+          nl
+
+          ldr r0, fp, 2    ;       rf1(x - 1);
+          sub r0, r0, 1
+          push r0
+          bl rf1
+          add sp, sp, 1
+
+@L0:                       ;    }
+
+          mov sp, fp       ; }
+          pop fp
+          pop lr
+          ret
+;==============================================================
+main:     push lr          ; int main()
+          push fp          ; {
+          mov fp, sp
+
+          mov r0, 2        ;    rf1(2);
+          push r0
+          bl rf1
+          add sp, sp, 1
+
+          mov r0, 0        ;    return 0;
+          mov sp, fp
+          pop fp
+          pop lr
+          ret
+                           ; }

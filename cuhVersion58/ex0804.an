@@ -1,0 +1,83 @@
+  1 ; ex0804.a  Pass by name (not supported by C)
+  2 startup   bl main
+  3           halt             ; back to operating system
+  4 ;==============================================================
+  5                            ; #include <stdio.h>
+  6 a:        .word 1          ; int a = 1;
+  7                            
+  8 f:        push lr          ; void f(int #x)
+  9           push fp          ; {
+ 10           mov fp, sp
+ 11                            
+ 12           ; get thunk addr ;    printf("%d\n", y);
+ 13           ldr r0, fp, 2
+ 14           ; save f's fp
+ 15           push fp
+ 16           ; restore fp with caller's fp
+ 17           ldr fp, fp, 0
+ 18           ; call thunk
+ 19           blr r0
+ 20           ; restore fp with called function's fp
+ 21           pop fp
+ 22           ; dereference address returned by thunk
+ 23           ldr r0, r0, 0
+ 24           ; display value returned
+ 25           dout r0
+ 26           nl
+ 27                            
+ 28           ld r0, a         ;    a = a + 2;
+ 29           add r0, r0, 2
+ 30           st r0, a
+ 31                             
+ 32           ; get thunk addr ;    printf("%d\n", y);
+ 33           ldr r0, fp, 2
+ 34           ; save f's fp
+ 35           push fp
+ 36           ; restore fp with caller's fp
+ 37           ldr fp, fp, 0
+ 38           ; call thunk
+ 39           blr r0
+ 40           ; restore fp with called function's fp
+ 41           pop fp
+ 42           ; dereference address returned by thunk
+ 43           ldr r0, r0, 0
+ 44           ; display value returned
+ 45           dout
+ 46           nl
+ 47                            
+ 48           mov sp, fp       ; }
+ 49           pop fp
+ 50           pop lr
+ 51           ret
+ 52 ;==============================================================
+ 53 main:     push lr          ; int main()
+ 54           push fp          ; {
+ 55           mov fp, sp
+ 56                            
+ 57           mov r0, 2        ;    int b = 2;
+ 58           push r0
+ 59 
+ 60           ; branch over thunk                 
+ 61           br @L0           ;    f(a+b);
+ 62 
+ 63           ; thunk
+ 64 @L1:      ld r0, a
+ 65           ldr r1, fp, -1
+ 66           add r0, r0, r1
+ 67           str r0, fp, -2
+ 68           add r0, fp, -2
+ 69           ret
+ 70 
+ 71           ; calling sequence
+ 72 @L0:      sub sp, sp, 1
+ 73           lea r0, @L1
+ 74           push r0
+ 75           bl f
+ 76           add sp, sp, 2
+ 77                            
+ 78           mov r0, 0        ;    return 0;
+ 79           mov sp, fp
+ 80           pop fp
+ 81           pop lr
+ 82           ret
+ 83                            ; }

@@ -1,0 +1,83 @@
+         ; Hex version of the btest.a program
+         ; To convert to binary and output to btest.e, enter
+         ;      h2b btest.hex
+         ; Can then run btest.e on sim with
+         ;      sim btest.e
+
+         ; btest test program in hex form
+802b     ;           ldi msg
+f006     ;           sout
+f001     ;           nl
+f001     ;           nl
+0029     ;           ld x
+f002     ;           dout     ; 1
+1029     ;           st x
+8001     ;           ldi 1
+2029     ;           add x    ; 2
+f002     ;           dout
+8004     ;           ldi 4
+3029     ;           sub x
+f002     ;           dout     ; 3
+a048     ;           call sub ; 4
+9ffe     ;           asp -2
+8005     ;           ldi 5
+5001     ;           str 1
+8000     ;           ldi 0
+4001     ;           ldr 1
+f002     ;           dout     ; 5
+0029     ;           ld x
+6001     ;           addr 1
+f002     ;           dout     ; 6
+800c     ;           ldi 12
+7001     ;           subr 1
+f002     ;           dout     ; 7
+c01c     ;           br br1
+f000     ;           halt
+8008     ; br1       ldi 8
+f002     ;           dout     ; 8
+8000     ;           ldi 0
+e021     ;           brz br2
+f000     ;           halt
+8009     ; br2       ldi 9
+f002     ;           dout     ; 9
+302a     ;           sub y
+d026     ;           brn br3
+f000     ;           halt
+800a     ; br3       ldi 10
+f002     ;           dout     ; 10
+f000     ;           halt
+0001     ; x         .fill 1
+0014     ; y         .fill 20
+0043     ; msg       .stringz "Correct if 1 to 10 displayed"
+006f
+0072
+0072
+0065
+0063
+0074
+0020
+0069
+0066
+0020   
+0031
+0020
+0074
+006f
+0020
+0031
+0030
+0020
+0064
+0069
+0073
+0070
+006c
+0061
+0079
+0065
+0064
+0000
+8004     ; sub       ldi 4
+f002     ;           dout
+b000     ;           ret
+

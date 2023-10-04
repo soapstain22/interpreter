@@ -1,0 +1,11 @@
+  1 // c1102.c
+  2 int ans, x, y, z;
+  3 #include <stdio.h>
+  4 int main()
+  5 {
+  6    printf("Enter three positive integers: ");
+  7    scanf("%d%d%d", &x, &y, &z);
+  8    ans = x*y/z + z/x + y/z;
+  9    printf("ans = %d\n", ans);
+ 10    return 0;
+ 11 }

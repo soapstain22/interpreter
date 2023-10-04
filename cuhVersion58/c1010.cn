@@ -1,0 +1,15 @@
+  1 // c1010.c  Are strings constants mutable?
+  2 #include <stdio.h>
+  3 int main()
+  4 {
+  5    char *p =  "123";
+  6    char *q =  "123";
+  7    char a[] = "123";
+  8    *p = 'X';
+  9    *(q+1) = 'Y';
+ 10    a[2] = 'Z';
+ 11    printf("%s\n", p);
+ 12    printf("%s\n", q);
+ 13    printf("%s\n", a);
+ 14    return 0;
+ 15 }

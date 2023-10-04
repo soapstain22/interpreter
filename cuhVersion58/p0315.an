@@ -1,0 +1,24 @@
+  1 first:    .word z1      ; points to first record
+  2 
+  3 z1:       .word 10
+  4           .word z2      ; points to next record
+  5 
+  6           .zero 5
+  7 
+  8 z2:       .word 20
+  9           .word z3      ; points to next record
+ 10 
+ 11           .zero 2
+ 12 
+ 13 z3:       .word 30
+ 14           .word z4      ; points to next record
+ 15 
+ 16           .zero 7
+ 17 
+ 18 z4:       .word 40
+ 19           .word z5      ; points to next record
+ 20 
+ 21           .zero 3
+ 22 
+ 23 r5:       .word 50
+ 24           .word 0       ; null pointer

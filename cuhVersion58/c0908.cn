@@ -1,0 +1,58 @@
+  1 // c0908.c
+  2 #include <stdio.h>
+  3 #include <stdlib.h>
+  4 struct NODE
+  5 {
+  6    int data;
+  7    struct NODE *left;
+  8    struct NODE *right;
+  9 };
+ 10 void addnode(struct NODE **rootpp, int val)
+ 11 {
+ 12   struct NODE *newnode, *leading, *trailing;
+ 13   newnode = (struct Node *)malloc(sizeof(struct NODE));
+ 14   newnode->data  = val;
+ 15   newnode->left  = NULL;
+ 16   newnode->right = NULL;
+ 17   leading = *rootpp;
+ 18   trailing = NULL;
+ 19   while (leading != NULL)
+ 20   {
+ 21     trailing = leading;
+ 22     if (val < leading->data)
+ 23        leading = leading->left;
+ 24     else
+ 25        leading = leading->right;
+ 26   }
+ 27   if (trailing == NULL)
+ 28      *rootpp = newnode;
+ 29   else
+ 30     if (val < trailing->data)
+ 31        trailing->left = newnode;
+ 32     else
+ 33        trailing->right = newnode;
+ 34 
+ 35 }
+ 36 void inorder(struct NODE *p)
+ 37 {
+ 38    if (p)
+ 39    {
+ 40       inorder(p->left);
+ 41       printf("%d\n", p->data);
+ 42       inorder (p->right);
+ 43    }
+ 44 }
+ 45 int main()
+ 46 {
+ 47   struct NODE *rootptr = NULL; // NULL is the constant 0
+ 48   int x, y = 8;
+ 49   while (y--)
+ 50   {
+ 51      printf("Enter: ");        // enter 10, 8, 3, 9, 7, 5, 1, -1
+ 52      scanf("%d", &x);
+ 53      addnode(&rootptr, x);
+ 54   }
+ 55   printf("Traverse the tree\n");
+ 56   inorder(rootptr);
+ 57   return 0;
+ 58 }

@@ -1,0 +1,9 @@
+  1 // ex0501.c  Global variables
+  2 #include <stdio.h>
+  3 int x = 2, y;
+  4 int main()
+  5 {
+  6    y = x;
+  7    printf("%d\n", y);
+  8    return 0;
+  9 }

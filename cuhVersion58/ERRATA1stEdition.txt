@@ -1,0 +1,131 @@
+Errata in C and C++ under the Hood    May 11, 2021
+
+Page 37
+   Ascii for 'B' is 01000010, not 00100010
+
+Page 40, problem 7
+   Change all occurrences of r2 to r0.
+
+Page 48, 323
+   The code for brn is 010; the code for brp is 011
+
+Page 143
+   Change "+-" near the bottom of the page to {
+
+Page 296
+   Change the declaration of inst on the sixth line to ir. Some 
+   declarations are missing for the code given for i1.c (for 
+   example, the declaration of pcoffset9). See i1shell.c for the 
+   correct set of declarations. 
+   
+Page 297 
+   Executable files for the lcc computer should start with the 
+   letter "o". This letter identifies the file as an executable 
+   lcc file. The reading of this "o" was omitted in the sample 
+   code in the textbook. Before the first fread, there should be 
+   another fread which reads the file signature (the letter"o"). 
+
+   The third and fourth statements in the body of the while loop 
+   should be 
+
+      pcoffset9 = ir << 7;
+      pcoffset9 = imm9 = pcoffset >> 7;
+
+   See i1shell.c for the correct version.
+
+Page 298 
+   Change if statement to
+
+   if (bit5)
+   {
+      regsave1 = r[sr1];
+      r[dr] = regsave1 + imm5;
+      // set c, v flags
+      setcv(r[dr], regsave1, imm5);
+   }
+   else
+   {
+      regsave1 = r[sr1]; regsave2 = r[sr2];
+      r[dr] = regsave1 + regsave2;
+      // set c, v flags
+      setcv(r[dr], regsave1, regsave2);
+   }
+
+   i1shell.c has this update.
+
+Page 300
+   The fwrite near the top of the page should output the file 
+   signature "o" followed by "C". See a1shell.c for the 
+   correction. 
+
+Page 302
+   Some declarations are missing in the code given for a1.c at 
+   the bottom of the page (for example, the declarations for 
+   stsize, symbol, and symadd). See a1shell.c for the correct set 
+   of declarations. 
+   
+Page 303
+   The letter 'o' (the file signature to an lcc executable file) 
+   should be outputed before the letter 'C'. See a1shell.c for 
+   the correct version. 
+
+Page 305
+   The code on the tenth line from the bottom (which tests if the 
+   third operand starts with 'r') works ok for the a1test.a test 
+   program for the assembly level 1 project. But for the general 
+   case, the code should instead test the entire register name 
+   and test for all the possible register names: 
+   
+      "r0", "r1", ..., "r7", "fp", "sp", and "lr". 
+
+   Moreover, the tests should be case insensitive because 
+   register names can be in either upper or lower case. 
+   Similarly, the tests for the mnemonics and directives should 
+   be case insensitive. However, the tests for labels should be 
+   case sensitive. See the rule at the bottom of page 42 in the 
+   textbook. 
+   
+   See a1shell.c which uses the more general approach: It uses a 
+   function isreg() that is passed o3 and which returns 1 if o3 
+   points to a reg name, and 0 otherwise. isreg() tests the 
+   entire name it is passed and performs a case insensitive 
+   compare. 
+   
+   To do a case insensitive string compare, use strcmpi(), which 
+   works just like strcmp(), except the compare is case 
+   insensitive. However, your compiler may not support strcmpi(), 
+   in which case you need to write your own and include it in 
+   your assembler. For example, 
+
+      // case insensitive string compare
+      short int strcmpi(const char *p, const char *q) 
+      {
+         char a, b;
+         while (1) 
+         {
+            a = tolower(*p); b = tolower(*q);
+            if (a != b) return a-b;
+            if (a == '\0') return 0;
+            p++; q++;
+         }
+      }
+
+Page 306
+   Insert after the third line (the right brace):
+
+      fwrite(&macword, 2, 1, outfile);
+   
+   Alternatively, you can remove all the fwrite()-loc_ctr++ 
+   sequences as shown but include it only once after the long 
+   nested if-else that determines macword for each of the 
+   instructions. But be careful that your code still works for 
+   .blkw which in general requires multiple fwrite() calls. Note 
+   that such a modification reduces the size of the program only 
+   minimally and has no effect on run-time. So its benefit (a 
+   minimally smaller program) does not justify its cost (more 
+   complex code making bugs more likely). 
+
+Page 310, 315
+   The code is not handling the "o" at the beginning of an 
+   executable file. See pshell.c and lshell.c for the correct 
+   versions. 

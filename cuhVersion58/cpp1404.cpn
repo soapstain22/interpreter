@@ -1,0 +1,18 @@
+  1 // cpp1404.cpp
+  2 #include <iostream>
+  3 using namespace std;
+  4 int y = 3;
+  5 void f(int &x)
+  6 {
+  7    if (x) {
+  8       cout << "hello\n";
+  9       x = x - 1;
+ 10       f(x);
+ 11    }
+ 12 }
+ 13 int main()
+ 14 {
+ 15    f(y);
+ 16    cout << y << endl;
+ 17    return 0;
+ 18 }

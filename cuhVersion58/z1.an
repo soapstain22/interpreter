@@ -1,0 +1,19 @@
+  1 ; z1.a
+  2                   ; void f(void);
+  3           .global x    ; int x = 5;
+  4 x:        .word 5
+  5 
+  6           .global main ; int main()
+  7 main:     push lr      ; {
+  8           push fp      ; 
+  9           mov fp, sp
+ 10             
+ 11           bl f        ;    f();
+ 12 
+ 13           mov r0, 0    ;    return 0;
+ 14           mov sp, fp
+ 15           pop fp
+ 16           pop lr
+ 17           ret
+ 18 
+ 19           .extern f    ; }

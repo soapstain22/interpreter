@@ -1,0 +1,253 @@
+                    C Library Functions Summary
+
+String functions
+----------------
+#include <string.h>    // required include for string functions
+
+For most string functions, the arguments have type char 
+pointer. Note that the name of a char array without the square 
+brackets is a pointer to the first slot of the array (so it's 
+a char pointer). A string constant is translated by the 
+compiler to the pointer to the first character of the string 
+(so it's a char pointer). For example, in the following 
+function call, two char pointers are passed to strcpy: 
+
+char a[100];
+strcpy(a, "hello");
+
+
+   char *strcat(char *, const char *)                     
+   ----------------------------------
+   Appends string at second address to first address
+
+
+   char *strchr(const char *, int) 
+   -------------------------------   
+   Returns pointer to first occurrence of char in string
+   Searches left to right
+   Returns NULL if char not found
+   For example, 
+      p = strchr(a, 'x');    // a is a char array
+
+
+   int strcmp(const char *, const char *)
+   --------------------------------------
+   Compares two strings
+   Returns 0 (treated as false) if equal
+   Returns negative if first string precedes second alphabetically
+   Returns positive if second string precedes first alphabetically
+
+
+   strcpy(char *, const char *)
+   ----------------------------
+   Copies string at second address to first address
+
+
+   char *strdup(const char *)
+   --------------------------
+   Dynamically allocates space for string
+   Copies string to allocated space
+   Returns pointer to allocated space
+
+
+   int strlen(const char *)
+   ------------------------
+   Returns length of string (does not count null char at end)
+
+
+   int strncmp(const char *, const char *, int)
+   --------------------------------------------
+   Like strcmp but it compares up to the max length specified by 
+   third arg
+
+
+   char *strrchr(const char *, int)
+   -----------------------------------------
+   Same as strchr but searches right to left
+
+
+   char*strstr(const char *, const char *)
+   ---------------------------------------
+   Returns the address of the first occurrence of the 
+   second string in the first string.
+   If no occurrence, returns NULL.
+
+
+   char *strtok(char *, const char *)
+   ----------------------------------
+   Tokenizes the first string 
+   Treats characters in second string as token separators
+   Returns pointer to token
+   After the first call, use NULL as the first arg to tokenize the 
+   remaining tokens
+   Each call returns one token
+   If no more tokens, returns NULL
+
+
+"is" functions
+--------------
+
+   #include <ctype.h>   // required include file
+
+   int isalnum(int)
+   int isalpha(int)
+   int isascii(int)
+   int isdigit(int)
+   int islower(int)
+   int isspace(int)
+   int isupper(int)
+
+   Returns zero on false
+   Return nonzero on true
+
+   Passed an int (char automatically extended to int)
+
+
+Frequently used I/O functions
+-----------------------------
+
+   #include <stdio.h>    // required include file
+
+   printf
+   ------
+   First arg pointer to the control string. After first arg, 
+   args are values unless corresponding conversion code is %s, 
+   in which case the arg should be a char pointer. 
+   Conversion codes: %d (decimal), %x (hex), %c (char), %s (string)  
+
+
+   fprintf
+   -------
+   Like printf except output to file. File pointer is first 
+   argument followed by control string.
+
+
+   int scanf()
+   -----------
+   All arguments should be pointers 
+   First arg should be conversion codes
+   Same conversion codes as printf
+   Returns the number of successful conversion
+
+
+   int sscanf
+   ----------
+   Like sscan except input from string, which is the firsr arg, 
+   followed by the control string.
+
+
+   fscanf
+   ------
+   Like scanf except input from file. File pointer is first 
+   argument followed by control string.
+
+
+Other I/O functions
+-------------------
+
+   int fread(void *, size, number, FILE *)
+   ---------------------------------------
+   Reads number items of size from file into buffer first parameter
+   points to
+   Returns number of items read
+
+
+   int fwrite(const void *, size, number, FILE *)
+   ----------------------------------------
+   Writes number items of size from buffer to which first parameter 
+   points to file
+   Returns number of items written
+
+
+   char *fgets(char *, int, FILE *)
+   --------------------------------
+   Reads at most n-1 characters (n is the 2nd arg) into buffer 
+   first parameter points to
+   Stops reading at n-1 characters or on a newline
+   Newline retained
+   Null character appended at end
+   Returns null pointer (which is treated as false) on EOF
+
+
+   fputs(const char *, FILE *)
+   --------------------------
+   Write string to file
+   Does not append a null character
+   Null character not copied
+
+                                      
+   int fgetc(FILE *)
+   -----------------
+   Returns next character in the file.
+   Returns EOF on end of file
+
+
+   int fputc(int, FILE *)
+   ----------------------
+   Writes character to file.
+
+
+   void rewind(FILE *)
+   -------------------
+   Resets file to beginning
+
+
+Memory allocation
+-----------------
+
+   #include <stdlib.h>    // required include file
+
+   void *malloc(int)
+   -----------------
+   Allocates specified number of bytes 
+   Returns a void pointer to allocated space
+   Should cast pointer to the appropriate type 
+   For example,
+      int *p;
+      p = (int *)malloc(100*sizeof(int));  // allocates 100 ints
+
+
+   void free(void *)
+   -----------------
+   Deallocates previously allocated block of memory
+
+
+Terminate program
+-----------------
+
+   void exit(int)
+   --------------
+   #include <stdlib.h>   // required include file
+   Terminates program 
+   Passes return code back to OS
+
+
+Get size
+--------
+
+   sizeof(type or variable)
+   ------------------------
+   Returns number of bytes in arg
+   For example,
+      int x, y, a;
+      x = sizeof(int);
+      y = sizeof(a);
+
+   Not a function--compiler replaces with number of bytes
+
+
+Non-standard functions (defined in a1shell.c)
+---------------------------------------------
+
+   int mystrcmpi(const char *, const char *)
+   -----------------------------------------
+   Compares two strings case insensitive
+   Returns 0 (treated as false) if equal
+   Returns negative if first string precedes second alphabetically
+   Returns positive if second string precedes first alphabetically
+
+
+   int mystrncmpi(const char *, const char *, int)
+   -----------------------------------------------
+   Like mystrcmpi but it compares up to the max length specified by 
+   third arg

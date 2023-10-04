@@ -1,0 +1,17 @@
+  1 // c1203.c
+  2 #include <stdio.h>
+  3 int r = 5;
+  4 static int s;
+  5 static void f(int a, int b)
+  6 {
+  7    s = a + b + r;
+  8 }
+  9 int main()
+ 10 {
+ 11    int q = -15;
+ 12    f(q, q + 8);
+ 13    printf("r = %d\n", r);
+ 14    printf("s = %d\n", s);
+ 15    printf("q = %d\n", q);
+ 16    return 0;
+ 17 }

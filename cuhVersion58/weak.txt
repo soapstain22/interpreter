@@ -1,0 +1,50 @@
+                                            weak.txt
+
+Weak Instruction Set                         
+--------------------
+Opcode      Format       Description
+
+ 8         push x     mem[--sp] = x
+ 4         add        temp = mem[sp++]; r0 = mem[sp]; mem[sp] = r0 + temp  
+
+x is the rightmost 12 bits in the instruction, which can range
+from 0 to 4095 (x is an unsigned number). 
+
+temp is the name of one of the register in the LCC that is 
+available to hold intermediate values in a computation.
+
+Also included in the weak instruction set are all the trap
+instructions (din, dout, nl, halt, etc.), all of which are
+handled by the sim program, not by microinstructions. For
+this instruction set, dout pops the stack and displays in
+decimal the popped value. din pushes the value read in onto
+the stack.
+
+
+Microcode
+---------
+
+w.sm is the symbolic microcode file you create for the weak 
+instruction set.
+
+
+Test Program wtest.a (no assembler is available)
+------------------------------------------------
+
+          ; test program for w.sm microcode        wtest.a
+          push 20
+          push 35
+          add
+          dout
+          nl
+          halt
+
+wtest.hex is the wtest.a program in hex form that you create.
+
+To run wtest.hex, enter
+
+   micro w.sm
+   h2b wtest.hex w
+   sim wtest.e
+
+Hand in w.lst, wtest.hex, wtest.log.

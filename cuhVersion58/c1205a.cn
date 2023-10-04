@@ -1,0 +1,27 @@
+  1 // c1205a.c
+  2 #include <stdio.h>
+  3 void g(int *);
+  4 static void f(int x)
+  5 {
+  6    printf("%d\n", x);
+  7 }
+  8 int main()
+  9 {
+ 10    int x;
+ 11    int y = 20;
+ 12    f(y);
+ 13    g(&x);
+ 14    printf("%d\n", x);
+ 15    return 0;
+ 16 }
+ 17 
+ 18 
+ 19 
+ 20 
+ 21 
+ 22 
+ 23 
+ 24 
+ 25 
+ 26 
+ 27 

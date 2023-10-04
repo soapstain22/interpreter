@@ -1,0 +1,20 @@
+  1 // ex0901.c  Structs
+  2 #include <stdio.h>
+  3 struct Point
+  4 {
+  5    int x;
+  6    int y;
+  7 };
+  8 struct Point a;
+  9 struct Point *p;
+ 10 //========================
+ 11 int main()
+ 12 {
+ 13    a.x = 1;
+ 14    a.y = 2;
+ 15    p = &a;
+ 16    printf("%d\n", a.y);
+ 17    printf("%d\n", p -> y);
+ 18    printf("%d\n", (*p).y);
+ 19    return 0;
+ 20 }   

@@ -1,0 +1,4 @@
+          .start startup
+          .extern main          
+startup:  bl main
+          halt

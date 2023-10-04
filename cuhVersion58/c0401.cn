@@ -1,0 +1,15 @@
+  1 // c0401.c
+  2 #include <stdio.h>
+  3 void g()
+  4 {
+  5    printf("in g\n");
+  6 }
+  7 void f(void)
+  8 {
+  9    g();
+ 10 }
+ 11 int main()
+ 12 {
+ 13    f();
+ 14    return 0;
+ 15 }

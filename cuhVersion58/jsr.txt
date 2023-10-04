@@ -1,0 +1,52 @@
+                                            jsr.txt
+
+Jsr Instruction Set                         
+--------------------
+Opcode      Format       Description
+
+ 8         jsr x      r7 = pc; pc = x
+ 4         ret        pc = r7
+ 2         ldi x      r0 = x
+
+x is the rightmost 12 bits in the instruction, which can range
+from 0 to 4095 (x is an unsigned number).
+
+Also included in the jsr instruction set are all the trap
+instructions (din, dout, nl, halt, etc.), all of which
+are handled by the sim program, not by microinstructions.
+
+
+Microcode
+---------
+
+j.sm is the symbolic microcode file you create for the jsr 
+instruction set.
+
+
+Test Program jtest.a (no assembler is available)
+------------------------------------------------
+
+          ; test program for j.sm microcode        jtest.a
+          jsr sub1
+          dout
+          nl
+          jsr sub2
+          dout
+          nl
+          halt
+
+sub1:     ldi 5
+          ret
+sub2:     ldi 7
+          ret
+
+jtest.hex is the jtest.a program in hex form that you create.
+
+To run jtest.hex, enter
+
+   micro j.sm
+   h2b jtest.hex j
+   sim jtest.e
+
+Hand in j.lst, jtest.hex, and jtest.log
+

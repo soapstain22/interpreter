@@ -1,0 +1,72 @@
+                      comment Utility Program
+
+DISCLAIMER 
+----------
+
+The files in this software package are provided to you on an "as 
+is" basis for instructional purposes only, without any 
+warranties, expressed or implied. The author and copyright holder 
+of these files shall not be liable in any event for incidental, 
+consequential, special, or punitive damages in connection with, 
+or arising out of the distribution, performance, or use of these 
+files.        
+================================================================= 
+
+Format
+------
+
+   comment <input filename> <optional indentation>
+
+
+Description
+-----------
+comment copies a file and inserts in the copy a semicolon/blank 
+sequence just before the first nonwhite space on each line, which
+turns C code into an assembly language comment. 
+
+The copied file has the same base name as the input file but with 
+the extension ".a". 
+
+The comments are indented by the number of columns specified  
+when the comment program is invoked (30 in the example that 
+follows). If the indentation is omitted when comment is invoked, 
+it defaults to 30. The best number of columns to indent depends
+on the input file. If it has long lines, then indent less; if
+it has short lines, then indent more.
+
+This program is useful in creating a file from a C or C++ 
+program file in which the C/C++ code appears as assembly language 
+comments. You can then add your assembly code with the corresponding 
+C or C++ code already in place as comments.  
+
+
+Example
+-------
+To comment the C file sample.c, enter
+
+   comment sample.c 30
+
+comment then creates the file sample.a containing each line 
+sample.c prefixed with a semicolom/blank sequence. 
+
+ 
+sample.c file 
+-------------
+#include <stdio.h>
+int main()
+{
+   printf("Hello, world.\n");
+
+   return 0;
+}
+
+
+sample.a file created from sample.c by the comment program 
+----------------------------------------------------------
+                              ; #include <stdio.h>
+                              ; int main()
+                              ; {
+                                 ; printf("Hello, world.\n");
+
+                                 ; return 0;
+                              ; }

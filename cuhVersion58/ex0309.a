@@ -1,0 +1,21 @@
+; ex0309.a
+          lea r0, prompt      ; prompt for numbers
+          sout r0
+          din r0              ; read in first number
+          mov r1, r0          ; save first number in r0
+          din r0              ; read in second number
+          sub r0, r1, r0      ; sub 2nd number from first
+          brlt less           ; branch according to the result
+          bre equal
+          brgt greater        ; can use br here instead of brgt
+less:     lea r0, msglt
+          br display          ; unconditional branch to display
+equal:    lea r0, msge
+          br display          ; unconditional branch to display
+greater:  lea r0, msggt
+display:  sout r0             ; display result
+          halt
+prompt:   .string "Enter two signed numbers\n"
+msglt:    .string "First number less\n"
+msge:     .string "Numbers equal\n"
+msggt:    .string "First number greater\n"

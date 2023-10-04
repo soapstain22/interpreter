@@ -1,0 +1,48 @@
+          ; test program btest.a
+          ldi msg
+          sout
+          nl
+          nl
+          ld x
+          dout     ; 1 
+          st x
+          ldi 1
+          add x    ; 2
+          dout
+          ldi 4
+          sub x
+          dout     ; 3
+          call sub ; 4
+          asp -2
+          ldi 5
+          str 1
+          ldi 0
+          ldr 1
+          dout     ; 5
+          ld x
+          addr 1
+          dout     ; 6
+          ldi 12
+          subr 1
+          dout     ; 7
+          br br1
+          halt
+br1:      ldi 8
+          dout     ; 8
+          ldi 0
+          brz br2
+          halt
+br2:      ldi 9
+          dout     ; 9
+          sub y
+          brn br3
+          halt
+br3:      ldi 10
+          dout     ; 10
+          halt
+x:        .word 1
+y:        .word 20
+msg:      .string "Correct if 1 to 10 displayed"
+sub:      ldi 4
+          dout
+          ret

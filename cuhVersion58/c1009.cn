@@ -1,0 +1,16 @@
+  1 // c1009.c  Initializing Arrays
+  2 #include <stdio.h>
+  3 int  a[]  = {1, 2};
+  4 int  b[5] = {1, 2};   
+  5 char c[]  = {'1', '2'};
+  6 char d[]  = {'1', '2', '\0'};
+  7 char e[]  = "12";
+  8 int main()
+  9 {
+ 10    char f[] = "12";
+ 11    printf("%s\n", d);
+ 12    printf("%s\n", e);
+ 13    printf("%s\n", f);
+ 14    printf("%s\n", "12");
+ 15    return 0;
+ 16 }

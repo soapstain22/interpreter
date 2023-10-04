@@ -1,0 +1,15 @@
+  1 // cpp1401.cpp
+  2 #include <iostream>
+  3 using namespace std;
+  4 int x = 1, y = 2;
+  5 void f(int &x)
+  6 {
+  7    x++;
+  8    cout << x << endl;
+  9 }
+ 10 int main()
+ 11 {
+ 12    f(y);
+ 13    cout << x << " " << y << endl;
+ 14    return 0;
+ 15 }

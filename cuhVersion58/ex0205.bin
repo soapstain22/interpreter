@@ -1,0 +1,4 @@
+; ex0205.bin
+1111 101 0000 00111  ; din reads decimal number into r5
+1111 101 0000 00100  ; hout displays in hex the binary number in r5 
+1111 000 0000 00000  ; halt

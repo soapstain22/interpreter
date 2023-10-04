@@ -1,0 +1,603 @@
+            Sim Microlevel Simulator Version 3.0
+                  February 11, 2022
+
+DISCLAIMER 
+----------
+
+The files in this software package are provided to you on an "as 
+is" basis for instructional purposes only, without any 
+warranties, expressed or implied. The author and copyright holder 
+of these files shall not be liable in any event for incidental, 
+consequential, special, or punitive damages in connection with, 
+or arising out of the distribution, performance, or use of these 
+files.           
+================================================================= 
+
+New: the lcc program can now be invoked by
+double clicking on its icon.
+
+New assembly/machine instruction: sext (sign
+extension). See LCCInstructionSetSummary.pdf. 
+
+Support for m1, m2 Mac.
+
+
+Users of the second edition of the textbook
+-------------------------------------------
+
+The textbook explains how to use sim and the other programs. You 
+will likely need to read this file only minimally, if at all.
+
+
+Users of the first edition of the textbook
+------------------------------------------
+
+The examples in the this software package use directives and 
+instruction mnemonics that different from those in the first 
+edition of the textbook. This should not cause a problem: 
+The programs in this package support the directives and
+mnemonics in both editions of the textbook.
+
+The assembly language in this edition has been updated
+to match the optimal assembly language in "Constructing
+a Microprogrammed Computer Second Edition."
+
+Here are equivalences of directives: 
+
+     .fill equivalent to .word
+     .blkw equivalent to .zero
+     .stringz equivalent to .string or .asciz
+
+Here are the equivalences of instruction mnemonics:
+
+     jsr is equivalent to bl
+     jsrr is equivalent to blr
+
+In addition, if a label at the start of a line of assembly code 
+does not start in column 1, it must be followed by a colon. Most 
+assembly languages require a colon after a label whether or not 
+the label starts in column 1. Accordingly, in the example 
+programs in this package and in the 2nd edition of textbook, 
+labels are all followed by a colon. 
+
+g replaces the 0 debugger command. 
+
+
+Changes in Version 3.0
+----------------------                            
+
+The addr field and the mpc are now 12 bits wide. The microstore 
+capacity has been increased to 4096 microinstructions.
+
+The microinstruction format has been extended by two bits: one 
+more bit in the addr field and a new field: the one-bit field 
+mmux.
+
+If a microcode file starts with the letter "s", the top of the 
+stack--not r0--is used by the I/O trap instructions.
+
+sim now supports a mpc multiplexor which allows for fast decoding 
+of a machine language instruction. The opcode and extended opcode 
+(if one is present), approapriate shifted, are loaded into the 
+mpc, causing an immediate branch to the microcode for that 
+machine instruction. The loading of the mpc occurs only for those 
+microinstructions in which mmux is 1. For details, see the 
+textbook. 
+
+Microstore now has a maximum capacity of 4096 microinstructions.
+
+At each pause in execution, the user can now displays the 
+contents of memory and/or registers. All registers are displayed 
+at a pause if r is entered. If r is followed by a register number 
+in decimal, only that register is displayed. If r followed by the 
+register name is entered, then only that register is displayed--
+for example, rac displays only the ac register. 
+
+At the end of execution, the user can now display the final 
+contents of memory and/or registers if the -f command line 
+argument is specified.
+ 
+A bug with the computation of the C and V flags has been fixed.
+
+In case of an infinite loop when the trace is active and/or the 
+program is generating output to the log file, the log file can 
+grow to an exorbinant size consuming all of the user's computer 
+hard disk space. sim now continually checks on the log file size 
+and pauses execution on every 50K byte increment in log file 
+size, allowing the user to cancel execution. 
+
+The check for an infinite loop now has a higher threshold for 
+generating a warning. 
+
+Input is now buffered. For example, if you enter on one line
+
+1 2
+
+and then execute two din instructions, the first din will input the 1, 
+the second din will input the 2. Previously, the first din inputed
+the 1 and then discarded the rest of the line. Thus, 2 would have
+to be re-entered for the second din.
+
+Each program in the package can now be invoked by double clicking 
+on the program's icon. 
+
+A label does not have to start in column. However, it it does 
+not start in column 1, it must be followed by a colon. 
+
+The debugger breakpoint command is now p, not b (so it is
+not a hex digit).
+
+Numbers and addresses specified in the debugger commands or on
+the command line are assumed to be in hex, except for the r 
+command (which requires a decimal number if a register number 
+is specified. You don't need to prefix a hex constant with "0x".
+
+New debugger command: m followed by an optional address. It 
+displays a block of 64 words of machine code starting at the 
+given address. If an address is not specified, the next block in 
+memory is displayed.
+
+New debugger command: h It displays a help screen that explains 
+the debugger commands.
+
+New debugger command: T (uppercase) It toggles on and off Machine 
+level tracing.
+
+The .log file created by sim now automatically includes 
+everything an instructor needs to evaluate student's work, which 
+makes it unnecessary to students to submit the machine, 
+assembler, or microcode in addition to the log file. 
+
+The return value returned when the halt instruction is executed 
+is the value in r0 unless using the stack instruction set or if  
+the configuration file specifies 1 for the usesp switch. In that 
+case, the value returned is the value on the top of the stack. 
+
+For most cases, the only command line arguments you might want to 
+use are -t, (to turn on the micro-level debugger), -T (to turn on 
+the machine-level debugger) or -L in either upper or lower case 
+(to specify a load point). The sim program will select the 
+correct microcode file so there is no need to use the -m command 
+line argument unless you are using a user-defined instruction set 
+and the signature at the start of the executable files does not 
+match the base name of the microcode file.  
+
+The -S forces the includes of the source program listing in the 
+log file. -S- prevents its inclusion.
+
+The -s forces the includes of the micro source program listing in 
+the log file. -s- prevents its inclusion. 
+
+The microcode source listing is included in the log file if the 
+input file ends in "test", unless -s- is specified on the command 
+line. 
+
+
+Changes in Version 1.2
+----------------------
+
+-d activates both the step and trace functions. 
+
+Corrected errors in sim.txt documentation
+
+Fixed bug in stest.a (not displaying 10 with nozero loadpoint)
+
+gcc-type directives (.zero, .string/.asciz, .word) now supported 
+by the basic, stack, and optimal assemblers. 
+
+The debugger command, p without any arguments, displays the 
+current breakpoint. 
+
+
+Changes in Version 1.1:
+-----------------------
+
+Improved trace format.
+
+Can now turn trace function on or off independently of the step 
+function at any debugger pause with the t command.
+
+Can set a breakpoint at any debugger pause:
+
+    p<addr>     sets breakpoint at microcode hex address <addr>
+    p-          cancels breakpoint
+    p           displays current breakpoint
+
+
+Invoking the microlevel simulator
+---------------------------------
+
+On Windows, on the command line enter
+
+   sim <machine code file name> <optional arg> <optional arg> ...
+
+On OS X, Linux, or Raspbian, on the command line enter
+
+   ./sim <machine code file name> <optional arg> <optional arg> ...
+
+
+Optional command line arguments (can be specified in any order):
+----------------------------------------------------------------
+
+   -L <loadpt>  (or -l <loadpt>)
+           If omitted, the load point defaults to 0. If
+           specified, it should be a hex constant. For
+           example, a3
+
+   -t  
+           If present, the micro-level trace and step functions are 
+           activated. 
+
+   -T  
+           If present, the machine-level trace and step functions are 
+           activated. 
+
+   -f      
+           Memory and/or registers displayed when program 
+           terminates. 
+
+   The following s command line arguments are rarely needed 
+   because sim automaticlly includes in the log file what is 
+   needed: 
+
+   -s      Force inclusion of microcode file if available
+           into the log file.
+   -s-     Prevent inclusion of microcodee file into the 
+           log file.
+   -S      Force inclusion of the machine or assembly
+           language source file if available into the log 
+           file.
+   -S-     Prevent inclusion of the machine or assembly
+           language source file into the log file.
+
+   -m <microcode file name> 
+           Used only if the executable file does not have a 
+           signature that identifies the microcode file. 
+
+If an extension is omitted on the machine code file name, it
+defaults to ".e". If an extension is omitted on the microcode
+file name, it defaults to ".m". The configuration file name is
+given by the base name of the microcode file plus the extension
+".cfg". A configuration file is not used for machine code files
+for the basic, stack, or optimal instruction sets.
+
+Output file:
+
+   <machine code file base name>.log
+
+
+Debugger commands
+-----------------
+
+   Enter         Execute step count number of microinstructions.
+
+   <hex number>  Set step count. 
+
+   g             Execute to end unless a breakpoint is reached.
+                 The trace function status not affected.
+
+   h             Display help screen on debugger commands.
+      
+   m<addr>       Display 64 (decimal) in memory starting at hex 
+                 address <addr>.
+
+                 When in memory display mode:
+                    Enter key    Display next 64 (decimal) words 
+                                 in memory. To exit memory 
+                                 display mode,  Enter without 
+                                 first entering a character. 
+                    m<addr>      Continue display at new address.
+                    Other key    Exit memory display mode
+
+   m             Continue from where previous display left off.
+
+
+   p<addr>       Set microcode breakpoint at hex address <addr>.
+                 If <addr> is negative or greater than 0xffff,
+                 then a breakpoint is not set, and the current
+                 breakpoint, if one is in effect, is cancelled.
+
+   p-            Cancel current breakpoint.
+
+   p             Display current breakpoint.
+
+   
+   t             toggle micro-level trace off or on. If on, 
+                 the t command turns off only the trace mode. The 
+                 step mode is still on. Thus, every time the 
+                 Enter key is hit, the step count number of 
+                 instructions are executed but not traced. To 
+                 turn off the step mode so the program executes 
+                 to the end (unless a breakpoint is triggered), 
+                 enter g. 
+
+   T             toggle machine-level trace off or on). If  on, 
+                 the T command turns off only the machine-level 
+                 trace mode. The step mode is still on. Thus, 
+                 every time the Enter key is hit, the step count 
+                 number of instructions are executed but not 
+                 traced. To turn off the step mode so the program 
+                 executes to the end (unless a breakpoint is 
+                 triggered), enter g. 
+
+
+Microcode format
+----------------
+
+Field   Width             Function
+
+A         5    Specifies which register inputs to the A multiplexer
+
+amux      1    Controls A multiplexer:
+               amux = 0 then A field drives A decoder
+               amux = 1 then sr1 field in ir drives A decoder
+
+B         5    Specifies which register inputs to the B multiplexer
+
+bmux      1    Controls B multiplexer:
+               bmux = 0 then B field drives B decoder
+               bmux = 1 then sr2 field in ir drives B decoder
+
+C         5    Specifies register that inputs to the C multiplexer
+
+cmux      1    Controls C multiplexer:
+               cmux = 0 then C field drives C decoder
+               cmux = 1 then dr field drives C decoder
+
+ALU       4    specifies ALU operation:
+
+
+    F3 F2 F1 F0      Mnemonic       Output              Flags Set
+    0  0  0  0 (0)     nop     left                         
+    0  0  0  1 (1)     not     ~left                        nz
+    0  0  1  0 (2)     and     left & right                 nz
+    0  0  1  1 (3)     sext    left sign ext, (rt =  mask)  nz
+    0  1  0  0 (4)     add     left + right                 nzcv
+    0  1  0  1 (5)     sub     left - right                 nzcv
+    0  1  1  0 (6)     mult    left * right                 nz
+    0  1  1  1 (7)     div     left / right                 nz
+    1  0  0  0 (8)     rem     left % right                 nz
+    1  0  0  1 (9)     or      left | right                 nz
+    1  0  1  0 (10)    xor     left ^ right                 nz
+    1  0  1  1 (11)    sll     left << right (logical)      nzc
+    1  1  0  0 (12)    srl     left >> right (logical       nzc
+    1  1  0  1 (13)    sra     left >> right (arithmetic)   nzc
+    1  1  1  0 (14)    rol     left << right (rotate)       nzc
+    1  1  1  1 (15)    ror     left >> right (rotate)       nzc
+
+u         1    "User" n, z, c, v flags used instead of system flags
+
+rd        1    Initiates memory read from address in mar
+wr        1    Initiates memory write of data in mdr to address in mar
+
+cond      4    Specifies branch condition:
+
+    Mnemonic      Branch if              Branch on
+ 0  nobr                        never
+ 1  zer        z = 1            zero or equal
+ 2  !zer       z = 0            not zero or not equal
+ 3  neg        n = 1            negative
+ 4  !neg       n = 0            not negative
+ 5  cy or <    c = 1            less than (unsigned cmp)
+ 6  !cy or >=  c = 0            grt or eq (unsigned cmp/overflow)
+ 7  v          v = 1            signed overflow
+ 8  pos        n = z            positive
+ 9  lt         n != v           less than (signed cmp)
+10  le         n != v or z = 1  less than or equal (signed cmp)
+11  gt         n = v and z = 0  greater (signed cmp)
+12  ge         n = v            greater than or equal (signed cmp)
+13  <=         c = 1 or z = 1   less than or equal (unsigned cmp)
+14  >          c = 0 and z = 0  greater than (unsigned cmp)
+15  br                          always
+
+addr      11   branch-to address
+
+
+Default Register Names
+----------------------
+
+ Reg   Name           Initial Contents
+
+  0     r0 or ac
+  1     r1
+  2     r2
+  3     r3
+  4     r4
+  5     r5 or fp
+  6     r6 or sp
+  7     r7 or lr
+  8     r8 or 2         0x0002
+  9     r9 or 3         0x0003
+ 10     r10 or 4        0x0004
+ 11     r11 or omask    0xf000
+ 12     r12 or cmask    0x01e0
+ 13     r13 or bit5     0x0020
+ 14     r14 or bit11    0x0800
+ 15     r15 or bit15    0x8000
+ 16     r16 or m3       0x0007
+ 17     r17 or m4       0x000f
+ 18     r18 or m5       0x001f
+ 19     r19 ir m6       0x003f
+ 20     r20 or m8       0x00ff
+ 21     r21 or m9       0x01ff
+ 22     r22 or m11      0x07ff
+ 23     r23 or m12      0x0fff
+ 24     r24 or temp        
+ 25     r25 or ir                (machine instruction register)
+ 26     r26 or dc                (decoding register)
+ 27     r27 or 1        0x0001   (constant 1)
+ 28     r28 or pc                (program counter register)
+ 29     r29 or mar               (memory address register)
+ 30     r30 or mdr               (memory data register)
+ 31     r31 or 0        0x0000   (read-only register containing 0)
+
+
+Registers 25 to 31 cannot be redefined with a cfg file.
+
+
+dr, sr1, sr2
+------------
+
+   dr, sr1, and sr2 are bit numbers of the leftmost bit in the
+   three register fields in the machine instruction in the ir.
+   If amux = 1, then the sr1 field drives the a bus, not the
+   register specified by the a field. Similarly if bmux = 1, then
+   the sr2 field drives the b bus, not the register specified by
+   the b field. If cmux = 1, then the register specified by the
+   dr field is loaded from the c bus, not the register specified
+   by the c field. Default values for dr, sr1, and sr2 are 11, 8,
+   and 2, respectively. They can be changed by a cfg file.
+
+
+Format of a Symbolic Microinstruction
+-------------------------------------
+
+   A symbolic microinstruction consists of a subset of the
+   following components, all on one line, with at least one blank
+   separating each component:
+
+      optional label starting in column 1
+      a.<reg name>
+      amux
+      b.<reg name>
+      bmux
+      c.<reg name>
+      <ALU code mnemonic>
+      u
+      rd
+      wr
+      <cond code mnemonic>@<branch-to label>
+
+   Omitted components default to zero except for c.<regname>,
+   which defaults to 31, which is the number of the read-only
+   register that contains 0. Thus, if c.<regname> is omitted, no
+   register is loaded from the c bus. All subsets are permissible
+   except for:
+
+       rd and wr cannot both appear in the same microinstruction.
+
+       c.mar or c.mdr cannot appear in a microinstruction in
+       which rd or wr appears.
+
+   A single line comment starts with a semicolon.
+
+   The components of a microinstruction can be in any order
+   except for a label, which if specified should start in column
+   1. The other components of a microinstruction should NOT start
+   in column 1.
+
+   Sample symbolic microcode:
+
+
+L2:      ; add
+         a.ir and b.m12 c.mar
+         rd
+         a.ac add b.mdr c.ac br@fetch
+
+
+How sim Determines Which Microcode to Load
+------------------------------------------
+
+The machine code file produced by h2b and the basic, stack, and 
+optimal assemblers starts with a single character signature that
+identifies the microcode file to be used. For example, if a
+machine code file starts with 'b', then sim will load and use the
+microcode in b.m.
+
+
+Creating Your Own Instruction Set
+---------------------------------
+
+To create your own instruction set, you need to create a symbolic 
+microcode file (like b.sm). The basename of your microcode file 
+should consist of a single character other than b, s, o, or e. 
+Then assemble it using the micro program to get a binary 
+microcode file. You can then use the h2b program to create an 
+executable machine code file. 
+
+For example, to run a program using the microcode in u.sm,
+first assemble u.sm by entering
+
+     micro u.sm
+
+to get the binary microcode file u.m. Create a hex file utest.hex 
+(you choose the basename) containing machine code that uses your 
+instruction set. Convert the file to binary by entering the name 
+of the hex file and the basename of your microcode file:
+
+     h2b utest.hex u
+
+to get the executable machine code file utest.e. Run utest.e
+using sim by entering
+
+     sim utest.e
+
+You can also write an assembler for your new instruction set. 
+Like the basic, stack, and optimal assemblers, your assembler 
+should output an initial signature character in lower case that 
+is the basename of your microcode file. It should generate a 
+machine code file that contains the signature, an optional header 
+with S and/or A entries, the letter 'C', and the machine code: 
+
+   Signature (basename of microcode file)
+   Header entries (if any)
+   C
+   Machine code
+
+
+An S header entry consists of the ASCII code for 'S' followed by 
+a 16-bit address. It indicates the address at which execution 
+should start. 
+
+An A header entry consists of the ASCII code for 'A' followed by 
+a 16-bit address. It indicates the address of an absolute address 
+in the program relative to 0. Absolute addresses have to be 
+adjusted if the load point is not zero. 
+
+If you are creating your own instruction set, you will also have
+to create a configuration file if the default configuration of
+sim is not correct for your instruction set.
+
+
+Configuration File
+------------------
+
+The basename of a configuration should be same as the basename of
+the microcode file. Its extension should be ".cfg".
+
+Format:
+
+   Zero or more register definitions
+   Line starting with %%
+   Line containing
+
+      sp switch (if 1, use top of stack for trap instructions)
+      dr field position
+      sr1 field position
+      sr2 field position
+      register field width
+
+Each register definition is represented with the following
+triple:
+
+   <reg number in decimal> <reg name> <initial value in decimal>
+
+Optionally following the register definitions is a line that
+starts with %% followed by another line that contains the sp 
+switch (if 1 then the top of the stack used for the trap
+instructions), the dr field position, the sr1 field position, the
+sr2 field position, and the register field width, all in decimal.
+
+Sample cfg file:
+
+0 bp 0       ; give reg 0 the name "bp", init value = 0
+7 mask 255   ; give reg 7 the name "mask", init value = 255
+2 ac 0       ; give reg 2 the name "ac", init value = 0
+%%
+0 11 8 2 3   ; spswitch=0, dr=11, sr1=8, sr2=2, register width=3
+
+In the above configuration file, 11 for dr indicates that the dr
+field starts at bit 11. 3 for the register width indicates that
+each register field is three bits wide. Thus, the dr field
+occupies bits 11, 10, and 9. Similarly, the sr1 field occupies
+bits 8, 7, and 6, and the sr2 field occupies bits 2, 1, and 0.

@@ -1,0 +1,44 @@
+  1 ; ex0802.a  Pass by address
+  2 startup:   bl main
+  3            halt
+  4 ;================================================
+  5 
+  6                            ; #include <stdio.h>
+  7 x:        .word 7          ; int x = 7;
+  8 
+  9                            ; void f(int *p)
+ 10 f:        push lr          ; {
+ 11           push fp
+ 12           mov fp, sp
+ 13 
+ 14           ldr r0, fp, 2    ;    *p = *p + 1;
+ 15           ldr r0, r0, 0
+ 16           add r0, r0, 1
+ 17           ldr r1, fp, 2
+ 18           str r0, r1, 0
+ 19 
+ 20           mov sp, fp       ; }
+ 21           pop fp
+ 22           pop lr
+ 23           ret
+ 24 ; ===============================================
+ 25                            ; int main()
+ 26 main:     push lr          ; {
+ 27           push fp
+ 28           mov fp, sp
+ 29 
+ 30           lea r0, x        ;    f(&x);
+ 31           push r0
+ 32           bl f
+ 33           add sp, sp, 1
+ 34 
+ 35           ld r0, x         ;    printf("%d\n", x);
+ 36           dout r0
+ 37           nl
+ 38 
+ 39           mov r0, 0        ;    return 0;
+ 40           mov sp, fp
+ 41           pop fp
+ 42           pop lr
+ 43           ret         
+ 44                          ; }

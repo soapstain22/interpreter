@@ -1,0 +1,16 @@
+  1 // ex0601.c  while Statement
+  2 #include <stdio.h>
+  3 void nr(int x)
+  4 {
+  5    while (x != 0)
+  6    {
+  7       printf("%d\n", x);
+  8       x = x - 1;
+  9    }
+ 10 }
+ 11 //======================
+ 12 int main()
+ 13 {
+ 14    nr(2);
+ 15    return 0;
+ 16 }

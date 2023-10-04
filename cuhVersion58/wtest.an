@@ -1,0 +1,7 @@
+  1           ; test program for w.sm microcode        wtest.a
+  2           push 20
+  3           push 35
+  4           add
+  5           dout
+  6           nl
+  7           halt

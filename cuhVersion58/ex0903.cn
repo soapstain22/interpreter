@@ -1,0 +1,26 @@
+  1 // ex0903.c  Passing structs
+  2 #include <stdio.h>
+  3 struct Point
+  4 {
+  5    int x;
+  6    int y;
+  7 };
+  8 struct Point a;
+  9 //===============================
+ 10 void f(struct Point s)
+ 11 {
+ 12    printf("%d %d\n", s.x, s.y);
+ 13 }
+ 14 //===============================
+ 15 void g(struct Point *p)
+ 16 {
+ 17    printf("%d %d\n", p->x, p->y);
+ 18 }
+ 19 //===============================
+ 20 int main()
+ 21 {
+ 22    a.x = 1;
+ 23    a.y = 2;
+ 24    f(a);
+ 25    g(&a);
+ 26 }   

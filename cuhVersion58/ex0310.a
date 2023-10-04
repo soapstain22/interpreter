@@ -1,0 +1,5 @@
+; ex0310.a
+          ld r0, x
+          dout r0
+          halt
+x:        .word 5

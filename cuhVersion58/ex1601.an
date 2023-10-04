@@ -1,0 +1,149 @@
+  1 ; ex1601.a  Inheritance
+  2 startup:  bl main
+  3           halt
+  4 ;==============================================================
+  5                            ; #include <iostream>
+  6                            ; using namespace std;
+  7                            ; class A
+  8                            ; {
+  9                            ;    public:
+ 10                            ;       void set(int a);
+ 11                            ;       void display();
+ 12                            ;    protected:   
+ 13                            ;       int x;
+ 14                            ; };
+ 15 
+ 16 @A@set$i: push lr          ; A::set(int n)
+ 17           push fp          ; {            
+ 18           mov fp, sp
+ 19                            
+ 20           ldr r0, fp, 3    ;    x = n;
+ 21           ldr r1, fp, 2
+ 22           str r0, r1, 0
+ 23                            
+ 24           mov sp, fp       ; }
+ 25           pop fp
+ 26           pop lr
+ 27           ret
+ 28 
+ 29 @A@display$v:              ; void A::display()
+ 30           push lr          ; {
+ 31           push fp
+ 32           mov fp, sp
+ 33                            
+ 34           ldr r0, fp, 2    ;    cout << x << endl;
+ 35           ldr r0, r0, 0
+ 36           dout r0
+ 37           nl
+ 38                            
+ 39           mov sp, fp       ; }
+ 40           pop fp
+ 41           pop lr
+ 42           ret
+ 43 ;==============================================================
+ 44                            ; class B: public A
+ 45                            ; {
+ 46                            ;    public:
+ 47                            ;       void set(int n, int m);
+ 48                            ;       void display();
+ 49                            ;    private:
+ 50                            ;       int y;
+ 51                            ; };
+ 52 
+ 53 @B@set$ii:push lr          ; void B::set(int n, int m): public A
+ 54           push fp          ; {                                  
+ 55           mov fp, sp
+ 56 
+ 57           ldr r0, fp, 3    ;    x = n;
+ 58           ldr r1, fp, 2
+ 59           str r0, r1, 0
+ 60                            
+ 61           ldr r0, fp, 4    ;    y = m;
+ 62           ldr r1, fp, 2
+ 63           str r0, r1, 1
+ 64                            
+ 65           mov sp, fp       ; }
+ 66           pop fp
+ 67           pop lr
+ 68           ret
+ 69 
+ 70 @B@display$v:              ; void B::display()
+ 71           push lr          ; {
+ 72           push fp
+ 73           mov fp, sp
+ 74                            
+ 75           ldr r0, fp, 2    ;    cout << x << " " << y << endl;
+ 76           ldr r0, r0, 0
+ 77           dout r0
+ 78           mov r0, ' '
+ 79           aout r0
+ 80           ldr r0, fp, 2
+ 81           ldr r0, r0, 1
+ 82           dout r0
+ 83           nl
+ 84                            
+ 85           mov sp, fp       ; }
+ 86           pop fp
+ 87           pop lr
+ 88           ret
+ 89 ;==============================================================
+ 90 main:     push lr          ; int main()
+ 91           push fp          ; {         
+ 92           mov fp, sp
+ 93                                
+ 94           sub sp, sp, 1    ;    A *aptr;
+ 95           sub sp, sp, 1    ;    B *bptr;
+ 96                            
+ 97           mov r1, 1        ;    aptr = new A;
+ 98           bl malloc 
+ 99           str r0, fp, -1
+100 
+101           mov r0, 1        ;    aptr->set(1);
+102           push r0
+103           ldr r0, fp, -1
+104           push r0
+105           bl @A@set$i
+106           add sp, sp, 2
+107                            
+108           ldr r0, fp, -1   ;    aptr->display();
+109           push r0
+110           bl @A@display$v
+111           add sp, sp, 1
+112                            
+113           mov r1, 2        ;    bptr = new B;
+114           bl malloc
+115           str r0, fp, -2
+116 
+117           mov r0, 3        ;    bptr->set(2, 3);
+118           push r0
+119           mov r0, 2
+120           push r0
+121           ldr r0, fp, -2
+122           push r0
+123           bl @B@set$ii
+124           add sp, sp, 3
+125                            
+126           ldr r0, fp, -2   ;    bptr->display();
+127           push r0
+128           bl @B@display$v
+129           add sp, sp, 1
+130                            
+131           ldr r0, fp, -2   ;    aptr = bptr;
+132           str r0, fp, -1
+133                            
+134           ldr r0, fp, -1   ;    aptr->display();
+135           push r0
+136           bl @A@display$v
+137           add sp, sp, 1
+138                            
+139           mov r0, 0        ;    return 0;
+140           mov sp, fp
+141           pop fp
+142           pop lr
+143           ret
+144 
+145 malloc:   ld r0, @avail
+146           add r1, r0, r1
+147           st r1, @avail
+148           ret                           
+149 @avail:   .word @avail+1   ; }

@@ -1,0 +1,58 @@
+h2b Hex to Binary Converter Version 3.0
+
+DISCLAIMER 
+----------
+
+The files in this software package are provided to you on an "as 
+is" basis for instructional purposes only, without any 
+warranties, expressed or implied. The author and copyright holder 
+of these files shall not be liable in any event for incidental, 
+consequential, special, or punitive damages in connection with, 
+or arising out of the distribution, performance, or use of these 
+files.          
+================================================================= 
+
+On Mac, Linux, and Raspberry, start the command line with 
+      "./". For example,
+
+      ./h2b e0201.hex
+
+
+h2b converts a machine code file in hex format to binary. The 
+binary file created is not relocatable. That is, it does not have 
+the S and A header entries that permit relocation. Thus, if the 
+machine program has any absolute addresses, they are not adjusted 
+according to the load point, in which case the program will not 
+work correctly if the load point is not 0. 
+
+To convert a hex file to b instruction set machine code, 
+enter 
+
+   h2b <hex file name>
+
+   or
+
+   h2b <hex file name> b
+
+To convert to s instruction set machine code, enter
+
+   h2b <hex file name> s
+
+To convert to r instruction set machine code, enter
+
+   h2b <hex file name> r 
+
+To convert to any other instruction set machine code, enter 
+
+   h2b <hex file name> <x>
+
+where <x> is the one-character basename of the microcode file. 
+<x> can be any character that is legal in a final name. For 
+example, if you create a microcode file named u.sm, then for
+<x> you should specify u:
+
+   h2b <hex file name> u
+
+If you use an uppercase letter for <x>, the lowercase version
+is used.
+

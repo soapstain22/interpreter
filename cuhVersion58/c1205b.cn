@@ -1,0 +1,12 @@
+  1 // c1205b.c         
+  2 #include <stdio.h>
+  3 void greeting(void);
+  4 void g(int *p)     
+  5 {                  
+  6    *p = -7;        
+  7    greeting();     
+  8 }                  
+  9 void greeting(void)    
+ 10 {                  
+ 11    printf("hi!\n");
+ 12 }
