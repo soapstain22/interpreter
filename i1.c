@@ -144,7 +144,13 @@ int main(int argc, char *argv[])
             break;
          case 2:                          // ld
         
-         // code missing here
+            // (CHANGED)
+            dr = mem[pc + pcoffset9];
+            break;
+
+         case 3:                          // st (NEW)
+            mem[pc + pcoffset9] = sr;
+            break;
 
          case 9:                          // not
             // ~ is the not operator in C
@@ -165,14 +171,21 @@ int main(int argc, char *argv[])
             r[dr] = pc + pcoffset9;
             break;
          case 15:                         // trap
-            if (trapvec == 0x00)             // halt
+            if (trapvec == 0x00) // halt
+            {
                exit(0);
-            else
-            if (trapvec == 0x01)             // nl
-               // code missing here
-            else
-            if (trapvec == 0x02)             // dout
-               // code missing here                
+            }             
+            else if (trapvec == 0x01)     // nl
+            {
+               // CHANGED
+               printf("\n");
+            }
+            else if (trapvec == 0x02)     // dout
+            {
+               // (CHANGED)
+               printf("%d", sr);
+            }
+
             break;
       }     // end of switch
    }        // end of while
