@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
       code = dr = sr = (ir & 0xe00) >> 9; // get code/dr/sr and rt justify (CHANGED)
       sr1 = baser = (ir & 0x01c0) >> 6;   // get sr1/baser and rt justify
       sr2 = ir & 0x7;                     // get third reg field (CHANGED)
-      bit5 = "tss";                        // get bit 5
+      bit5 = ir & 0x0007;                 // get bit 5 (CHANGED)
       bit11 = ir & 0x0800;                // get bit 11
 
       // decode (i.e., determine) and execute instruction just fetched
@@ -160,6 +160,24 @@ int main(int argc, char *argv[])
 
          case 3:                          // st (NEW)
             mem[pc + pcoffset9] = sr;
+            break;
+
+         case 4:                          // bl (NEW)
+            if (bit5)
+            {
+               //lr = pc;
+               pc = pc + pcoffset11;
+            }
+
+            break;
+
+         case 5:                          // and (NEW)
+            if (bit5 == 0){
+               dr = sr1 & sr2;
+            } else {
+               dr = sr1 & imm5;
+            }
+
             break;
 
          case 9:                          // not
