@@ -162,6 +162,15 @@ int main(int argc, char *argv[])
             mem[pc + pcoffset9] = sr;
             break;
 
+         case 4:                          // bl (NEW)
+            if (bit5)
+            {
+               //lr = pc;
+               pc = pc + pcoffset11;
+            }
+
+            break;
+
          case 5:                          // and (NEW)
             if (bit5 == 0){
                dr = sr1 & sr2;
