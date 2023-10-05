@@ -161,6 +161,10 @@ int main(int argc, char *argv[])
          case 3:                          // st (NEW)
             mem[pc + pcoffset9] = sr;
             break;
+         
+         case 7:                          //str
+            mem[baser + offset6] = r[sr];
+            break;
 
          case 4:                          // bl (NEW)
             if (bit5)
