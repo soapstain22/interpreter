@@ -93,16 +93,16 @@ int main(int argc, char *argv[])
       pcoffset9 = ir << 7;                // left justify pcoffset9 field
       pcoffset9 = imm9 = pcoffset9 >> 7;  // sign extend and rt justify
       pcoffset11 = ir << 5;               // left justify pcoffset11 field (CHANGED)
-      pcoffset11 = ir >> 5;               // sign extend and rt justify (CHANGED)
+      pcoffset11 = pcoffset11 >> 5;               // sign extend and rt justify (CHANGED)
       imm5 = ir << 11;                    // left justify imm5 field (CHANGED)
-      imm5 = ir >> 11;                    // sign extend andd rt justify (CHANGED)
+      imm5 = imm5 >> 11;                  // sign extend andd rt justify (CHANGED)
       offset6 = ir << 10;                 // left justify offset6 field (CHANGED)
-      offset6 = ir >> 10;                 // sign extend and rt justify (CHANGED)
+      offset6 = offset6 >> 10;            // sign extend and rt justify (CHANGED)
       trapvec = eopcode = ir & 0x1f;      // get trapvec and eopcode fields
       code = dr = sr = (ir & 0xe00) >> 9; // get code/dr/sr and rt justify (CHANGED)
       sr1 = baser = (ir & 0x01c0) >> 6;   // get sr1/baser and rt justify
       sr2 = ir & 0x7;                     // get third reg field (CHANGED)
-      bit5 = ir & 0x0007;                 // get bit 5 (CHANGED)
+      bit5 = ir & 0x0020;                 // get bit 5 (CHANGED)
       bit11 = ir & 0x0800;                // get bit 11
 
       // decode (i.e., determine) and execute instruction just fetched
@@ -155,11 +155,11 @@ int main(int argc, char *argv[])
          case 2:                          // ld
         
             // (CHANGED)
-            dr = mem[pc + pcoffset9];
+            r[dr] = mem[pc + pcoffset9];
             break;
 
          case 3:                          // st (NEW)
-            mem[pc + pcoffset9] = sr;
+            mem[pc + pcoffset9] = r[sr];
             break;
          
          case 7:                          //str
@@ -167,21 +167,39 @@ int main(int argc, char *argv[])
             break;
 
          case 4:                          // bl (NEW)
-            if (bit5)
+            if(bit11)
             {
-               //lr = pc;
-               pc = pc + pcoffset11;
+                r[7] = pc;
+                pc = pc + pcoffset11;
+            }
+            else
+            {
+                r[7] = pc;
+                pc = r[baser] + offset6;
+            }
+            
+            break;
+
+         case 5:                          // and (NEW)
+            if(bit5)
+            {
+                r[dr] = r[sr1] & imm5;
+                setnz(r[dr]);
+            }
+            else
+            {
+                r[dr] = r[sr1] & r[sr2];
+                setnz(r[dr]);
             }
 
             break;
 
-         case 5:                          // and (NEW)
-            if (bit5 == 0){
-               dr = sr1 & sr2;
-            } else {
-               dr = sr1 & imm5;
-            }
+         case 6:                          // ldr (NEW)
+            r[dr] = mem[r[baser] + offset6];
+            break;
 
+         case 7:                          // str (NEW)
+            mem[r[baser] + offset6] = r[sr];
             break;
 
          case 9:                          // not
@@ -215,7 +233,7 @@ int main(int argc, char *argv[])
             else if (trapvec == 0x02)     // dout
             {
                // (CHANGED)
-               printf("%d", sr);
+               printf("%d", r[sr]);
             }
 
             break;
