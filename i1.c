@@ -163,29 +163,39 @@ int main(int argc, char *argv[])
             break;
 
          case 4:                          // bl (NEW)
-            if (bit5)
+            if(bit11)
             {
-               //lr = pc;
-               pc = pc + pcoffset11;
+                r[7] = pc;
+                pc = pc + pcoffset11;
             }
-
+            else
+            {
+                r[7] = pc;
+                pc = r[baser] + offset6;
+            }
+            
             break;
 
          case 5:                          // and (NEW)
-            if (bit5 == 0){
-               r[dr] = r[sr1] & r[sr2];
-            } else {
-               r[dr] = r[sr1] & imm5;
+            if(bit5)
+            {
+                r[dr] = r[sr1] & imm5;
+                setnz(r[dr]);
+            }
+            else
+            {
+                r[dr] = r[sr1] & r[sr2];
+                setnz(r[dr]);
             }
 
             break;
 
          case 6:                          // ldr (NEW)
-            r[dr] = mem[baser + offset6];
+            r[dr] = mem[r[baser] + offset6];
             break;
 
          case 7:                          // str (NEW)
-            mem[baser + offset6] = r[sr];
+            mem[r[baser] + offset6] = r[sr];
             break;
 
          case 9:                          // not
